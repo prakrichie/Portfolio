@@ -448,6 +448,18 @@
             box-shadow: 0 24px 56px rgba(27,26,23,.12);
         }
 
+        .card--inactive {
+            opacity: 0.45;
+            filter: grayscale(30%);
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .card--inactive .card-link {
+            color: var(--muted);
+            opacity: 0.6;
+        }
+
         .card-image {
             width: 100%;
             overflow: hidden;
@@ -619,6 +631,21 @@
         }
 
         /* ════════════════════════════════════════════
+           PAGE TRANSITION
+        ════════════════════════════════════════════ */
+        body {
+            animation: pageFadeIn .4s ease forwards;
+        }
+        @keyframes pageFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        body.fade-out {
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        /* ════════════════════════════════════════════
            ARROW ICON (shared SVG across buttons)
         ════════════════════════════════════════════ */
         .arrow-icon {
@@ -696,7 +723,7 @@
                 <div class="hero-eyebrow">UX/UI and multimedia designer</div>
 
                 <!-- h1: DM Serif Display 96px -->
-                <h1 class="hero-heading">Hi, I'm<br>Richie.</h1>
+                <h1 class="hero-heading">Hi, I'm<br>Richie<span style="color:var(--roughy)">.</span></h1>
 
                 <!-- tagline: 32px italic -->
                 <p class="hero-tagline">
@@ -759,24 +786,6 @@
         </div>
     </section>
 
-    <!-- ══ STATS ═════════════════════════════════════ -->
-    <div class="stats-section">
-        <div class="stats-inner">
-            <div class="stat-item">
-                <div class="stat-number">3+</div>
-                <div class="stat-label">Years designing products</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">12+</div>
-                <div class="stat-label">Projects shipped</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">NZ</div>
-                <div class="stat-label">Based in New Zealand</div>
-            </div>
-        </div>
-    </div>
-
     <!-- ══ WORK ══════════════════════════════════════ -->
     <section class="work-section" id="work">
         <div class="section-row">
@@ -794,8 +803,8 @@
                 <div class="card-body">
                     <div class="card-tags">
                         <span class="tag">Social</span>
-                        <span class="tag">Mobile</span>
-                        <span class="tag">Editorial</span>
+                        <span class="tag">Stakeholder</span>
+                        <span class="tag">MVP</span>
                     </div>
                     <h3 class="card-title">Tribes</h3>
                     <p class="card-desc">
@@ -812,13 +821,13 @@
             </a>
 
             <!-- Card 2: Munchies ───────────────── -->
-            <a class="card" href="#">
+            <a class="card card--inactive" href="#">
                 <div class="card-image">
                     <img src="Munchies.png" alt="Munchies — Food Delivery App">
                 </div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag">Mobile</span>
+                        <span class="tag">Prototyping</span>
                         <span class="tag">UI Design</span>
                         <span class="tag">Food</span>
                     </div>
@@ -827,56 +836,33 @@
                         A dark-mode food delivery app built for speed and delight — reducing friction
                         in the ordering experience with a bold, immersive visual language.
                     </p>
-                    <div class="card-link">
-                        View case study
-                        <svg class="arrow-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
-                            <path d="M1.5 11.5L11.5 1.5M11.5 1.5H4.5M11.5 1.5V8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
+                    <div class="card-link">Coming soon</div>
                 </div>
             </a>
 
             <!-- Card 3: Sharesies ──────────────── -->
-            <a class="card" href="#">
+            <a class="card card--inactive" href="#">
                 <div class="card-image">
                     <img src="Sharesies.png" alt="Sharesies — Investment Platform">
                 </div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag">Fintech</span>
+                        <span class="tag">Onboarding</span>
                         <span class="tag">Product Design</span>
-                        <span class="tag">iOS</span>
+                        <span class="tag">Interviews</span>
                     </div>
                     <h3 class="card-title">Sharesies</h3>
                     <p class="card-desc">
                         Redesigning the investing experience to feel approachable and confidence-building —
                         making wealth-building accessible for everyday New Zealanders.
                     </p>
-                    <div class="card-link">
-                        View case study
-                        <svg class="arrow-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
-                            <path d="M1.5 11.5L11.5 1.5M11.5 1.5H4.5M11.5 1.5V8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
+                    <div class="card-link">Coming soon</div>
                 </div>
             </a>
 
         </div>
     </section>
 
-    <!-- ══ CTA BAND ══════════════════════════════════ -->
-    <div class="cta-band">
-        <h2 class="cta-heading">
-            Got a project in mind?<br><em>Let's make it happen.</em>
-        </h2>
-        <!-- Component 2 variant-2: light pill -->
-        <a href="mailto:richiehine1@gmail.com" class="btn-light">
-            Get in touch
-            <svg class="arrow-icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
-                <path d="M2.5 12.5L12.5 2.5M12.5 2.5H5.5M12.5 2.5V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </a>
-    </div>
 
     <!-- ══ FOOTER ═════════════════════════════════════ -->
     <footer>
@@ -889,5 +875,13 @@
         <p class="footer-copy">© 2025 Richie. All rights reserved.</p>
     </footer>
 
+    <script>
+        document.querySelector('a.card[href="index3.html"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            var href = this.href;
+            document.body.classList.add('fade-out');
+            setTimeout(function() { window.location.href = href; }, 300);
+        });
+    </script>
 </body>
 </html>
