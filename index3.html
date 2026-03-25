@@ -667,7 +667,7 @@
 
     .screens-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
       margin-top: 40px;
     }
@@ -677,6 +677,11 @@
       border-radius: 18px;
       overflow: hidden;
       background: rgba(255,255,255,0.4);
+    }
+
+    .screen-card--priority {
+      border: 2.5px solid #6563ff;
+      box-shadow: 0 0 0 4px rgba(101,99,255,0.1);
     }
 
     .screen-card-dark {
@@ -958,7 +963,7 @@
       .hero-title { font-size: 48px; }
       .pttp { grid-template-columns: 1fr 1fr; }
       .two-col { grid-template-columns: 1fr; }
-      .screens-grid { grid-template-columns: 1fr; }
+      .screens-grid { grid-template-columns: 1fr 1fr; }
       .findings-grid { grid-template-columns: 1fr; }
       .two-image-row { grid-template-columns: 1fr; }
       .style-guide-grid { grid-template-columns: 1fr; }
@@ -1242,32 +1247,35 @@
         <p style="margin-top:20px;">Through observing their actions, I knew what prototype caught their eye as they were constantly interacting with it as if it was a mini-game and not having to interrupt and guide them on how to complete the task. Satisfied with the outcome, proto_a was sent in to hi-fidelity prototyping.</p>
       </div>
 
-      <p class="section-eyebrow" style="margin-top:48px;">Main screens — The highlighted screens were prioritised in prototyping</p>
+      <p class="section-eyebrow" style="margin-top:48px;">Main screens</p>
+      <p style="font-family:var(--ff-sans);font-size:13px;font-weight:300;color:var(--mid);margin-top:8px;display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #6563ff;flex-shrink:0;"></span>
+        The highlighted screens were prioritised in prototyping
+      </p>
 
       <div class="screens-grid">
-        <div class="screen-card">
-          <div class="screen-card-dark"></div>
+
+        <!-- MiPage — priority -->
+        <div class="screen-card screen-card--priority">
+          <div class="screen-card-dark" style="min-height:200px;"></div>
           <div class="screen-card-body">
             <h3 class="screen-title">MiPage</h3>
-            <div class="screen-tags">
-              <span class="screen-tag">Central hub</span>
-              <span class="screen-tag">Your curation</span>
-            </div>
-            <ul class="screen-desc">
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Central hub</li>
+              <li>Your curation</li>
               <li>Users can see your 'MiPage'</li>
               <li>Adding content</li>
             </ul>
           </div>
         </div>
 
-        <div class="screen-card">
-          <div class="screen-card-dark"></div>
+        <!-- Tribe — priority -->
+        <div class="screen-card screen-card--priority">
+          <div class="screen-card-dark" style="min-height:200px;"></div>
           <div class="screen-card-body">
             <h3 class="screen-title">Tribe</h3>
-            <div class="screen-tags">
-              <span class="screen-tag">Your group</span>
-            </div>
-            <ul class="screen-desc">
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Your group</li>
               <li>See shared content</li>
               <li>Share content</li>
               <li>Message members</li>
@@ -1277,21 +1285,31 @@
           </div>
         </div>
 
+        <!-- Media -->
         <div class="screen-card">
-          <div class="screen-card-dark"></div>
+          <div class="screen-card-dark" style="min-height:200px;"></div>
           <div class="screen-card-body">
             <h3 class="screen-title">Media</h3>
-            <div class="screen-tags">
-              <span class="screen-tag">Content exploration</span>
-            </div>
-            <ul class="screen-desc">
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Content exploration</li>
               <li>Liked and shared content</li>
               <li>See what other Tribe members have liked and shared</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Add Users -->
+        <div class="screen-card">
+          <div class="screen-card-dark" style="min-height:200px;"></div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">Add Users</h3>
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
               <li>Find and add registered users</li>
               <li>Find mutual friends</li>
             </ul>
           </div>
         </div>
+
       </div>
 
       <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Lo-fidelity Prototyping →</span>
@@ -1405,6 +1423,8 @@
             </div>
           </div>
         </div>
+
+        <img src="Center_Nav.png" alt="Centre Navigation diagram" style="width:100%;border-radius:12px;margin-top:32px;display:block;" />
       </div>
     </div>
   </section>
