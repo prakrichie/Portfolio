@@ -195,13 +195,27 @@
             margin-bottom: 40px;
         }
 
+        /* contact line */
+        .hero-contact {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+        .hero-contact a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .hero-contact a:hover { color: var(--rangoon); }
+
         /* actions row: gap 20px */
         .hero-actions {
             display: flex;
             align-items: center;
             gap: 20px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 60px;
         }
 
         /* Component 2 variant-1 default: bg rangoon, r100, p26/14, gap8 */
@@ -301,7 +315,7 @@
         }
 
         .hero-avatar img {
-            width: 105%;
+            width: 115%;
             height: auto;
             display: block;
             object-fit: contain;
@@ -762,6 +776,9 @@
                     <span class="badge-dot"></span>
                     Available for new projects
                 </div>
+
+                <!-- contact line -->
+                <p class="hero-contact">Best way to contact me: <a href="mailto:prakrichie@gmail.com">prakrichie@gmail.com</a> · <a href="https://www.linkedin.com/in/richieprak/" target="_blank">www.linkedin.com/in/richieprak/</a></p>
             </div>
 
             <!-- avatar right column: 300×400 r160 -->
