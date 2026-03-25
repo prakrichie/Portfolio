@@ -289,20 +289,28 @@
         .hero-avatar {
             width: 300px;
             height: 400px;
-            border-radius: 160px;
-            background: var(--friar);
-            overflow: hidden;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            border: 1px solid var(--border);
+            animation: avatarEntrance .7s cubic-bezier(.22,1,.36,1) .2s both;
+        }
+
+        @keyframes avatarEntrance {
+            from { opacity: 0; transform: translateY(24px) scale(.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .hero-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 105%;
+            height: auto;
             display: block;
+            object-fit: contain;
+            animation: avatarFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes avatarFloat {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
         }
 
         /* placeholder state */
@@ -762,17 +770,7 @@
             <!-- avatar right column: 300×400 r160 -->
             <div class="hero-right">
                 <div class="hero-avatar">
-                    <!--
-                        Replace this div with:
-                        <img src="your-photo.jpg" alt="Richie">
-                    -->
-                    <div class="avatar-placeholder">
-                        <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-                            <circle cx="26" cy="18" r="10" fill="currentColor"/>
-                            <path d="M4 48c0-12.15 9.85-22 22-22s22 9.85 22 22" fill="currentColor"/>
-                        </svg>
-                        <small>Your photo</small>
-                    </div>
+                    <img src="v2_uni.png" alt="Richie">
                 </div>
 
                 <div class="scroll-hint">
