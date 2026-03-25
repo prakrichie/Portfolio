@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tribes — Case Study · Richie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4f2ec;
+      --ink:   #1b1a17;
+      --mid:   #6b6860;
+      --rule:  #5ac4d4;
+      --border: rgba(27,26,23,0.15);
+      --card-bg: #1b1a17;
+      --ff-serif: 'DM Serif Display', Georgia, serif;
+      --ff-sans:  'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ──────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 62px;
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(244,242,236,0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--ff-serif);
+      font-size: 17.6px;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nav-logo .dot {
+      width: 7px; height: 7px;
+      border-radius: 3.5px;
+      background: var(--ink);
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-cta {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1.5px solid var(--ink);
+      border-radius: 100px;
+      padding: 7px 20px;
+      transition: background .2s, color .2s;
+    }
+    .nav-cta:hover { background: var(--ink); color: var(--cream); }
+
+    /* ─── Layout ───────────────────────────────────────── */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+
+    /* ─── Section divider ──────────────────────────────── */
+    .divider {
+      height: 2px;
+      background: var(--rule);
+      margin: 0;
+      width: 100%;
+    }
+
+    /* ─── Hero / Header ────────────────────────────────── */
+    .hero {
+      padding-top: 62px; /* nav height */
+    }
+
+    .hero-inner {
+      padding: 72px 52px 0;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { opacity: 0.5; }
+
+    /* Hero card — large bordered frame */
+    .hero-card {
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--cream);
+      margin-bottom: 0;
+    }
+
+    .hero-card-top {
+      padding: 52px 64px 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: var(--ff-serif);
+      font-size: 80px;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .hero-quote {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink);
+      max-width: 640px;
+      opacity: 0.85;
+    }
+
+    /* PTTP metadata */
+    .pttp {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .pttp-item {
+      padding: 28px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .pttp-item:last-child { border-right: none; }
+
+    .pttp-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+
+    .pttp-value {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* Image strip */
+    .hero-image-strip {
+      background: var(--card-bg);
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-image-strip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0.9;
+    }
+
+    /* Role block (right side of hero-card-top) */
+    .hero-role {
+      min-width: 260px;
+    }
+
+    .hero-role-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 14px;
+    }
+
+    .hero-role ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hero-role ul li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .hero-role ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--mid);
+      font-size: 12px;
+    }
+
+    /* ─── Sections ─────────────────────────────────────── */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-eyebrow {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: var(--ff-serif);
+      font-size: 42px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .section-body {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    .section-body p + p { margin-top: 20px; }
+
+    /* Two-col layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    /* ─── What to expect ───────────────────────────────── */
+    .expect-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .jump-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 28px 32px;
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.4);
+    }
+
+    .jump-links-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 6px;
+    }
+
+    .jump-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      text-align: center;
+      transition: background .2s, border-color .2s;
+    }
+    .jump-links a:hover {
+      background: var(--ink);
+      color: var(--cream);
+      border-color: var(--ink);
+    }
+
+    .read-time {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      margin-top: 12px;
+    }
+
+    /* ─── Project Brief ────────────────────────────────── */
+    .objectives-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .objectives-list li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .objectives-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0.4;
+    }
+
+    .challenges-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .challenges-list li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .challenges-list li::before {
+      content: '×';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--mid);
+      font-size: 14px;
+    }
+
+    .next-label {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rule);
+      margin-top: 40px;
+    }
+
+    /* ─── How I Got Here ───────────────────────────────── */
+    .story-text {
+      font-family: var(--ff-sans);
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.85;
+      max-width: 720px;
+    }
+    .story-text p + p { margin-top: 24px; }
+
+    /* ─── Research ─────────────────────────────────────── */
+    .research-intro {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: 40px;
+    }
+
+    .research-goals {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .research-goals li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--ink);
+      list-style: none;
+      padding-left: 24px;
+      position: relative;
+    }
+    .research-goals li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--rule);
+    }
+
+    .findings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 48px;
+    }
+
+    .findings-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 36px 36px 32px;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .findings-card h3 {
+      font-family: var(--ff-serif);
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .findings-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .findings-card ul li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .findings-card ul li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--mid);
+    }
+
+    .future-steps {
+      margin-top: 32px;
+      padding: 24px 32px;
+      border-left: 3px solid var(--rule);
+      background: rgba(90,196,212,0.06);
+      border-radius: 0 12px 12px 0;
+    }
+    .future-steps p {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--mid);
+      line-height: 1.65;
+    }
+
+    /* ─── Dark image blocks ────────────────────────────── */
+    .dark-card {
+      background: var(--card-bg);
+      border-radius: 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+    }
+    .dark-card-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .dark-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ─── Ideation ─────────────────────────────────────── */
+    .principles-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .principle-tag {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 20px;
+    }
+
+    .quote-block {
+      border-left: 3px solid var(--ink);
+      padding: 20px 28px;
+      margin: 32px 0;
+      background: rgba(27,26,23,0.03);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .quote-block .speaker {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 6px;
+    }
+
+    .quote-block p {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sketches-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 16px 0 28px;
+    }
+    .sketches-list li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      padding-left: 20px;
+      position: relative;
+    }
+    .sketches-list li::before {
+      content: '·';
+      position: absolute;
+      left: 6px;
+      color: var(--mid);
+      font-size: 18px;
+      line-height: 1;
+      top: 4px;
+    }
+
+    .two-image-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    /* ─── Feedback & Testing ───────────────────────────── */
+    .feedback-intro {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--ink);
+      max-width: 680px;
+      margin-bottom: 32px;
+    }
+
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .screen-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.4);
+    }
+
+    .screen-card-dark {
+      background: var(--card-bg);
+      border-radius: 18px;
+      min-height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen-card-body {
+      padding: 24px;
+    }
+
+    .screen-title {
+      font-family: var(--ff-serif);
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .screen-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .screen-tag {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--mid);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 3px 12px;
+    }
+
+    .screen-desc {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.6;
+      list-style: none;
+    }
+    .screen-desc li { padding-left: 0; }
+    .screen-desc li::before { display: none; }
+
+    /* ─── Hi-Fi ─────────────────────────────────────────── */
+    .style-guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin: 40px 0;
+    }
+
+    .guide-block {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .guide-block h4 {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 16px;
+    }
+
+    .colour-swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch-circle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+    }
+
+    .swatch-name {
+      font-family: var(--ff-sans);
+      font-size: 10px;
+      color: var(--mid);
+      text-align: center;
+    }
+
+    .spec-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spec-list li {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink);
+      display: flex;
+      gap: 8px;
+    }
+    .spec-list li span {
+      color: var(--mid);
+      font-size: 11px;
+      min-width: 6px;
+    }
+
+    /* centre navigation */
+    .centre-nav-block {
+      background: var(--card-bg);
+      border-radius: 22px;
+      padding: 48px;
+      margin-top: 40px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .centre-nav-block h3 {
+      font-family: var(--ff-serif);
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .centre-nav-block p {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.7);
+      max-width: 580px;
+      margin-bottom: 24px;
+    }
+
+    .gesture-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .gesture-tag {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+    }
+
+    .gesture-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .gesture-group-item label {
+      display: block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 10px;
+    }
+
+    /* ─── Final ─────────────────────────────────────────── */
+    .final-screens {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .final-screen-row {
+      background: var(--card-bg);
+      border-radius: 22px;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-screen-row img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .final-screen-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ─── Footer ────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .footer-logo {
+      font-family: var(--ff-serif);
+      font-size: 17.6px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-family: var(--ff-sans);
+      font-size: 12.8px;
+      font-weight: 300;
+      color: var(--mid);
+    }
+
+    /* ─── Responsive ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 0 32px; }
+      .hero-inner, .container { padding: 0 32px; }
+      .hero-card-top { padding: 40px 40px 36px; gap: 32px; }
+      .hero-title { font-size: 60px; }
+      .pttp { grid-template-columns: repeat(2, 1fr); }
+      .pttp-item:nth-child(2) { border-right: none; }
+      .pttp-item:nth-child(3) { border-top: 1px solid var(--border); }
+      .pttp-item:nth-child(4) { border-top: 1px solid var(--border); }
+      .two-col { gap: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero-inner, .container { padding: 0 20px; }
+      .hero-card-top { grid-template-columns: 1fr; padding: 32px; }
+      .hero-role { min-width: unset; }
+      .hero-title { font-size: 48px; }
+      .pttp { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .screens-grid { grid-template-columns: 1fr; }
+      .findings-grid { grid-template-columns: 1fr; }
+      .two-image-row { grid-template-columns: 1fr; }
+      .style-guide-grid { grid-template-columns: 1fr; }
+      .expect-grid { grid-template-columns: 1fr; }
+      .gesture-group { grid-template-columns: 1fr; }
+      section { padding: 56px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">Richie<span class="dot"></span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+    <a href="mailto:richiehine1@gmail.com" class="nav-cta">Contact me</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Work</a>
+        <span>/</span>
+        Tribes
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <div>
+            <span class="hero-tag">Start-up</span>
+            <h1 class="hero-title">Tribes</h1>
+            <p class="hero-quote">"Empowering self-discovery and promoting meaningful connections through personalised AI and curated search. Tribes is a decentralised network and universal clipboard of our personal archives. Add friends to your Tribe and search from this trusted content pool. Discover your friends multidimensionality and get search results that are personalised and curated from those whose opinions we value. Save time and get straight to all that is relevant."</p>
+          </div>
+
+          <div class="hero-role">
+            <p class="hero-role-label">My role &amp; what we did</p>
+            <ul>
+              <li>Developing a minimum viable product (MVP)</li>
+              <li>Scoping the MVP requirements</li>
+              <li>Introducing user experience to the team</li>
+              <li>Weekly meetings collaborating with founders</li>
+              <li>Creating sketches, wireframes, &amp; user flows</li>
+              <li>Creating low and hi-fidelity prototypes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pttp">
+          <div class="pttp-item">
+            <p class="pttp-label">Position</p>
+            <p class="pttp-value">UX/UI Designer</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Team</p>
+            <p class="pttp-value">Victor — Co-founder<br>Hank — Software Engineer<br>Me!</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Tools</p>
+            <p class="pttp-value">Figma<br>Pen and paper</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Project Duration</p>
+            <p class="pttp-value">4 Months</p>
+          </div>
+        </div>
+
+        <div class="hero-image-strip">
+          <img src="Tribes.png" alt="Tribes app screens" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- What to expect -->
+  <section id="expect">
+    <div class="container">
+      <div class="expect-grid">
+        <div>
+          <p class="section-eyebrow">Overview</p>
+          <h2 class="section-title">What to expect</h2>
+          <p class="section-body">
+            Leading the development of an interactive mobile app showcasing its core features of having a personalised homepage, your Tribe, media showcase, adding friends, and adding users to your Tribe. While aligning UX/UI principles with the start-up's goals of presenting to potential investors. Firstly, what is an MVP and how do I start it?
+          </p>
+          <p class="read-time">15–20 minute read.</p>
+        </div>
+
+        <div class="jump-links">
+          <p class="jump-links-label">Jump to</p>
+          <a href="#brief">Project Brief</a>
+          <a href="#research">Research</a>
+          <a href="#ideation">Ideation</a>
+          <a href="#testing">Feedback &amp; Testing</a>
+          <a href="#hifi">Hi-fidelity</a>
+          <a href="#final">Final</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- How I Got Here -->
+  <section id="story">
+    <div class="container">
+      <p class="section-eyebrow">Background</p>
+      <h2 class="section-title">How I got here</h2>
+      <div class="story-text">
+        <p>I had the amazing opportunity to collaborate with Victor and Hank who are leading the mission to empower users with a personalised curation of content, discovering, and building meaningful connections with other users, friends, and family.</p>
+        <p>Through frequently visiting a local café I ended up connecting with the owner, Victor. He was interested in my projects and I shared with him previous and work in progress work. A few months down the road, he ended up recruiting me to lead the UX/UI development.</p>
+        <p>I was super interested with the vision of this app being grown into a large social network between users, friends, and family. With plans to bring it into virtual reality and using AI to guide and assist users.</p>
+        <p>With the rapid growth of AI and how it is effecting our daily lives in different ways, this was a perfect opportunity for me to jump on board and learn how AI can be used as a learning tool.</p>
+      </div>
+      <span class="next-label">Next up: Project Brief →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Project Brief -->
+  <section id="brief">
+    <div class="container">
+      <p class="section-eyebrow">Project Brief</p>
+      <h2 class="section-title">Project Brief</h2>
+      <p class="section-body" style="max-width:700px;margin-bottom:48px;">
+        Introducing UX/UI principles to Victor and Hank, aligning business goals, aesthetics, and functionality to create an interactive prototype ready for presentation.
+      </p>
+
+      <div class="two-col">
+        <div>
+          <p class="section-eyebrow">Objectives</p>
+          <ul class="objectives-list">
+            <li>Develop an MVP</li>
+            <li>Research existing social media platforms</li>
+            <li>Desk and user research</li>
+            <li>Sketching and ideating</li>
+            <li>Develop lo and hi-fidelity prototypes</li>
+            <li>Weekly meetings</li>
+            <li>Identifying effective methods for gesture-based interactions</li>
+            <li>Interactive and scalable product</li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="section-eyebrow">Challenges</p>
+          <ul class="challenges-list">
+            <li>What's an MVP?</li>
+            <li>Finding time between projects and study</li>
+            <li>Future-proofing design decisions</li>
+            <li>Keeping in mind how mobile UI will parallel to VR</li>
+            <li>Proposing improvements and validating design decisions</li>
+          </ul>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Research →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Research -->
+  <section id="research">
+    <div class="container">
+      <p class="section-eyebrow">Research</p>
+      <h2 class="section-title">Research</h2>
+
+      <p class="research-intro">It is emphasised by Victor to have gesture controls as the main interaction pattern as part of future-proofing.</p>
+
+      <ul class="research-goals">
+        <li>Conducting desk research on successful social media platforms and discovering what makes their product polished and defined</li>
+        <li>Discovering what patterns, design systems, and navigations these platforms share</li>
+        <li>Products and games that use virtual reality</li>
+      </ul>
+
+      <div class="findings-grid">
+        <div class="findings-card">
+          <h3>Discoveries</h3>
+          <ul>
+            <li>Simple and effective onboarding</li>
+            <li>Minimal effort to learn because users are already familiar with similar patterns</li>
+            <li>Built with accessibility for users of all ages</li>
+            <li>Approachable and familiar colours</li>
+            <li>Tons of space for breathing</li>
+          </ul>
+        </div>
+
+        <div class="findings-card">
+          <h3>Takeaways</h3>
+          <ul>
+            <li>Create simple and straightforward navigation</li>
+            <li>Upholding user familiarity with UI patterns, gesture controls and structure</li>
+            <li>Minimalistic design with approachable colours</li>
+          </ul>
+          <div class="future-steps" style="margin-top:24px;">
+            <p>Future steps: Since there was time constraints, I was unable to conduct own user interviews or surveys.</p>
+          </div>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Ideation →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Ideation -->
+  <section id="ideation">
+    <div class="container">
+      <p class="section-eyebrow">Ideation</p>
+      <h2 class="section-title">Ideation</h2>
+
+      <p class="section-body" style="margin-bottom:28px;">My design principles:</p>
+
+      <div class="principles-grid">
+        <span class="principle-tag">Accessibility</span>
+        <span class="principle-tag">Empowering</span>
+        <span class="principle-tag">Engaging</span>
+        <span class="principle-tag">Meaningful</span>
+        <span class="principle-tag">Interactive</span>
+      </div>
+
+      <div class="quote-block">
+        <p class="speaker">Victor</p>
+        <p>"Please add these as screens, a homepage, group page, content exploration and adding users!"</p>
+      </div>
+
+      <p class="section-body" style="margin-bottom:16px;">With direction and clarity, these sketches will contain the contents below:</p>
+
+      <ul class="sketches-list">
+        <li>Structure</li>
+        <li>Component layout</li>
+        <li>Content layout</li>
+        <li>Interaction patterns, like gesture controls</li>
+        <li>Navigation</li>
+        <li>User flow</li>
+        <li>Pinpointing potential pain points</li>
+        <li>Create a task for Victor and Hank to complete</li>
+      </ul>
+
+      <div class="quote-block">
+        <p class="speaker">Victor</p>
+        <p>"Are we able to make the home screen different from traditional pages, such as a quadrant view?"</p>
+      </div>
+
+      <p class="section-body" style="margin:28px 0 12px;">Results weren't satisfactory, not much inspiration to go off so I decided to create my own rendition of a page that meets requirements and align with UX and UI principles. It was a challenge, but a fun one.</p>
+
+      <p class="section-body" style="margin-bottom:8px;"><strong style="font-weight:500;">Sketches:</strong> For clearer insight for me, I decided to develop two strong sketches into lo-fidelity prototyping to present animations and test gesture controls on a real mobile device.</p>
+
+      <div class="two-image-row">
+        <div class="dark-card" style="min-height:380px;">
+          <p class="dark-card-label">Paper Sketch</p>
+        </div>
+        <div class="dark-card" style="min-height:380px;">
+          <p class="dark-card-label">Lo-Fidelity</p>
+        </div>
+      </div>
+
+      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Feedback and Testing →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Feedback & Testing -->
+  <section id="testing">
+    <div class="container">
+      <p class="section-eyebrow">Feedback &amp; Testing</p>
+      <h2 class="section-title">Feedback &amp; Testing</h2>
+
+      <p class="feedback-intro">"…Because gesture controls are key, I wanted to observe how users would interact."</p>
+
+      <div class="section-body" style="max-width:700px;">
+        <p>To achieve this, I presented 2 strong lo-fidelity prototypes (named proto_a and proto_b.) and created a task for Victor and Hank. I created these tasks to observe and study their behaviour and attitude.</p>
+        <p style="margin-top:20px;">The task was simple — I handed my phone with the prototypes to experience the authentic gesture controls, from point A (the homepage) to point B (the contents).</p>
+        <p style="margin-top:20px;">Through observing their actions, I knew what prototype caught their eye as they were constantly interacting with it as if it was a mini-game and not having to interrupt and guide them on how to complete the task. Satisfied with the outcome, proto_a was sent in to hi-fidelity prototyping.</p>
+      </div>
+
+      <p class="section-eyebrow" style="margin-top:48px;">Main screens — The highlighted screens were prioritised in prototyping</p>
+
+      <div class="screens-grid">
+        <div class="screen-card">
+          <div class="screen-card-dark"></div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">MiPage</h3>
+            <div class="screen-tags">
+              <span class="screen-tag">Central hub</span>
+              <span class="screen-tag">Your curation</span>
+            </div>
+            <ul class="screen-desc">
+              <li>Users can see your 'MiPage'</li>
+              <li>Adding content</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="screen-card-dark"></div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">Tribe</h3>
+            <div class="screen-tags">
+              <span class="screen-tag">Your group</span>
+            </div>
+            <ul class="screen-desc">
+              <li>See shared content</li>
+              <li>Share content</li>
+              <li>Message members</li>
+              <li>Cycle through multiple Tribes</li>
+              <li>Add members</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="screen-card-dark"></div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">Media</h3>
+            <div class="screen-tags">
+              <span class="screen-tag">Content exploration</span>
+            </div>
+            <ul class="screen-desc">
+              <li>Liked and shared content</li>
+              <li>See what other Tribe members have liked and shared</li>
+              <li>Find and add registered users</li>
+              <li>Find mutual friends</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Lo-fidelity Prototyping →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Hi-fidelity Prototyping -->
+  <section id="hifi">
+    <div class="container">
+      <p class="section-eyebrow">Hi-fidelity Prototyping</p>
+      <h2 class="section-title">Hi-fidelity Prototyping</h2>
+
+      <div class="two-col" style="margin-bottom:48px;">
+        <p class="section-body">The MiPage and Tribes page are prioritised because the features will be what separates itself from other social media platforms — integrating complex UX and UI decisions. The media and adding user page is lower on the list as it is not the feature that will capture the audience.</p>
+        <p class="section-body">Due to time restrictions, making a refined and polished style guide was a difficult task. However, since it was a guide for just myself, it was easier to create and follow.</p>
+      </div>
+
+      <p class="section-eyebrow">Tribe's Style Guide — A simple style guide to follow</p>
+
+      <div class="style-guide-grid">
+        <div class="guide-block">
+          <h4>Colours</h4>
+          <div class="colour-swatches">
+            <div class="swatch">
+              <div class="swatch-circle" style="background:#E7B6FB;"></div>
+              <span class="swatch-name">Lily<br>#E7B6FB</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch-circle" style="background:#1B2127;"></div>
+              <span class="swatch-name">Midnight<br>#1B2127</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch-circle" style="background:#FFA51F;"></div>
+              <span class="swatch-name">Mango<br>#FFA51F</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch-circle" style="background:#DDADF7;"></div>
+              <span class="swatch-name">Lilac<br>#DDADF7</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch-circle" style="background:#D0A2F8;"></div>
+              <span class="swatch-name">Lavender<br>#D0A2F8</span>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <ul class="spec-list">
+              <li><span>—</span> Primary: Background</li>
+              <li><span>—</span> Typography &amp; Error State</li>
+              <li><span>—</span> Accent &amp; Highlights</li>
+              <li><span>—</span> Secondary</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="guide-block">
+          <h4>Typography &amp; Layout</h4>
+          <ul class="spec-list">
+            <li><span>·</span> Font: ITC Avant Garde Gothic Std</li>
+            <li><span>·</span> Frame: iPhone 13</li>
+            <li><span>·</span> Grid: 6 rows &amp; 5 columns</li>
+            <li><span>·</span> Spacing: 4px steps</li>
+            <li><span>·</span> Icons: 64×64px (scales without distortion)</li>
+          </ul>
+          <div style="margin-top:20px;">
+            <h4 style="margin-bottom:10px;">For mobile</h4>
+            <ul class="spec-list">
+              <li><span>·</span> 64px for base</li>
+              <li><span>·</span> 32px for menus</li>
+              <li><span>·</span> 16px for navigation bar</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block" style="margin-top:0;">
+        <p class="speaker">Victor</p>
+        <p>"Are we able to add a quora push animation? The user's friends receiving a notification from the user asking a question about dining suggestions?"</p>
+      </div>
+
+      <p class="section-eyebrow" style="margin-top:40px;">In refinement</p>
+      <div class="principles-grid" style="margin-top:12px;margin-bottom:32px;">
+        <span class="principle-tag">MiPage</span>
+        <span class="principle-tag">Tribe</span>
+        <span class="principle-tag">Media Content</span>
+        <span class="principle-tag">User Discovery</span>
+      </div>
+
+      <p class="section-body" style="margin-bottom:8px;"><strong style="font-weight:500;">New additions:</strong> Adding a Quora push animation, showcasing users receiving a notification from a Tribe member.</p>
+
+      <div class="centre-nav-block">
+        <h3>Centre Navigation</h3>
+        <p>Located in the MiPage, the centre navigation will be the interactive element with gesture controls. The purpose of this demonstration and achieving its brief, is to go from the homepage to your Tribe and from there, the user will —</p>
+
+        <div class="gesture-group">
+          <div class="gesture-group-item">
+            <label>On tap → Expand</label>
+            <div class="gesture-tags">
+              <span class="gesture-tag">Cycle through different Tribes</span>
+              <span class="gesture-tag">Content exploration</span>
+              <span class="gesture-tag">Discover users</span>
+              <span class="gesture-tag">Add users</span>
+              <span class="gesture-tag">Ask other users and search for recommendations</span>
+            </div>
+          </div>
+          <div class="gesture-group-item">
+            <label>Drag and hold</label>
+            <div class="gesture-tags">
+              <span class="gesture-tag">Tribes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Final -->
+  <section id="final">
+    <div class="container">
+      <p class="section-eyebrow">Final</p>
+      <h2 class="section-title">Final</h2>
+      <p class="section-body" style="margin-bottom:48px;">MiPage and Tribe page — adding content to your MiPage, the Quora push, and the full interactive flow.</p>
+
+      <div class="final-screens">
+        <div class="final-screen-row" style="min-height:480px;">
+          <p class="final-screen-label">MiPage &amp; Tribe Page</p>
+          <div style="padding:24px;text-align:center;color:rgba(255,255,255,0.4);font-family:var(--ff-sans);font-size:13px;">
+            Search · Spirited Away · Director: Hayao Miyazaki · Synopsis · Animation · Lads
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div class="final-screen-row" style="min-height:380px;">
+            <p class="final-screen-label">Tribes</p>
+          </div>
+          <div class="final-screen-row" style="min-height:380px;">
+            <p class="final-screen-label">Quora Push</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="index.html" class="footer-logo">Richie.</a>
+        <ul class="footer-links">
+          <li><a href="index.html#work">Work</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="mailto:richiehine1@gmail.com">Email</a></li>
+          <li><a href="https://www.linkedin.com/in/richie-hine" target="_blank">LinkedIn</a></li>
+        </ul>
+        <p class="footer-copy">© 2024 Richie</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
