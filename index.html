@@ -361,6 +361,52 @@
         }
 
         /* ════════════════════════════════════════════
+           TICKER
+        ════════════════════════════════════════════ */
+        .ticker-outer {
+            padding: 0 52px 72px;
+            max-width: calc(1160px + 104px);
+            margin: 0 auto;
+        }
+
+        .ticker-wrap {
+            background: #d4f04a;
+            overflow: hidden;
+            padding: 14px 0;
+            border-radius: 100px;
+        }
+
+        .ticker-track {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            white-space: nowrap;
+            animation: ticker 22s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes ticker {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--rangoon);
+            flex-shrink: 0;
+        }
+
+        .ticker-sep {
+            font-size: 9px;
+            color: var(--rangoon);
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        /* ════════════════════════════════════════════
            STATS
            r18 border · 3 cols
            Each: p32,28 · gap4 vertical
@@ -748,7 +794,7 @@
 
                 <!-- tagline: 32px italic -->
                 <p class="hero-tagline">
-                    Designing products people<br>actually enjoy using.
+                    Designing cool things people<br>actually enjoy using.
                 </p>
 
                 <!-- bio: 16px/fw300 max-width 420px -->
@@ -797,6 +843,43 @@
 
         </div>
     </section>
+
+    <!-- ══ TICKER ════════════════════════════════════ -->
+    <div class="ticker-outer">
+    <div class="ticker-wrap">
+        <div class="ticker-track">
+            <span class="ticker-item">User Interviews</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Usability Testing</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Prototyping</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Design Systems</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Graphic Design</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Motion Design</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">AI</span>
+            <span class="ticker-sep">✦</span>
+            <!-- duplicate for seamless loop -->
+            <span class="ticker-item">User Interviews</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Usability Testing</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Prototyping</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Design Systems</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Graphic Design</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">Motion Design</span>
+            <span class="ticker-sep">✦</span>
+            <span class="ticker-item">AI</span>
+            <span class="ticker-sep">✦</span>
+        </div>
+    </div>
+    </div>
 
     <!-- ══ WORK ══════════════════════════════════════ -->
     <section class="work-section" id="work">
