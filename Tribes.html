@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tribes — Case Study · Richie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { font-weight: 400; }
+
+/* Focus visible */
+    :focus-visible {
+      outline: 3px solid var(--brand);
+      outline-offset: 3px;
+    }
+
+    body { animation: pageFadeIn .4s ease forwards; }
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    body.fade-out { opacity: 0; transition: opacity .3s ease; }
+
+    /* ─── Scroll reveals (Skill: Design mode motion) ───────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
+      transition-delay: var(--delay, 0ms);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    :root {
+      --cream: #f4f2ec;
+      --ink:   #1b1a17;
+      --mid:   #52504a;
+      --rule:  #5ac4d4;
+      --brand: #7b1fa2;
+      --border: rgba(27,26,23,0.15);
+      --card-bg: #1b1a17;
+      --ff-serif: 'JetBrains Mono', monospace;
+      --ff-sans:  'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ──────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 62px;
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(244,242,236,0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--ff-serif);
+      font-size: 17.6px;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nav-logo .dot {
+      width: 7px; height: 7px;
+      border-radius: 3.5px;
+      background: var(--ink);
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-cta {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1.5px solid var(--ink);
+      border-radius: 100px;
+      padding: 7px 20px;
+      transition: background .2s, color .2s;
+    }
+    .nav-cta:hover { background: var(--ink); color: var(--cream); }
+
+    /* ─── Layout ───────────────────────────────────────── */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+
+
+    /* ─── Hero / Header ────────────────────────────────── */
+    .hero {
+      padding-top: 62px; /* nav height */
+    }
+
+    .hero-inner {
+      padding: 72px 52px 0;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span[aria-hidden] { opacity: 0.5; }
+    .breadcrumb span[aria-current] { opacity: 1; }
+
+    /* Hero card — large bordered frame */
+    .hero-card {
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--cream);
+      margin-bottom: 0;
+    }
+
+    .hero-card-top {
+      padding: 52px 64px 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: var(--ff-serif);
+      font-size: 80px;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--brand);
+      margin-bottom: 28px;
+      opacity: 0;
+    }
+    .type-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--brand);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink-cursor .75s step-end infinite;
+    }
+    @keyframes blink-cursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-title { opacity: 1; }
+      .type-cursor { animation: none; }
+    }
+
+    .hero-quote {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink);
+      max-width: 640px;
+    }
+
+    /* PTTP metadata */
+    .pttp {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .pttp-item {
+      padding: 28px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .pttp-item:last-child { border-right: none; }
+
+    .pttp-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+
+    .pttp-value {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* Image strip */
+    .hero-image-strip {
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-image-strip img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.9;
+    }
+
+    /* Role block (right side of hero-card-top) */
+    .hero-role {
+      min-width: 260px;
+    }
+
+    .hero-role-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 14px;
+    }
+
+    .hero-role ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hero-role ul li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .hero-role ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #5ac4d4;
+      font-size: 12px;
+    }
+
+    /* ─── Sections ─────────────────────────────────────── */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-eyebrow {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: var(--ff-serif);
+      font-size: 32px;
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--brand);
+      margin-bottom: 28px;
+    }
+
+    .section-body {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    .section-body p + p { margin-top: 20px; }
+
+    #story .section-body,
+    #research .section-body,
+    #ideation .section-body,
+    #testing .section-body,
+    #hifi .section-body { max-width: none; }
+
+    /* Two-col layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    /* ─── What to expect ───────────────────────────────── */
+    .wte-brief-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .wte-brief-block {
+      background: none;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    .wte-brief-block .objectives-list,
+    .wte-brief-block .challenges-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 6px 24px;
+      margin-top: 12px;
+    }
+
+    .wte-brief-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 4px;
+    }
+
+    .wte-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 64px;
+      padding: 64px 0 56px;
+    }
+
+    .wte-left { padding-top: 6px; }
+
+    .wte-jump-nav {
+      padding: 0;
+      margin-top: 36px;
+    }
+
+    .wte-jump-nav-label {
+      font-family: var(--ff-serif);
+      font-size: 32px;
+      line-height: 1.1;
+      font-weight: 400;
+      color: var(--brand);
+      text-align: left;
+      padding: 10px 0 0;
+      margin-bottom: 12px;
+    }
+
+    .wte-jump-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .wte-jump-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: #1b1a17;
+      text-decoration: none;
+      padding: 6px 16px;
+      border-radius: 10px;
+      background: rgba(27,26,23,0.05);
+      cursor: pointer;
+      transition: background .2s, color .2s, transform .15s;
+      white-space: nowrap;
+    }
+
+    .wte-jump-pill:hover {
+      background: #1b1a17;
+      color: var(--cream);
+      transform: translateY(-2px);
+    }
+
+    .jump-links-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .read-time {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: #d4f04a;
+      border: none;
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-top: 16px;
+    }
+
+    /* ─── Project Brief ────────────────────────────────── */
+    .objectives-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .objectives-list li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .objectives-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #5ac4d4;
+    }
+
+    .challenges-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .challenges-list li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .challenges-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #5ac4d4;
+    }
+
+    .next-label {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #B7B7B7;
+      margin-top: 40px;
+    }
+
+    /* ─── How I Got Here ───────────────────────────────── */
+    .story-text {
+      font-family: var(--ff-sans);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.85;
+      max-width: none;
+    }
+    .story-text p + p { margin-top: 24px; }
+
+    /* ─── Research ─────────────────────────────────────── */
+    .research-intro {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.7;
+      max-width: none;
+      margin-bottom: 40px;
+    }
+
+    .research-goals {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .research-goals li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      list-style: none;
+      padding-left: 24px;
+      position: relative;
+    }
+    .research-goals li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #5ac4d4;
+    }
+
+    .findings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .findings-card {
+      background: none;
+      padding: 0;
+    }
+
+    .findings-card-icon {
+      width: 120px;
+      height: auto;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .findings-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .findings-card ul li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.65;
+    }
+    .findings-card ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #5ac4d4;
+    }
+
+    .future-steps {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #C7C7C7;
+    }
+    .future-steps p {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      line-height: 1.65;
+    }
+
+    /* ─── Dark image blocks ────────────────────────────── */
+    .dark-card {
+      background: var(--card-bg);
+      border-radius: 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .dark-card-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .dark-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ─── Ideation ─────────────────────────────────────── */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .principle-tag {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .principle-icon {
+      width: 100%;
+    }
+
+    .principle-icon img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .quote-block {
+      border-left: 3px solid #FFA51F;
+      padding: 20px 28px;
+      margin: 32px 0;
+      background: rgba(27,26,23,0.03);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .quote-block .speaker {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 6px;
+    }
+
+    .quote-block p {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sketches-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px 12px;
+      margin: 16px 0 28px;
+    }
+    .sketches-list li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 20px;
+      position: relative;
+    }
+    .sketches-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #5ac4d4;
+      font-size: 18px;
+      line-height: 1;
+      top: 4px;
+    }
+
+    .two-image-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    /* ─── Feedback & Testing ───────────────────────────── */
+    .feedback-intro {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--ink);
+      max-width: none;
+      margin-bottom: 32px;
+    }
+
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .screen-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.4);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+
+    .screen-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 46px rgba(0,0,0,0.16);
+    }
+
+    .screen-card--priority {
+      border: 4px solid #6563ff;
+      box-shadow: 0 0 0 6px rgba(101,99,255,0.2);
+    }
+
+    .screen-card-dark {
+      border-radius: 18px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--friar, #f0ede6);
+      border: 1.5px dashed rgba(27,26,23,0.18);
+      color: var(--mid);
+    }
+
+    .screen-card-dark svg {
+      opacity: 0.4;
+    }
+
+    .screen-card-dark img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+    }
+
+    .screen-card-dark span {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--mid);
+      opacity: 0.6;
+      letter-spacing: 0.04em;
+    }
+
+    .screen-card-body {
+      padding: 24px;
+    }
+
+    .screen-title {
+      font-family: var(--ff-serif);
+      font-size: 22px;
+      color: var(--brand);
+      margin-bottom: 8px;
+    }
+
+    .screen-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .screen-tag {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--mid);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 3px 12px;
+    }
+
+    .screen-desc {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.6;
+      list-style: none;
+    }
+    .screen-desc li { padding-left: 0; }
+    .screen-desc li::before { display: none; }
+
+    /* ─── Hi-Fi ─────────────────────────────────────────── */
+    .style-guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin: 40px 0;
+    }
+
+    .guide-block {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .guide-block h4 {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 16px;
+    }
+
+    .colour-swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch-circle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+    }
+
+    .swatch-name {
+      font-family: var(--ff-sans);
+      font-size: 10px;
+      color: var(--mid);
+      text-align: center;
+    }
+
+    .spec-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spec-list li {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      display: flex;
+      gap: 8px;
+    }
+    .spec-list li span {
+      color: var(--mid);
+      font-size: 11px;
+      min-width: 6px;
+    }
+
+    /* centre navigation */
+    .centre-nav-block {
+      background: var(--card-bg);
+      border-radius: 22px;
+      padding: 48px;
+      margin-top: 40px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .centre-nav-block h3 {
+      font-family: var(--ff-serif);
+      font-size: 28px;
+      color: var(--brand);
+      margin-bottom: 16px;
+    }
+
+    .centre-nav-block p {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+      max-width: none;
+      margin-bottom: 24px;
+    }
+
+    .gesture-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .gesture-tag {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+    }
+
+    .gesture-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .gesture-group-item label {
+      display: block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 10px;
+    }
+
+    /* ─── Final ─────────────────────────────────────────── */
+    .final-screens {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .final-screen-row {
+      background: none;
+      border-radius: 0;
+      min-height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow: visible;
+    }
+
+    .final-screen-row img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .final-screen-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ─── Footer ────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .footer-logo {
+      font-family: var(--ff-serif);
+      font-size: 17.6px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-family: var(--ff-sans);
+      font-size: 12.8px;
+      font-weight: 400;
+      color: var(--mid);
+    }
+
+    /* ─── Back to top ──────────────────────────────────── */
+    .back-to-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--cream);
+      color: var(--ink);
+      text-decoration: none;
+      margin: 40px auto 0;
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .back-to-top:hover {
+      background: var(--ink);
+      color: var(--cream);
+      transform: translateY(-3px);
+    }
+
+    /* ─── Divider ───────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid #C7C7C7;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+
+    /* ─── Responsive ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 0 32px; }
+      .hero-inner, .container, .divider { padding: 0 32px; }
+      .hero-card-top { padding: 40px 40px 36px; gap: 32px; }
+      .hero-title { font-size: 60px; }
+      .pttp { grid-template-columns: repeat(2, 1fr); }
+      .pttp-item:nth-child(2) { border-right: none; }
+      .pttp-item:nth-child(3) { border-top: 1px solid var(--border); }
+      .pttp-item:nth-child(4) { border-top: 1px solid var(--border); }
+      .two-col { gap: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero-inner, .container, .divider { padding: 0 20px; }
+      .hero-card-top { grid-template-columns: 1fr; padding: 32px; }
+      .hero-role { min-width: unset; }
+      .hero-title { font-size: 48px; }
+      .pttp { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .screens-grid { grid-template-columns: 1fr 1fr; }
+      .findings-grid { grid-template-columns: 1fr; }
+      .two-image-row { grid-template-columns: 1fr; }
+      .style-guide-grid { grid-template-columns: 1fr; }
+      .wte-layout { grid-template-columns: 1fr; gap: 32px; padding: 40px 0; }
+      .wte-brief-grid { grid-template-columns: 1fr; }
+      .gesture-group { grid-template-columns: 1fr; }
+      section { padding: 56px 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      body { animation: none; }
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav aria-label="Main navigation">
+    <a href="Landing_Page.html" class="nav-logo">Richie<span class="dot" aria-hidden="true"></span></a>
+    <ul class="nav-links">
+      <li><a href="Landing_Page.html#about">About</a></li>
+      <li><a href="Landing_Page.html#work">Work</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="breadcrumb" role="navigation" aria-label="Breadcrumb">
+        <a href="Landing_Page.html">Work</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Tribes</span>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <div>
+            <span class="hero-tag">Start-up</span>
+            <h1 class="hero-title">Tribes</h1>
+            <p class="hero-quote">"Empowering self-discovery and promoting meaningful connections through personalised AI and curated search. Tribes is a decentralised network and universal clipboard of our personal archives. Add friends to your Tribe and search from this trusted content pool. Discover your friends multidimensionality and get search results that are personalised and curated from those whose opinions we value. Save time and get straight to all that is relevant."</p>
+          </div>
+
+        </div>
+
+        <div class="pttp">
+          <div class="pttp-item">
+            <p class="pttp-label">Position</p>
+            <p class="pttp-value">UX/UI Designer</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Team</p>
+            <p class="pttp-value">Victor — Co-founder<br>Hank — Software Engineer<br>Me!</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">My role</p>
+            <p class="pttp-value">MVP Development<br>UX/UI Introduction<br>Concepting<br>Prototyping</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Project Duration</p>
+            <p class="pttp-value">4 Months</p>
+          </div>
+        </div>
+
+        <div class="hero-image-strip">
+          <img src="Tribe_assets/Tribes.png" alt="Tribes app screens" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider" style="margin-top:80px;"></div>
+
+  <!-- What to expect + Project Brief -->
+  <section id="expect" class="reveal" style="--delay: 0ms;">
+    <div class="container">
+      <div class="wte-layout">
+
+        <!-- Left: heading + badge -->
+        <div class="wte-left">
+          <h2 class="section-title" style="margin-bottom:12px;">What to expect</h2>
+          <p class="read-time">15–20 minute read</p>
+        </div>
+
+        <!-- Right: content -->
+        <div class="wte-right">
+
+          <p class="section-body" style="margin-bottom:32px;">
+            I led the UX/UI development of Tribes — an interactive social app built around personalised content, shared media, and meaningful connections. Working closely with Victor and Hank, the goal was to align design principles with the start-up's vision and shape an MVP ready to present to investors. The big question going in: what even is an MVP, and where do I start?
+          </p>
+
+          <div class="wte-brief-grid">
+
+            <div class="wte-brief-block">
+              <p class="wte-brief-label">Objectives</p>
+              <ul class="objectives-list" style="margin-top:12px;">
+                <li>Develop an MVP</li>
+                <li>Research existing social media platforms</li>
+                <li>Desk and user research</li>
+                <li>Sketching and ideating</li>
+                <li>Develop lo and hi-fidelity prototypes</li>
+                <li>Weekly collaborative meetings</li>
+                <li>Identifying effective methods for gesture-based interactions</li>
+                <li>Interactive and scalable product</li>
+              </ul>
+            </div>
+
+            <div class="wte-brief-block">
+              <p class="wte-brief-label">Challenges</p>
+              <ul class="challenges-list" style="margin-top:12px;">
+                <li>What's an MVP?</li>
+                <li>Finding time between projects and study</li>
+                <li>Future-proofing design decisions</li>
+                <li>Keeping in mind how mobile UI will parallel to VR</li>
+                <li>Proposing improvements and validating design decisions</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- Jump nav aligned to content column -->
+          <div class="wte-jump-nav">
+            <h3 class="wte-jump-nav-label">Jump to section</h3>
+            <div class="wte-jump-grid">
+              <a href="#research" class="wte-jump-pill">Research</a>
+              <a href="#ideation" class="wte-jump-pill">Ideation</a>
+              <a href="#testing" class="wte-jump-pill">Feedback &amp; Testing</a>
+              <a href="#hifi" class="wte-jump-pill">Hi-fidelity</a>
+              <a href="#final" class="wte-jump-pill">Final</a>
+              <a href="#reflection" class="wte-jump-pill">Reflection</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  
+  <div class="divider"></div>
+
+  <!-- How I Got Here -->
+  <section id="story" class="reveal" style="--delay: 60ms;">
+    <div class="container">
+            <h2 class="section-title">How I got here</h2>
+      <div class="story-text">
+        <p>I had the amazing opportunity to collaborate with Victor and Hank who are leading the mission to empower users with a personalised curation of content, discovering, and building meaningful connections with other users, friends, and family.</p>
+        <p>Through frequently visiting a local café I ended up connecting with the owner, Victor. He was interested in my projects and I shared with him previous and work in progress work. A few months down the road, he ended up recruiting me to lead the UX/UI development.</p>
+        <p>I was super interested with the vision of this app being grown into a large social network between users, friends, and family. With plans to bring it into virtual reality and using AI to guide and assist users.</p>
+        <p>With the rapid growth of AI and how it is effecting our daily lives in different ways, this was a perfect opportunity for me to jump on board and learn how AI can be used as a learning tool.</p>
+      </div>
+      <span class="next-label">Next up: Project Brief →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Research -->
+  <section id="research" class="reveal" style="--delay: 180ms;">
+    <div class="container">
+            <h2 class="section-title">Research</h2>
+
+      <p class="research-intro">It is emphasised by Victor to have gesture controls as the main interaction pattern as part of future-proofing.</p>
+
+      <ul class="research-goals">
+        <li>Conducting desk research on successful social media platforms and discovering what makes their product polished and defined</li>
+        <li>Discovering what patterns, design systems, and navigations these platforms share</li>
+        <li>Products and games that use virtual reality</li>
+      </ul>
+
+      <div class="findings-grid">
+        <div class="findings-card">
+          <img class="findings-card-icon" src="SVGS/ic_behaviour.svg" alt="Behaviour icon" />
+          <ul>
+            <li>Personalised algorithms keep users engaged</li>
+            <li>Short-term content has minimal cognitive effort, keeping user attention</li>
+            <li>Social validation, likes, shares, and reposts</li>
+          </ul>
+        </div>
+
+        <div class="findings-card">
+          <img class="findings-card-icon" src="SVGS/ic_designSystem.svg" alt="Design Systems icon" />
+          <ul>
+            <li>Simple and guided onboarding</li>
+            <li>Build familiar systems so users don't have to re-learn</li>
+            <li>Building with accessibility such as colours and fonts</li>
+            <li>Approachable and familiar colours</li>
+            <li>Tons of space for breathing</li>
+          </ul>
+          <div class="future-steps">
+            <p>Future steps: Since there was time constraints, I was unable to conduct own user interviews or surveys.</p>
+          </div>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Ideation →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Ideation -->
+  <section id="ideation" class="reveal" style="--delay: 240ms;">
+    <div class="container">
+            <h2 class="section-title">Ideation</h2>
+
+      <p class="section-body" style="margin-bottom:28px;">My design principles:</p>
+
+      <div class="principles-grid">
+        <div class="principle-tag">
+          <div class="principle-icon">
+            <img src="SVGS/ic_access.svg" alt="Accessibility" />
+          </div>
+        </div>
+        <div class="principle-tag">
+          <div class="principle-icon">
+            <img src="SVGS/ic_empower.svg" alt="Empowering" />
+          </div>
+        </div>
+        <div class="principle-tag">
+          <div class="principle-icon">
+            <img src="SVGS/ic_engage.svg" alt="Engaging" />
+          </div>
+        </div>
+        <div class="principle-tag">
+          <div class="principle-icon">
+            <img src="SVGS/ic_mean.svg" alt="Meaningful" />
+          </div>
+        </div>
+        <div class="principle-tag">
+          <div class="principle-icon">
+            <img src="SVGS/ic_inter.svg" alt="Interactive" />
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        <p class="speaker">Victor</p>
+        <p>"Please add these as screens, a homepage, group page, content exploration and adding users!"</p>
+      </div>
+
+      <p class="section-body" style="margin-bottom:16px;">With direction and clarity, these sketches will contain the contents below:</p>
+
+      <ul class="sketches-list">
+        <li>Structure</li>
+        <li>Component layout</li>
+        <li>Content layout</li>
+        <li>Interaction patterns, like gesture controls</li>
+        <li>Navigation</li>
+        <li>User flow</li>
+        <li>Pinpointing potential pain points</li>
+        <li>Create a task for Victor and Hank to complete</li>
+      </ul>
+
+      <div class="quote-block">
+        <p class="speaker">Victor</p>
+        <p>"Are we able to make the home screen different from traditional pages, such as a quadrant view?"</p>
+      </div>
+
+      <p class="section-body" style="margin:28px 0 12px;">Results weren't satisfactory, not much inspiration to go off so I decided to create my own rendition of a page that meets requirements and align with UX and UI principles. It was a challenge, but a fun one.</p>
+
+      <p class="section-body" style="margin-bottom:8px;"><strong style="font-weight: 400;">Sketches:</strong> For clearer insight for me, I decided to develop two strong sketches into lo-fidelity prototyping to present animations and test gesture controls on a real mobile device.</p>
+
+      <div class="two-image-row">
+        <div class="dark-card" style="min-height:380px;">
+          <p class="dark-card-label">Paper Sketch</p>
+        </div>
+        <div class="dark-card" style="min-height:380px;">
+          <p class="dark-card-label">Lo-Fidelity</p>
+        </div>
+      </div>
+
+      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Feedback and Testing →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Feedback & Testing -->
+  <section id="testing" class="reveal" style="--delay: 300ms;">
+    <div class="container">
+            <h2 class="section-title">Feedback &amp; Testing</h2>
+
+      <p class="feedback-intro">"…Because gesture controls are key, I wanted to observe how users would interact."</p>
+
+      <div class="section-body" style="max-width:none;">
+        <p>To achieve this, I presented 2 strong lo-fidelity prototypes (named proto_a and proto_b.) and created a task for Victor and Hank. I created these tasks to observe and study their behaviour and attitude.</p>
+        <p style="margin-top:20px;">The task was simple — I handed my phone with the prototypes to experience the authentic gesture controls, from point A (the homepage) to point B (the contents).</p>
+        <p style="margin-top:20px;">Through observing their actions, I knew what prototype caught their eye as they were constantly interacting with it as if it was a mini-game and not having to interrupt and guide them on how to complete the task. Satisfied with the outcome, proto_a was sent in to hi-fidelity prototyping.</p>
+      </div>
+
+            <p style="font-family:var(--ff-sans);font-size:13px;font-weight: 400;color:var(--mid);margin-top:8px;display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #6563ff;flex-shrink:0;"></span>
+        The highlighted screens were prioritised in prototyping
+      </p>
+
+      <div class="screens-grid">
+
+        <!-- MiPage — priority -->
+        <div class="screen-card screen-card--priority">
+          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
+            <img src="SVGS/ic_miPage.svg" alt="MiPage screen" />
+          </div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">MiPage</h3>
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Central hub</li>
+              <li>Your curation</li>
+              <li>Users can see your 'MiPage'</li>
+              <li>Adding content</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tribe — priority -->
+        <div class="screen-card screen-card--priority">
+          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
+            <img src="SVGS/ic_Tribe.svg" alt="Tribe screen" />
+          </div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">Tribe</h3>
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Your group</li>
+              <li>See shared content</li>
+              <li>Share content</li>
+              <li>Message members</li>
+              <li>Cycle through multiple Tribes</li>
+              <li>Add members</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Media -->
+        <div class="screen-card">
+          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
+            <img src="SVGS/ic_Media.svg" alt="Media screen" />
+          </div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">Media</h3>
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Content exploration</li>
+              <li>Liked and shared content</li>
+              <li>See what other Tribe members have liked and shared</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Add Users -->
+        <div class="screen-card">
+          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
+            <img src="SVGS/ic_addUsers.svg" alt="Add Users screen" />
+          </div>
+          <div class="screen-card-body">
+            <h3 class="screen-title">Add Users</h3>
+            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+              <li>Find and add registered users</li>
+              <li>Find mutual friends</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Lo-fidelity Prototyping →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Hi-fidelity Prototyping -->
+  <section id="hifi" class="reveal" style="--delay: 360ms;">
+    <div class="container">
+            <h2 class="section-title">Hi-fidelity Prototyping</h2>
+
+      <div class="two-col" style="margin-bottom:48px;">
+        <p class="section-body">The MiPage and Tribes page are prioritised because the features will be what separates itself from other social media platforms — integrating complex UX and UI decisions. The media and adding user page is lower on the list as it is not the feature that will capture the audience.</p>
+        <p class="section-body">Due to time restrictions, making a refined and polished style guide was a difficult task. However, since it was a guide for just myself, it was easier to create and follow.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:16px;">Constraints</h2>
+      <p class="section-body" style="margin-bottom:48px;">Due to limited time, making a polished and refined style guide would have proven difficult, however since the guide was just for my own viewing, I didn't have to create a guide where developers would have required very specific styles and spacing styles. So a mini style-guide was developed anyway for myself to have a direction.</p>
+
+      
+      <div style="background:#1b1a17;border-radius:22px;padding:48px;margin:40px 0;">
+        <h2 class="section-title" style="margin-bottom:24px;color:#ffa51f;">Style Guide</h2>
+        <img src="Tribes_Styleguide.jpg" alt="Tribes Style Guide" style="width:100%;border-radius:12px;display:block;">
+      </div>
+
+      <div class="quote-block" style="margin-top:0;">
+        <p class="speaker">Victor</p>
+        <p>"Are we able to add a quora push animation? The user's friends receiving a notification from the user asking a question about dining suggestions?"</p>
+      </div>
+
+            <div class="principles-grid" style="margin-top:12px;margin-bottom:32px;grid-template-columns:repeat(4,1fr);">
+        <span class="principle-tag">MiPage</span>
+        <span class="principle-tag">Tribe</span>
+        <span class="principle-tag">Media Content</span>
+        <span class="principle-tag">User Discovery</span>
+      </div>
+
+      <p class="section-body" style="margin-bottom:8px;"><strong style="font-weight: 400;">New additions:</strong> Adding a Quora push animation, showcasing users receiving a notification from a Tribe member.</p>
+
+      <div class="centre-nav-block">
+        <h3 style="color:#ffa51f;">Centre Navigation</h3>
+        <p>Located in the MiPage, the centre navigation will be the interactive element with gesture controls. The purpose of this demonstration and achieving its brief, is to go from the homepage to your Tribe and from there, the user will —</p>
+
+        <div class="gesture-group">
+          <div class="gesture-group-item">
+            <label>On tap → Expand</label>
+            <div class="gesture-tags">
+              <span class="gesture-tag">Cycle through different Tribes</span>
+              <span class="gesture-tag">Content exploration</span>
+              <span class="gesture-tag">Discover users</span>
+              <span class="gesture-tag">Add users</span>
+              <span class="gesture-tag">Ask other users and search for recommendations</span>
+            </div>
+          </div>
+          <div class="gesture-group-item">
+            <label>Drag and hold</label>
+            <div class="gesture-tags">
+              <span class="gesture-tag">Tribes</span>
+            </div>
+          </div>
+        </div>
+
+        <img src="Tribe_assets/Center_Nav.png" alt="Centre Navigation diagram" style="width:100%;border-radius:12px;margin-top:32px;display:block;" />
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Final -->
+  <section id="final" class="reveal" style="--delay: 420ms;">
+    <div class="container">
+            <h2 class="section-title">Final</h2>
+    </div>
+
+    <!-- Full-bleed presentation wrapper -->
+    <div style="background:#1b1a17;border-radius:32px;max-width:1160px;margin:0 auto;padding:48px;position:relative;overflow:hidden;">
+
+      <!-- Subtle gradient accent -->
+      <div style="position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(162,45,210,0.12) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="position:absolute;bottom:-100px;left:-60px;width:350px;height:350px;background:radial-gradient(circle,rgba(90,196,212,0.1) 0%,transparent 70%);pointer-events:none;"></div>
+
+      <!-- Section label -->
+      <p style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:24px;">Final Deliverables</p>
+
+      <div class="final-screens" style="gap:16px;">
+
+        <!-- Hero shot -->
+        <div class="final-screen-row">
+          <img src="Tribe_assets/TRI_hero.jpg" alt="MiPage & Tribe Page" style="border-radius:24px;width:100%;" />
+        </div>
+
+        <!-- Row 1: 2-col asymmetric -->
+        <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;height:320px;">
+          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
+            <img src="Tribe_assets/F_Gesture.jpg" alt="Tap and swipe gestures" style="border-radius:24px;width:100%;height:320px;object-fit:cover;" />
+          </div>
+          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
+            <img src="Tribe_assets/F_Tribe.jpg" alt="MiPage to your Tribe or content" style="border-radius:24px;width:100%;height:320px;object-fit:cover;object-position:10% center;" />
+          </div>
+        </div>
+
+        <!-- Row 2: 3-col equal -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
+            <img src="Tribe_assets/F_Talk.jpg" alt="Talk or ask your Tribe" style="border-radius:24px;width:100%;height:100%;object-fit:cover;" />
+          </div>
+          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
+            <img src="Tribe_assets/F_Add.jpg" alt="Invite or add a friend to your Tribe" style="border-radius:24px;width:100%;height:100%;object-fit:cover;" />
+          </div>
+          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
+            <img src="Tribe_assets/F_SC.jpg" alt="Screenshot to your MiPage" style="border-radius:24px;width:100%;height:100%;object-fit:cover;" />
+          </div>
+        </div>
+        <!-- Video placeholder -->
+        <div style="border-radius:24px;background:rgba(255,255,255,0.06);border:1.5px dashed rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;min-height:400px;margin-top:16px;cursor:pointer;transition:background .2s;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+            <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-left:3px;">
+                <path d="M8 5.14v13.72a1 1 0 001.5.86l11.04-6.86a1 1 0 000-1.72L9.5 4.28a1 1 0 00-1.5.86z" fill="rgba(255,255,255,0.5)"/>
+              </svg>
+            </div>
+            <p style="font-family:var(--ff-sans);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Video Coming Soon</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Reflection -->
+  <section id="reflection" class="reveal" style="--delay: 480ms;">
+    <div class="container">
+            <h2 class="section-title">Reflection</h2>
+      <div class="section-body" style="max-width:none;">
+        <p>Working on Tribes taught me that gesture-based UX isn’t just a cool interaction — it’s a promise. If the prototypes don’t clearly communicate affordances and signifiers, users hesitate, and the whole experience loses momentum.</p>
+        <p>I also learned how much clarity matters during collaboration. Aligning with Victor and Hank early helped me translate business goals into interaction priorities, but the time constraints meant I didn’t run as many user interviews as I wanted — and that’s the main thing I would improve.</p>
+        <p>If I had more time, I’d iterate through additional usability sessions, refine the feedback loop around errors and misunderstandings, and push the hi-fidelity stage further so the animations feel as intentional as the layout.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Back to top -->
+  <a href="#" class="back-to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M9 15V3M9 3L3 9M9 3l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="Landing_Page.html" class="footer-logo">Richie.</a>
+        <ul class="footer-links">
+          <li><a href="https://www.linkedin.com/in/richieprak/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in new tab)">LinkedIn</a></li>
+        </ul>
+        <p class="footer-copy">© 2025 Richie</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Skill: scroll-triggered reveals + reduced motion support.
+    (function () {
+      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      var targets = document.querySelectorAll('section.reveal');
+      if (!targets.length) return;
+
+      if (!('IntersectionObserver' in window)) {
+        targets.forEach(function (t) { t.classList.add('is-visible'); });
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -48px 0px'
+      });
+
+      targets.forEach(function (t) { io.observe(t); });
+    })();
+
+    document.querySelectorAll('a[href^="index.html"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var href = this.href;
+        document.body.classList.add('fade-out');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+    });
+
+    // Hero title typing animation
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var heading = document.querySelector('.hero-title');
+      if (!heading) return;
+      var text = heading.textContent.trim();
+      var cursor = document.createElement('span');
+      cursor.className = 'type-cursor';
+      heading.style.opacity = '1';
+      heading.innerHTML = '';
+      heading.appendChild(cursor);
+      var i = 0;
+      setTimeout(function() {
+        var timer = setInterval(function() {
+          if (i < text.length) {
+            heading.insertBefore(document.createTextNode(text[i]), cursor);
+            i++;
+          } else {
+            clearInterval(timer);
+            setTimeout(function() {
+              if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+            }, 900);
+          }
+        }, 60);
+      }, 200);
+    })();
+  </script>
+</body>
+</html>

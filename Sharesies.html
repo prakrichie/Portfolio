@@ -1,0 +1,2653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharesies — Case Study · Richie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { font-weight: 400; }
+
+    body { animation: pageFadeIn .4s ease forwards; }
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    body.fade-out { opacity: 0; transition: opacity .3s ease; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    :root {
+      --cream: #f4f2ec;
+      --ink:   #1b1a17;
+      --mid:   #6b6860;
+      --brand: #D83F6E;
+      --brand-light: #FCEEF2;
+      --rule:  #D83F6E;
+      --border: rgba(27,26,23,0.13);
+      --card-bg: #1b1a17;
+      --ff-serif: 'JetBrains Mono', monospace;
+      --ff-sans:  'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 62px;
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(244,242,236,0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--ff-serif);
+      font-size: 17.6px;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nav-logo .dot {
+      width: 7px; height: 7px;
+      border-radius: 3.5px;
+      background: var(--ink);
+      display: inline-block;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* ─── Layout ─── */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+
+    /* ─── Hero ─── */
+    .hero { padding-top: 62px; }
+
+    .hero-inner {
+      padding: 72px 52px 0;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .breadcrumb a { color: var(--mid); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { opacity: 0.5; }
+
+    .hero-card {
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--cream);
+    }
+    .hero-card-top {
+      padding: 52px 64px 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: start;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: var(--ff-serif);
+      font-size: 80px;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--brand);
+      margin-bottom: 20px;
+      opacity: 0;
+    }
+    .type-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--brand);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink-cursor .75s step-end infinite;
+    }
+    @keyframes blink-cursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-title { opacity: 1; }
+      .type-cursor { animation: none; }
+    }
+    .hero-subtitle {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--mid);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .hero-quote {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink);
+      max-width: 640px;
+      opacity: 0.85;
+    }
+    .pttp {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pttp-item {
+      padding: 28px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .pttp-item:last-child { border-right: none; }
+    .pttp-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+    .pttp-value {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .hero-image-strip {
+      background: var(--card-bg);
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-image-strip-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+    .hero-role { min-width: 260px; }
+    .hero-role-label {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 14px;
+    }
+    .hero-role ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .hero-role ul li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .hero-role ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--mid);
+      font-size: 12px;
+    }
+
+    /* ─── Sections ─── */
+    section { padding: 80px 0; }
+
+    .section-eyebrow {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--ff-serif);
+      font-size: 32px;
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--brand);
+      margin-bottom: 28px;
+    }
+    .section-body {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.75;
+      max-width: none;
+    }
+    .section-body p + p { margin-top: 20px; }
+
+    .story-text {
+      font-family: var(--ff-sans);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.85;
+      max-width: none;
+    }
+    .story-text p + p { margin-top: 24px; }
+
+    /* ─── Divider ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid #C7C7C7;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+
+    /* ─── Next label ─── */
+    .next-label {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #B7B7B7;
+      margin-top: 40px;
+    }
+
+    /* ─── Two-col grid ─── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* ─── Card base (findings / principle / insight) ─── */
+    .card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 36px 36px 32px;
+      background: rgba(255,255,255,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(27,26,23,0.06);
+    }
+    .card h3 {
+      font-family: var(--ff-serif);
+      font-size: 24px;
+      color: var(--ink);
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.2;
+    }
+    .card p {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+    .card p + p { margin-top: 10px; }
+
+    /* ─── Tag pill ─── */
+    .tag-pill {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brand);
+      background: var(--brand-light);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .tag-pill.alt {
+      background: #FFF0E6;
+      color: #C45A20;
+    }
+
+    /* ─── Two / Three col card grids ─── */
+    .cards-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .cards-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .card-full { grid-column: 1 / -1; }
+
+    /* ─── Quote block ─── */
+    .quote-block {
+      border-left: 3px solid #FFA51F;
+      padding: 20px 28px;
+      margin: 32px 0;
+      background: rgba(27,26,23,0.03);
+      border-radius: 0 12px 12px 0;
+    }
+    .quote-block .speaker {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 6px;
+    }
+    .quote-block blockquote {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* ─── Stat highlight ─── */
+    .stat-highlight {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 28px 36px;
+      background: var(--card-bg);
+      border-radius: 18px;
+      margin: 32px 0 40px;
+      color: white;
+    }
+    .stat-number {
+      font-family: var(--ff-serif);
+      font-size: 56px;
+      line-height: 1;
+      color: var(--brand);
+      flex-shrink: 0;
+    }
+    .stat-text {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.75);
+    }
+    .stat-text strong { color: white; font-weight: 400; }
+
+    /* ─── Research goals list ─── */
+    .research-goals {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .research-goals li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .research-goals li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--brand);
+    }
+
+    /* ─── Findings list (positive/negative) ─── */
+    .findings-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .findings-list li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 22px;
+      position: relative;
+      line-height: 1.65;
+    }
+    .finding-positive li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #2EAD6B;
+      opacity: 0.6;
+    }
+    .finding-negative li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--brand);
+      opacity: 0.5;
+    }
+    .finding-label {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 6px;
+      margin-top: 16px;
+    }
+    .finding-label.positive { color: #1D7A4A; background: #E6F7EE; }
+    .finding-label.negative { color: #B5304C; background: #FCEEF2; }
+
+    /* ─── Objectives list ─── */
+    .objectives-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .objectives-list li {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .objectives-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--brand);
+      opacity: 0.5;
+    }
+
+    /* ─── What to expect ─── */
+    .wte-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 64px;
+      padding: 64px 0 56px;
+    }
+
+    .wte-left {
+      padding-top: 6px;
+    }
+
+    .wte-badge {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: #d4f04a;
+      border: none;
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-top: 16px;
+    }
+
+    .wte-bullets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
+      margin-bottom: 4px;
+    }
+
+    .wte-bullets ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wte-bullets ul li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .wte-bullets ul li::before {
+      content: '·';
+      position: absolute;
+      left: 4px;
+      color: var(--brand);
+      font-size: 18px;
+      line-height: 1;
+      top: 3px;
+    }
+
+    .wte-problem {
+      border-left: 3px solid var(--brand);
+      padding: 20px 24px;
+      background: var(--brand-light);
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 36px;
+    }
+
+    .wte-problem-label {
+      font-family: var(--ff-serif);
+      font-size: 16px;
+      color: var(--brand);
+      margin-bottom: 8px;
+    }
+
+    .wte-problem p:last-child {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+
+    .wte-coffee-label {
+      font-family: var(--ff-serif);
+      font-size: 20px;
+      color: var(--ink);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .wte-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .wte-cta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 10px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+    }
+
+    .wte-cta-pill:hover { background: var(--brand); transform: translateY(-2px); }
+
+    .wte-cta-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid rgba(27,26,23,0.2);
+    }
+
+    .wte-cta-ghost:hover { background: var(--ink); color: var(--cream); }
+
+    @media (max-width: 768px) {
+      .wte-layout { grid-template-columns: 1fr; gap: 32px; padding: 40px 0 40px; }
+      .wte-bullets { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Outcomes checklist ─── */
+    .outcomes-checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .outcomes-checklist li {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.7;
+      padding-left: 26px;
+      position: relative;
+    }
+    .outcomes-checklist li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--brand);
+      font-size: 14px;
+    }
+
+    /* ─── Dark callout box ─── */
+    .dark-callout {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px 48px;
+      margin-top: 32px;
+      color: rgba(255,255,255,0.85);
+    }
+    .dark-callout h3 {
+      font-family: var(--ff-serif);
+      font-size: 26px;
+      color: var(--brand);
+      margin-bottom: 14px;
+    }
+    .dark-callout p {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.65);
+      max-width: 600px;
+    }
+
+    /* ─── Info callout (light) ─── */
+    .info-callout {
+      padding: 28px 32px;
+      background: rgba(255,255,255,0.5);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      margin-top: 32px;
+    }
+    .info-callout-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--brand-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .info-callout h3 {
+      font-family: var(--ff-serif);
+      font-size: 20px;
+      color: var(--brand);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-callout p {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.75;
+    }
+
+    /* ─── Participant groups ─── */
+    .participant-group {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.35);
+      margin-bottom: 20px;
+    }
+    .participant-group-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 24px 28px 0;
+    }
+    .group-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .group-new .group-icon { background: var(--brand-light); }
+    .group-experienced .group-icon { background: #E6F7EE; }
+    .group-both .group-icon { background: #EDE9FE; }
+    .participant-group-header h3 {
+      font-family: var(--ff-serif);
+      font-size: 22px;
+      color: var(--ink);
+    }
+    .group-badge {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 100px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .group-new .group-badge { background: var(--brand-light); color: #8B1A42; }
+    .group-experienced .group-badge { background: #E6F7EE; color: #0D4428; }
+    .group-both .group-badge { background: #EDE9FE; color: #3B1580; }
+    .participant-group-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 20px 28px 28px;
+    }
+    .participant-who {
+      padding-right: 28px;
+      border-right: 1px solid var(--border);
+    }
+    .participant-questions { padding-left: 28px; }
+    .participant-who h4, .participant-questions h4 {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .participant-who p {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .research-questions {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .research-questions li {
+      font-family: var(--ff-sans);
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.6;
+      padding-left: 20px;
+      position: relative;
+    }
+    .research-questions li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #8B1A42;
+    }
+    .group-experienced .research-questions li::before { color: #0D4428; }
+    .group-both .research-questions li::before { color: #3B1580; }
+
+    /* ─── Roster grid ─── */
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .roster-card {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .roster-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27,26,23,0.06);
+    }
+    .roster-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-serif);
+      font-size: 18px;
+      color: white;
+      margin-bottom: 12px;
+    }
+    .roster-avatar.new-user { background: var(--brand); }
+    .roster-avatar.exp-user { background: #2EAD6B; }
+    .roster-name {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .roster-detail {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+    .roster-type {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-top: 8px;
+    }
+    .roster-type.new { background: var(--brand-light); color: var(--brand); }
+    .roster-type.experienced { background: #E6F7EE; color: #1D7A4A; }
+
+    /* ─── Insight cards ─── */
+    .insight-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+      background: rgba(255,255,255,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .insight-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(27,26,23,0.06);
+    }
+    .insight-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: var(--brand);
+      color: white;
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+    .insight-card h3 {
+      font-family: var(--ff-serif);
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.3;
+    }
+    .insight-card p {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.72;
+      margin-bottom: 10px;
+    }
+    .insight-card p:last-child { margin-bottom: 0; }
+    .insight-quote {
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: rgba(216,63,110,0.04);
+      border-left: 2px solid var(--brand);
+      border-radius: 0 10px 10px 0;
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .quote-attribution {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--ff-sans);
+      font-style: normal;
+      font-size: 11px;
+      color: var(--mid);
+      font-weight: 400;
+    }
+    .insight-findings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 12px;
+    }
+    .insight-findings span {
+      font-family: var(--ff-sans);
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--mid);
+      background: rgba(27,26,23,0.06);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* ─── Design principle cards ─── */
+    .dp-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 36px 32px 32px;
+      background: rgba(255,255,255,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .dp-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(27,26,23,0.06);
+    }
+    .dp-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .dp-icon svg { width: 26px; height: 26px; }
+    .dp-icon.icon-user { background: var(--brand-light); }
+    .dp-icon.icon-simple { background: #EDE9FE; }
+    .dp-icon.icon-guidance { background: #E6F7EE; }
+    .dp-icon.icon-connect { background: #FFF0E6; }
+    .dp-card h3 {
+      font-family: var(--ff-serif);
+      font-size: 26px;
+      color: var(--ink);
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dp-summary {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.72;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dp-detail { margin-bottom: 14px; }
+    .dp-detail:last-child { margin-bottom: 0; }
+    .dp-detail h4 {
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .dp-detail.how h4 { color: #8B1A42; }
+    .dp-detail.why h4 { color: #3B1580; }
+    .dp-detail p {
+      font-family: var(--ff-sans);
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* ─── Agenda timeline ─── */
+    .agenda-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      position: relative;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .agenda-list li {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.5;
+      padding: 36px 12px 0;
+      position: relative;
+      flex: 1 1 0;
+      min-width: 120px;
+      text-align: center;
+    }
+    .agenda-list li::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 2px solid var(--brand);
+      z-index: 1;
+    }
+    .agenda-list li::after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0; right: 0;
+      height: 2px;
+      background: rgba(216,63,110,0.2);
+      z-index: 0;
+    }
+    .agenda-list li:first-child::after { left: 50%; }
+    .agenda-list li:last-child::after { right: 50%; }
+
+    /* ─── Workshop retro ─── */
+    .workshop-retro {
+      margin-top: 48px;
+    }
+    .retro-block { margin-bottom: 40px; }
+    .retro-block:last-child { margin-bottom: 0; }
+    .retro-col h3 {
+      font-family: var(--ff-serif);
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .retro-lists-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .retro-sub { margin-bottom: 0; }
+    .retro-sub h4 {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .retro-sub h4.went-well { color: #2EAD6B; }
+    .retro-sub h4.improve { color: var(--brand); }
+    .takeaways-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .retro-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .retro-list li {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.65;
+      padding-left: 20px;
+      position: relative;
+    }
+    .retro-list.positive li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 9px;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #2EAD6B;
+      opacity: 0.6;
+    }
+    .retro-list.improve li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 9px;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--brand);
+      opacity: 0.5;
+    }
+
+    /* ─── Takeaway cards ─── */
+    .takeaway-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      background: rgba(255,255,255,0.4);
+      margin-bottom: 14px;
+    }
+    .takeaway-card:last-child { margin-bottom: 0; }
+    .takeaway-card h4 {
+      font-family: var(--ff-serif);
+      font-size: 18px;
+      color: var(--ink);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .takeaway-card p {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    .takeaway-card p:last-child { margin-bottom: 0; }
+
+    /* ─── Image placeholders ─── */
+    .image-placeholders {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+    .image-placeholder {
+      aspect-ratio: 16 / 10;
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.3);
+    }
+    .image-placeholder svg { width: 32px; height: 32px; opacity: 0.3; }
+    .image-placeholder span {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--mid);
+      opacity: 0.6;
+    }
+
+    /* ─── Sketch placeholder ─── */
+    .sketch-placeholder {
+      aspect-ratio: 4 / 3;
+      border: 1.5px dashed var(--border);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.3);
+      margin: 32px 0;
+    }
+    .sketch-placeholder svg { width: 40px; height: 40px; opacity: 0.25; }
+    .sketch-placeholder span {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      opacity: 0.6;
+    }
+
+    /* ─── Objectives intro block ─── */
+    .objectives-intro {
+      background: rgba(255,255,255,0.5);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+    }
+    .objectives-intro h4 {
+      font-family: var(--ff-serif);
+      font-size: 20px;
+      color: #d83f6e;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .objectives-intro p {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 400;
+      color: #1b1a17;
+      line-height: 1.75;
+    }
+
+    /* ─── Objective numbered cards ─── */
+    .obj-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+      background: var(--brand-light);
+    }
+    .obj-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: white;
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .obj-card p {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    /* ─── Process columns ─── */
+    .process-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 32px;
+    }
+    .process-column h3 {
+      font-family: var(--ff-serif);
+      font-size: 24px;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .process-column p {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .process-column p:last-child { margin-bottom: 0; }
+    .process-column strong { font-weight: 400; }
+
+    /* ─── Concept block ─── */
+    .concept-block {
+      background: rgba(255,255,255,0.5);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 44px;
+      margin-top: 32px;
+    }
+    .concept-block h3 {
+      font-family: var(--ff-serif);
+      font-size: 28px;
+      color: var(--ink);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .concept-subtitle {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .concept-block p {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .concept-block p:last-child { margin-bottom: 0; }
+
+    /* ─── HMW cards ─── */
+    .hmw-card {
+      padding: 8px 0;
+      position: relative;
+    }
+    .hmw-card::before {
+      content: '\201C';
+      font-family: var(--ff-serif);
+      font-size: 80px;
+      line-height: 1;
+      color: var(--brand);
+      opacity: 0.18;
+      position: absolute;
+      top: -8px;
+      left: 0;
+    }
+    .hmw-card p {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ink);
+      line-height: 1.65;
+      position: relative;
+    }
+
+    /* ─── Phase tags ─── */
+    .step-phase {
+      display: inline-block;
+      font-family: var(--ff-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .phase-research { background: #EDE9FE; color: #6D28D9; }
+    .phase-design { background: var(--brand-light); color: var(--brand); }
+    .phase-prototype { background: #E6F7EE; color: #1D7A4A; }
+
+    /* ─── Convergent concept cards ─── */
+    .convergent-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      background: rgba(255,255,255,0.35);
+    }
+    .convergent-card h3 {
+      font-family: var(--ff-serif);
+      font-size: 20px;
+      color: var(--ink);
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cc-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .cc-icon svg { width: 18px; height: 18px; }
+    .cc-preview .cc-icon { background: var(--brand-light); }
+    .cc-media .cc-icon { background: #EDE9FE; }
+    .cc-access .cc-icon { background: #E6F7EE; }
+    .cc-custom .cc-icon { background: #FFF0E6; }
+    .convergent-card p {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    /* ─── Workshop overview ─── */
+    .workshop-overview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 32px;
+    }
+    .workshop-col h3 {
+      font-family: var(--ff-serif);
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .workshop-col p {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+      margin-top: 40px;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .footer-logo {
+      font-family: var(--ff-serif);
+      font-size: 17.6px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy {
+      font-family: var(--ff-sans);
+      font-size: 12.8px;
+      font-weight: 400;
+      color: var(--mid);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 0 32px; }
+      .hero-inner, .container, .divider { padding: 0 32px; }
+      .hero-card-top { padding: 40px 40px 36px; gap: 32px; }
+      .hero-title { font-size: 60px; }
+      .pttp { grid-template-columns: repeat(2, 1fr); }
+      .pttp-item:nth-child(2) { border-right: none; }
+      .pttp-item:nth-child(3) { border-top: 1px solid var(--border); }
+      .pttp-item:nth-child(4) { border-top: 1px solid var(--border); }
+      .section-title { font-size: 28px; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero-inner, .container, .divider { padding: 0 20px; }
+      .hero-card-top { grid-template-columns: 1fr; padding: 32px; }
+      .hero-role { min-width: unset; }
+      .hero-title { font-size: 48px; }
+      .pttp { grid-template-columns: 1fr 1fr; }
+      .two-col, .cards-grid-2, .process-columns, .workshop-overview { grid-template-columns: 1fr; gap: 24px; }
+      .retro-lists-row, .takeaways-row { grid-template-columns: 1fr; gap: 20px; }
+      .cards-grid-3 { grid-template-columns: 1fr; }
+      .participant-group-body { grid-template-columns: 1fr; }
+      .participant-who { padding-right: 0; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+      .participant-questions { padding-left: 0; }
+      .roster-grid { grid-template-columns: 1fr 1fr; }
+      .image-placeholders { grid-template-columns: 1fr; }
+      section { padding: 56px 0; }
+      .agenda-list { flex-direction: column; }
+      .agenda-list li { text-align: left; padding: 8px 0 8px 32px; min-width: auto; }
+      .agenda-list li::before { left: 8px; top: 14px; transform: none; }
+      .agenda-list li::after { left: 13px; top: 0; bottom: 0; right: auto; width: 2px; height: auto; }
+      .agenda-list li:first-child::after { left: 13px; top: 14px; }
+      .agenda-list li:last-child::after { right: auto; bottom: 50%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav aria-label="Main navigation">
+    <a href="Landing_Page.html" class="nav-logo">Richie<span class="dot" aria-hidden="true"></span></a>
+    <ul class="nav-links">
+      <li><a href="Landing_Page.html#about">About</a></li>
+      <li><a href="Landing_Page.html#work">Work</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="breadcrumb">
+        <a href="Landing_Page.html">Work</a>
+        <span>/</span>
+        Sharesies
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <div>
+            <span class="hero-tag">Master's Capstone Project</span>
+            <h1 class="hero-title">Sharesies</h1>
+            <p class="hero-subtitle">Online investment platform</p>
+            <p class="hero-quote">"Sharesies is a digital investment and wealth development platform. Their mission is to give everyone the same investment opportunities and financial empowerment, no matter what amount someone is starting from."</p>
+          </div>
+
+        </div>
+
+        <div class="pttp">
+          <div class="pttp-item">
+            <p class="pttp-label">Position</p>
+            <p class="pttp-value">UX/UI Designer</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Team</p>
+            <p class="pttp-value">Ashleigh<br>Grace<br>Zoe<br>Me!</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">My role</p>
+            <p class="pttp-value">Research<br>User interviews<br>Usability testing<br>Workshopping<br>Prototyping</p>
+          </div>
+          <div class="pttp-item">
+            <p class="pttp-label">Project Duration</p>
+            <p class="pttp-value">4 Months</p>
+          </div>
+        </div>
+
+        <div class="hero-image-strip" style="padding:0;overflow:hidden;">
+          <img src="SHA_Screenshot/SHA_Hero.jpg" alt="Sharesies · Onboarding" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider" style="margin-top:80px;"></div>
+
+  <!-- What to expect -->
+  <section id="expect">
+    <div class="container">
+
+      <div class="wte-layout reveal">
+
+        <!-- Left: heading + label -->
+        <div class="wte-left">
+          <h2 class="section-title" style="margin-bottom:12px;">What to expect</h2>
+          <span class="wte-badge">20–30 minute read</span>
+        </div>
+
+        <!-- Right: body + bullets + problem + cta -->
+        <div class="wte-right">
+
+          <p class="section-body" style="margin-bottom:28px;">A three to four month master's capstone project with a team of three other designers from the UX cohort, collaborating with designers from Sharesies weekly to discover and create solutions for Sharesies' concerns. In this case study, the majority of UX and UI principles and methodologies will be applied, such as:</p>
+
+          <div class="wte-bullets">
+            <ul>
+              <li>Affinity mapping</li>
+              <li>User interviews</li>
+              <li>Usability testing</li>
+              <li>Wireframing</li>
+              <li>Prototyping</li>
+            </ul>
+            <ul>
+              <li>Accessibility</li>
+              <li>Consistency</li>
+              <li>User-centered</li>
+              <li>Interactive</li>
+              <li>Meaningful</li>
+            </ul>
+          </div>
+          <p style="font-family:var(--ff-sans);font-size:13px;color:var(--mid);margin:12px 0 36px;font-style:italic;">plus many more to be discovered</p>
+
+          <!-- The problem callout -->
+          <div class="wte-problem">
+            <p class="wte-problem-label">The problem</p>
+            <p>Sharesies acknowledges it can be overwhelming to get started with investing — adding more options could introduce new challenges and choices that users have to make. One resource to acknowledge is the 'Go-to Guides' (G2G), aiming to help users up-level their understanding of investing with jargon.</p>
+          </div>
+
+          <!-- Coffee section -->
+          <div class="wte-coffee">
+            <p class="wte-coffee-label">Coffee, tea, water?</p>
+            <p style="font-family:var(--ff-sans);font-size:15px;line-height:1.7;color:#1b1a17;margin-bottom:28px;">This can be a lengthy read — up to 20–30 minutes. If you're here just for the aesthetic and end product, jump straight to results. Otherwise, grab a beverage and enjoy the read.</p>
+          </div>
+
+          <!-- Jump to section -->
+          <div style="margin-top:40px;">
+            <p style="font-family:var(--ff-serif);font-size:32px;line-height:1.1;font-weight:400;color:var(--brand);margin-bottom:12px;">Jump to section</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <a href="#project-brief" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Project Brief</a>
+              <a href="#design-process" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Design Process</a>
+              <a href="#research" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Onboarding Principles</a>
+              <a href="#game-design" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Game Design</a>
+              <a href="#desk-research" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Desk Research</a>
+              <a href="#brief" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Problem Re-framing</a>
+              <a href="#objectives" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Research Objectives</a>
+              <a href="#participants" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Participants</a>
+              <a href="#qualitative" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Qualitative Research</a>
+              <a href="#insights" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Insights</a>
+              <a href="#principles" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Design Principles</a>
+              <a href="#ideation" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Sketches &amp; Wireframes</a>
+              <a href="#concept" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">The Concept</a>
+              <a href="#workshop" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Concepting Workshop</a>
+              <a href="#retro" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Retrospective</a>
+              <a href="#convergent" style="display:inline-flex;align-items:center;font-family:var(--ff-sans);font-size:13px;color:var(--ink);text-decoration:none;padding:6px 16px;border-radius:10px;background:rgba(27,26,23,0.05);transition:background .2s,color .2s,transform .15s;white-space:nowrap;">Convergent Concept</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Project Brief -->
+  <section id="project-brief">
+    <div class="container">
+      <h2 class="section-title reveal">Project Brief:</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>Sharesies aims to provide equal opportunity for financial empowerment to everyone regardless of how much they are able to invest. Sharesies wants to move beyond 'just investing' and help users develop financial wealth. During this master study, we will be looking at two products: KiwiSaver and Invest.</p>
+      </div>
+
+      <!-- Two column products -->
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-bottom:48px;">
+        <div>
+          <h3 style="font-size:20px;color:#fff;background:#d83f6e;display:inline-block;padding:2px 12px;border-radius:6px;margin-bottom:12px;">Save</h3>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;font-style:italic;">Get a great interest rate, plus all the flexibility you need — no minimum deposit, no rules, and no fuss to open.</p>
+        </div>
+        <div>
+          <h3 style="font-size:20px;color:#fff;background:#2D8625;display:inline-block;padding:2px 12px;border-radius:6px;margin-bottom:12px;">KiwiSaver</h3>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;font-style:italic;">"Reimagining KiwiSaver to build a new generation of empowered investors, giving users control and confidence to invest their money, and connecting users to their financial goals."</p>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div class="story-text reveal" style="margin-bottom:16px;">
+        <h3 style="font-size:20px;color:#fff;background:#d83f6e;display:inline-block;padding:2px 12px;border-radius:6px;margin-bottom:12px;">Team</h3>
+        <p>The SHMUXD (Master's of User Experience Design) team will be partnering with Sharesies to better understand the challenges users face and proposing potential solutions to make the experience better for the user.</p>
+      </div>
+
+      <div class="story-text reveal" style="margin-bottom:32px;">
+        <p>Combining both Sharesies and SHMUXD team, we call ourselves the</p>
+      </div>
+
+      <!-- SHMUXD logo -->
+      <div class="reveal" style="display:flex;justify-content:center;margin-bottom:64px;margin-top:64px;">
+        <img src="SHA_Screenshot/SHA_SHMUXD.svg" alt="SHMUXD team" style="height:100px;width:auto;display:block;" />
+      </div>
+
+      <div class="story-text reveal" style="margin-bottom:48px;">
+        <p>Together as the SHMUXD team, we are so close towards the finish line of our final project of our degree. Fueled by my personal 3–4 extra espresso shots in my coffee and other caffeinated beverages, we tackle our final challenge with high spirits to deliver an amazing product with great results.</p>
+      </div>
+
+      <span class="next-label">Next up: Design Process →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Design Process -->
+  <section id="design-process">
+    <div class="container">
+      <h2 class="section-title reveal">Design Process</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>We followed the Double Diamond — a framework that keeps discovery and delivery clearly separated. The first diamond is about understanding the problem deeply before narrowing in. The second is about exploring solutions widely before committing to one.</p>
+      </div>
+
+      <!-- Double Diamond dark card -->
+      <div class="reveal" style="background:#EAEAEA;border-radius:22px;padding:48px;margin-bottom:48px;">
+        <p style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(27,26,23,0.4);margin-bottom:28px;">Double Diamond</p>
+        <img src="SHA_Screenshot/SHA_DD.svg" alt="Double Diamond framework" style="width:600px;height:auto;display:block;margin:0 auto;" />
+      </div>
+
+      <!-- Double Diamond phases list -->
+      <div class="reveal" style="margin-bottom:40px;">
+        <ol style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;margin-bottom:28px;">
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">1.</span> Discover/Research — insight into the problem</li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">2.</span> Define/Synthesis — the area to focus upon</li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">3.</span> Develop/Ideation — potential solutions</li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">4.</span> Deliver/Implementation — solutions that work</li>
+        </ol>
+        <p style="font-size:15px;color:var(--ink);line-height:1.7;">Using the double diamond design process, we approached the brief by using process to guide and navigate us through a lengthy journey.</p>
+      </div>
+
+      <!-- Research list -->
+      <div class="reveal" style="margin-bottom:48px;">
+        <h3 style="font-size:22px;color:#d83f6e;margin-bottom:16px;">Research:</h3>
+        <p style="font-size:15px;color:var(--ink);line-height:1.7;margin-bottom:20px;">These were some of the things we researched:</p>
+
+        <!-- legend -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+          <span style="display:inline-block;width:14px;height:14px;background:#6563FF;border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:14px;color:var(--mid);">The highlighted text are the topics I focused my research on</span>
+        </div>
+
+        <ol style="list-style:none;padding:0;display:flex;flex-direction:column;gap:16px;">
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
+            <span style="background:#6563FF;color:#fff;border-radius:4px;padding:1px 8px;">1. Onboarding Principles</span>
+            <p style="color:#1b1a17;margin-top:6px;">Discovering what products and services have strong and intuitive onboarding interactions.</p>
+          </li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
+            <span style="background:#6563FF;color:#fff;border-radius:4px;padding:1px 8px;">2. Gamification Principles</span>
+            <p style="color:#1b1a17;margin-top:6px;">Discovering what principles developers use to create an engaging tutorial.</p>
+          </li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
+            <span>3. Sharesies' Existing Onboarding</span>
+            <p style="color:#1b1a17;margin-top:6px;">Discovering what Sharesies has created to help their customers confidently learn and understand investing.</p>
+          </li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
+            <span>4. Competitor Analysis</span>
+            <p style="color:#1b1a17;margin-top:6px;">Discovering competitors' onboarding process.</p>
+          </li>
+          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
+            <span style="background:#6563FF;color:#fff;border-radius:4px;padding:1px 8px;">5. Books</span>
+            <p style="color:#1b1a17;margin-top:6px;">Discovering how authors and designers documented their journey for creating successful onboarding.</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Discovery icons row -->
+      <h3 style="font-size:22px;color:#d83f6e;margin-bottom:24px;" class="reveal">Discovery</h3>
+
+      <div class="reveal" style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;">
+          <img src="SHA_Screenshot/SHA_OB.svg" alt="Onboarding Research" style="width:100%;height:auto;display:block;" />
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We researched onboarding principles to understand what makes early user experiences effective — focusing on reducing friction and building confidence from day one.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;">
+          <img src="SHA_Screenshot/SHA_Game.svg" alt="Game Design Principles" style="width:100%;height:auto;display:block;" />
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We explored game design principles — specifically how progress mechanics, rewards, and goal-setting can drive engagement and motivate continued learning within a product.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;">
+          <img src="SHA_Screenshot/SHA_Book.svg" alt="Desk Research" style="width:100%;height:auto;display:block;" />
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">Secondary desk research helped us map the broader landscape — understanding competitor approaches, industry benchmarks, and best practices in financial product onboarding.</p>
+        </div>
+      </div>
+
+      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Onboarding Principles →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Research: Onboarding Principles -->
+  <section id="research">
+    <div class="container">
+            <h2 class="section-title">Onboarding Principles</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>With all that context in my back pocket, I started looking into the principles that actually make onboarding work.</p>
+      </div>
+
+      <div class="cards-grid-2">
+        <div class="card reveal">
+                    <h3>Guided Interactions</h3>
+          <p>Helpful info is woven into the experience at just the right moment — so it feels like a natural part of what the user is already doing, not a popup interrupting their flow.</p>
+        </div>
+        <div class="card reveal">
+                    <h3>Reactive Guidance</h3>
+          <p>Instead of bombarding users with instructions upfront, this type of help only shows up when someone makes a mistake or gets stuck — meeting them exactly where they need it.</p>
+        </div>
+        <div class="card reveal">
+                    <h3>On-Demand Support</h3>
+          <p>Users who want extra help can easily find it, while those who are confident aren't slowed down. It's about giving people control over their own learning pace.</p>
+        </div>
+        <div class="card reveal">
+                    <h3>Diverse Methods</h3>
+          <p>Not every user needs the same level of hand-holding. A first-time user and a tech-savvy one shouldn't have to follow the same path — personalised journeys let everyone move at the pace that suits them.</p>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Game Design →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Game Design Principles -->
+  <section id="game-design">
+    <div class="container">
+            <h2 class="section-title">Game Design Principles</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>Games have been solving this exact problem for years — getting players up to speed without them even noticing. So I looked at what we could borrow from game design.</p>
+      </div>
+
+      <div class="cards-grid-2">
+        <div class="card reveal">
+                    <h3>Copywriting</h3>
+          <p>The words on screen do the heavy lifting. Duolingo uses cheerful, encouraging language to nudge users forward — it feels like a friend cheering you on, not a textbook telling you what to do.</p>
+        </div>
+        <div class="card reveal">
+                    <h3>Celebration</h3>
+          <p>Those satisfying little moments — confetti, a level-up sound, a cheerful message — that reward you for making progress. Small wins keep users motivated and coming back.</p>
+        </div>
+        <div class="card reveal">
+                    <h3>Immersion</h3>
+          <p>Learning is baked right into the experience. Plants vs. Zombies 2 disguises its entire tutorial as a playable level — players are picking up mechanics without even realising they're being taught.</p>
+        </div>
+        <div class="card reveal">
+                    <h3>Progress Tracking</h3>
+          <p>Duolingo's lesson maps show you exactly how far you've come and what's ahead. It gives users a clear sense of direction without ever feeling overwhelming — just a friendly nudge to keep going.</p>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Desk Research →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Desk Research -->
+  <section id="desk-research">
+    <div class="container">
+            <h2 class="section-title">Desk Research</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>With all this secondary research in hand, it was time to see how things actually played out in the real world. Our team did some guerrilla testing — signing up for Sharesies ourselves and going through the current onboarding flow as if we were brand new users.</p>
+      </div>
+
+      <div class="cards-grid-3">
+        <div class="card reveal">
+          <h3>Guerrilla Testing</h3>
+          <p>Each team member signed up and experienced the current Sharesies onboarding process first-hand — collectively analysing the flow to better understand the product from a user's perspective.</p>
+        </div>
+        <div class="card reveal">
+          <h3>What We Found</h3>
+          <span class="finding-label positive">What worked</span>
+          <ul class="findings-list finding-positive">
+            <li>The content was delivered in a way that was easy to take in and understand</li>
+            <li>Users liked the colloquial language within micro-interactions — it felt humanising</li>
+            <li>Users were more willing to give information when an explanation was given as to why it's needed</li>
+          </ul>
+          <span class="finding-label negative">Pain points</span>
+          <ul class="findings-list finding-negative">
+            <li>Users felt unsupported when given unfamiliar terminology and couldn't link it to a meaningful action</li>
+            <li>There were instances where users were taken out of the process and their focus was directed away from the task</li>
+          </ul>
+        </div>
+        <div class="card reveal">
+          <h3>Limitations</h3>
+          <p>After meeting with Sharesies, we learned there was a new onboarding flow already in development. Testing the new process wasn't an option yet, but we were able to see a demo of the prototype and how it addressed current challenges.</p>
+          <p>This pivot meant we needed to re-frame our problem — shifting from looking at the onboarding flow itself, to building guidance and coaching into a user's first week in Sharesies after sign-up.</p>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Problem Re-framing →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Problem Re-framing -->
+  <section id="brief">
+    <div class="container">
+            <h2 class="section-title">Problem Re-framing</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>After getting more context and feedback, we narrowed our problem down to focus on two areas: building user confidence and how Sharesies' products can help.</p>
+      </div>
+
+      <div class="cards-grid-2">
+        <div class="hmw-card reveal">
+                    <p>How might we guide or coach users to make them feel confident enough to get started throughout their first week?</p>
+        </div>
+        <div class="hmw-card reveal">
+                    <p>How might we guide or coach users to decide which is the right product for them within the first week of signing up?</p>
+        </div>
+      </div>
+
+            <h2 class="section-title" style="margin-top:28px;">Outcomes</h2>
+
+      <div class="cards-grid-2">
+        <div class="card reveal" style="border-color: var(--brand);">
+                    <p>Users feel confident enough to start using a product within their first week of signing up with Sharesies.</p>
+        </div>
+        <div class="card reveal" style="border-color: var(--brand);">
+                    <p>Users are given effective guidance that helps them decide which product suits their needs within the first week of signing up with Sharesies.</p>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Research Objectives →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Research Objectives -->
+  <section id="objectives">
+    <div class="container">
+            <h2 class="section-title">Research Objectives</h2>
+
+      <div class="story-text reveal" style="margin-bottom:32px;">
+        <p>With our re-framed problem and clear outcomes in place, the next step was figuring out what we actually needed to learn. That's where research objectives came in — they gave us a focused direction so we weren't just asking questions for the sake of it.</p>
+      </div>
+
+      <div class="objectives-intro reveal">
+        <h4>Why do research objectives matter?</h4>
+        <p>Research objectives are the specific questions a team sets out to answer before jumping into user interviews or testing. They keep the research focused and purposeful — without them, it's easy to collect a lot of data that doesn't actually help you make design decisions. Think of them as a compass: they don't tell you the answer, but they make sure you're looking in the right direction.</p>
+      </div>
+
+      <p class="section-body reveal" style="margin-bottom:28px;">The re-framed problem helped guide our research objectives, which aimed to answer the question: what do we need to understand in order to build our solution?</p>
+
+      <div class="cards-grid-2">
+        <div class="obj-card reveal">
+          <span class="obj-number">1</span>
+          <p>How might we better understand the attitudes and behaviours that users have towards confidence in managing or developing their wealth?</p>
+        </div>
+        <div class="obj-card reveal">
+          <span class="obj-number">2</span>
+          <p>How might we better understand the attitudes and behaviours users have towards their financial goals to help them choose which product suits them best?</p>
+        </div>
+      </div>
+
+      <div class="info-callout reveal">
+        <h3>What do we mean by wealth development?</h3>
+        <p>Wealth development is about more than just keeping your finances steady — it's moving beyond maintaining a level of financial wellbeing and actively growing it towards financial empowerment. For Sharesies users, this means feeling confident enough to take that next step, whether it's their first investment or choosing the right product for their goals.</p>
+      </div>
+
+      <span class="next-label">Next up: Participant Groups →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Participant Groups -->
+  <section id="participants">
+    <div class="container">
+            <h2 class="section-title">Participant Groups &amp; Research Outcomes</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>With our research objectives locked in, the next step was talking to real people. We identified two participant groups based on their experience with wealth development — and mapped out what we wanted to learn from each.</p>
+      </div>
+
+      <p class="section-body reveal" style="margin-bottom:28px;">Who our research participants are and what we want to understand from each group.</p>
+
+      <div class="reveal">
+        <div class="participant-group group-new">
+          <div class="participant-group-header">
+            <div class="group-icon" aria-hidden="true">🌱</div>
+            <h3 id="group-new-heading">People new to wealth development</h3>
+            <span class="group-badge" aria-describedby="group-new-heading">Newer users</span>
+          </div>
+          <div class="participant-group-body">
+            <div class="participant-who">
+              <h4>Who they are</h4>
+              <p>Have either not started or have spent less than three months developing their wealth.</p>
+            </div>
+            <div class="participant-questions">
+              <h4>What we want to learn</h4>
+              <ul class="research-questions">
+                <li>What do people need to feel confident in managing their wealth?</li>
+                <li>What do people need to feel supported enough to get started or progress with wealth management?</li>
+                <li>What are the barriers that prevent people from having defined wealth management goals?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="participant-group group-experienced">
+          <div class="participant-group-header">
+            <div class="group-icon" aria-hidden="true">📈</div>
+            <h3 id="group-experienced-heading">People experienced in wealth development</h3>
+            <span class="group-badge" aria-describedby="group-experienced-heading">Experienced users</span>
+          </div>
+          <div class="participant-group-body">
+            <div class="participant-who">
+              <h4>Who they are</h4>
+              <p>Have started and have spent more than three months developing their wealth.</p>
+            </div>
+            <div class="participant-questions">
+              <h4>What we want to learn</h4>
+              <ul class="research-questions">
+                <li>What processes and resources have helped them become confident in wealth management? What made these effective?</li>
+                <li>How do the products or services people use contribute towards their wealth management goals?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="participant-group group-both">
+          <div class="participant-group-header">
+            <div class="group-icon" aria-hidden="true">🔗</div>
+            <h3 id="group-both-heading">Both groups</h3>
+            <span class="group-badge" aria-describedby="group-both-heading">Shared questions</span>
+          </div>
+          <div class="participant-group-body">
+            <div class="participant-who">
+              <h4>Who they are</h4>
+              <p>Questions relevant to all participants regardless of their experience level with wealth development.</p>
+            </div>
+            <div class="participant-questions">
+              <h4>What we want to learn</h4>
+              <ul class="research-questions">
+                <li>What are the types of financial goals someone might have?</li>
+                <li>Is there a categorical list of things that make up a fundamental understanding of wealth management? If so, what?</li>
+                <li>What factors contribute to whether people have defined goals or not?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Qualitative Research →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Qualitative Research Process -->
+  <section id="qualitative">
+    <div class="container">
+            <h2 class="section-title">Qualitative Research Process</h2>
+
+      <div class="story-text reveal" style="margin-bottom:32px;">
+        <p>Now that we knew who we wanted to talk to and what we needed to learn, it was time to actually get out there and have those conversations.</p>
+      </div>
+
+      <div class="process-columns reveal">
+        <div class="process-column">
+          <h3>Participant Cohorts</h3>
+          <p>We wanted to speak to <strong>people who are new to wealth development</strong>, to better understand what their current barriers are to pursuing wealth development and what they might need to feel more confident in managing their wealth.</p>
+          <p>We also reached out to speak to <strong>people who are experienced in wealth development</strong>, to better understand how they gained their confidence and knowledge to push past the barriers at the beginning of their journey.</p>
+        </div>
+        <div class="process-column">
+          <h3>Methods</h3>
+          <p>We conducted <strong>semi-structured interviews</strong> with nine participants. Our participants ranged in age, gender, background, and experience.</p>
+          <p><strong>Six</strong> of the participants were new to wealth development and <strong>three</strong> were experienced in wealth development.</p>
+          <p>We each recruited 2–3 participants from a range of professional backgrounds. To get the most out of the interviews, we deliberately interviewed each other's participants rather than our own — the idea being that speaking with someone unfamiliar would create a more natural dynamic and help us build confidence interviewing strangers.</p>
+          <p>We used <strong>affinity mapping</strong> to organise and cluster interview notes to identify key findings and insights within our participants' experiences.</p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:48px;">
+                <div class="roster-grid">
+          <div class="roster-card"><div class="roster-avatar new-user">A</div><div class="roster-name">Participant A</div><div class="roster-detail">Female, Early 30s<br>Student</div><span class="roster-type new">New to wealth dev.</span></div>
+          <div class="roster-card"><div class="roster-avatar new-user">B</div><div class="roster-name">Participant B</div><div class="roster-detail">Female, Early 30s<br>Student</div><span class="roster-type new">New to wealth dev.</span></div>
+          <div class="roster-card"><div class="roster-avatar new-user">C</div><div class="roster-name">Participant C</div><div class="roster-detail">Male, Mid 20s<br>Software developer</div><span class="roster-type new">New to wealth dev.</span></div>
+          <div class="roster-card"><div class="roster-avatar new-user">D</div><div class="roster-name">Participant D</div><div class="roster-detail">Female, Early 30s<br>Stay-at-home mum</div><span class="roster-type new">New to wealth dev.</span></div>
+          <div class="roster-card"><div class="roster-avatar new-user">E</div><div class="roster-name">Participant E</div><div class="roster-detail">Female, Early 30s<br>UX designer</div><span class="roster-type new">New to wealth dev.</span></div>
+          <div class="roster-card"><div class="roster-avatar new-user">F</div><div class="roster-name">Participant F</div><div class="roster-detail">Male, Mid 20s<br>Govt admin</div><span class="roster-type new">New to wealth dev.</span></div>
+          <div class="roster-card"><div class="roster-avatar exp-user">G</div><div class="roster-name">Participant G</div><div class="roster-detail">Male, Late 30s<br>Executive chef</div><span class="roster-type experienced">Experienced</span></div>
+          <div class="roster-card"><div class="roster-avatar exp-user">H</div><div class="roster-name">Participant H</div><div class="roster-detail">Male, Late 30s<br>Software dev</div><span class="roster-type experienced">Experienced</span></div>
+          <div class="roster-card"><div class="roster-avatar exp-user">I</div><div class="roster-name">Participant I</div><div class="roster-detail">Male, Mid 20s<br>Product designer</div><span class="roster-type experienced">Experienced</span></div>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Findings &amp; Analysis →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Insights -->
+  <section id="insights">
+    <div class="container">
+            <h2 class="section-title">Insights</h2>
+
+      <div class="story-text reveal" style="margin-bottom:0;">
+        <p>Through affinity mapping, we identified shared patterns, behaviours, and attitudes across our interviews. This surfaced 38 individual findings, which we distilled down to 8 key insights — the ones we believed would be most impactful in shaping an ideal onboarding experience.</p>
+      </div>
+
+      <div class="stat-highlight reveal">
+        <span class="stat-number">38</span>
+        <span class="stat-text">individual findings distilled into <strong>8 key insights</strong> that shaped our design direction for the onboarding experience.</span>
+      </div>
+
+      <div class="cards-grid-2">
+
+        <div class="insight-card reveal">
+          <span class="insight-number">01</span>
+          <h3>People want guidance that feels human</h3>
+          <p>People who are new to wealth development want customised, continual, and engaging financial guidance that feels human — whether from a real person or a program.</p>
+          <p>They are drawn to relatable content that comes from others' similar experience, which provides more opportunity for guidance that's suited to the context of their situations and goals.</p>
+          <div class="insight-findings"><span>F05</span><span>F16</span><span>F17</span><span>F20</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">02</span>
+          <h3>Continual guidance at pivotal moments</h3>
+          <p>Participants want continual guidance at pivotal moments in their own financial journey because it helps them feel supported to make decisions in developing their wealth.</p>
+          <p>Guidance that is more self-directed and combines instruction with meaningful action appears to be the most effective and engaging way for participants to learn.</p>
+          <div class="insight-quote">"I feel like a chatbot I can ask questions on I can be interactive and provide guidance"<span class="quote-attribution">— Participant B (B31)</span></div>
+          <div class="insight-findings"><span>F04</span><span>F16</span><span>F22</span><span>F24</span><span>F26</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">03</span>
+          <h3>Hesitant to leave current financial routine</h3>
+          <p>People new to wealth development are hesitant to leave their current financial routine because they don't feel like they have the knowledge to justify the level of risk they're considering, further holding them back from making the first step.</p>
+          <div class="insight-quote">"Investing seems like magic"<span class="quote-attribution">— Participant A (A11)</span></div>
+          <div class="insight-findings"><span>F04</span><span>F16</span><span>F26</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">04</span>
+          <h3>People don't identify with "wealth management"</h3>
+          <p>People don't identify with the term 'wealth management' because they don't see it as something they do or for anyone they're affiliated with. However, we found that they are actively managing their wealth in their behaviours and routines.</p>
+          <div class="insight-findings"><span>F03</span><span>F07</span><span>F09</span><span>F25</span><span>F26</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">05</span>
+          <h3>Contradictions in how people talk about wealth</h3>
+          <p>There are contradictions in how people view talking about wealth in their social circles. Investing is a more socially accepted topic to discuss with friends while personal finances are treated as a sensitive topic.</p>
+          <p>This might be because investing is seen as an ambitious pursuit whereas personal finances reveal more about someone's financial wellbeing than they might feel comfortable sharing.</p>
+          <div class="insight-quote">"Not many people delve into talking about how they manage their money"<span class="quote-attribution">— Participant B (B22)</span></div>
+          <div class="insight-findings"><span>F01</span><span>F02</span><span>F12</span><span>F18</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">06</span>
+          <h3>Building blocks for understanding wealth development</h3>
+          <p>People see the following topics as building blocks to understand wealth development: what an investment is and how it can work for them, what financial risk is, the ways in which current events impact the financial markets, and insight into other people's experiences.</p>
+          <div class="insight-findings"><span>F09</span><span>F14</span><span>F16</span><span>F23</span><span>F25</span><span>F26</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">07</span>
+          <h3>Immediate costs come before long-term investing</h3>
+          <p>People are focused on immediate and urgent costs before they are able to consider the long-term, non-essential costs. This may be because they don't feel they can invest until they are in a safe place with their financial wellbeing and have covered their essential costs of living.</p>
+          <div class="insight-findings"><span>F11</span><span>F18</span><span>F21</span><span>F29</span><span>F34</span><span>F37</span></div>
+        </div>
+
+        <div class="insight-card reveal">
+          <span class="insight-number">08</span>
+          <h3>Experienced investors have greater discernment</h3>
+          <p>People who have more experience in investing may have greater discernment on how market conditions and current events could impact their investments because they have learnt from their past investing mistakes, and can apply better judgement going forward.</p>
+          <div class="insight-findings"><span>F18</span><span>F30</span><span>F31</span><span>F32</span><span>F33</span><span>F38</span></div>
+        </div>
+
+      </div>
+
+      <span class="next-label">Next up: Design Principles →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Design Principles -->
+  <section id="principles">
+    <div class="container">
+            <h2 class="section-title">Design Principles</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>Analysis of our qualitative research gave us our design principles — the rules we'd use to guide every design decision from here on out.</p>
+      </div>
+
+      <div class="cards-grid-2">
+
+        <div class="dp-card reveal">
+          <div class="dp-icon icon-user" aria-hidden="true">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="14" cy="9" r="5" stroke="#D83F6E" stroke-width="2" fill="none"/>
+              <path d="M4 25c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#D83F6E" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <h3>User Centred</h3>
+          <p class="dp-summary">The design should centre and adapt around the user's wealth development goals, needs, and preferences.</p>
+          <div class="dp-detail how"><h4>How</h4><p>The design should consider diverse user journeys, multiple entry points, and personalised pathways to cater to users' varying needs and preferences.</p></div>
+          <div class="dp-detail why"><h4>Why</h4><p>To create an intuitive, meaningful, and personalised experience that will help increase user satisfaction and user retention.</p></div>
+        </div>
+
+        <div class="dp-card reveal">
+          <div class="dp-icon icon-simple" aria-hidden="true">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="20" height="20" rx="4" stroke="#6D28D9" stroke-width="2" fill="none"/>
+              <circle cx="14" cy="14" r="4" fill="#EDE9FE" stroke="#6D28D9" stroke-width="1.5"/>
+              <path d="M10 14h8" stroke="#6D28D9" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Simplicity</h3>
+          <p class="dp-summary">The design should be clear, approachable, and simple. Each component tries to function or guide to the experience.</p>
+          <div class="dp-detail how"><h4>How</h4><p>Language should be jargon-free, approachable, and empathetic. UI should prioritise a "feeling first" approach using my feelings, aspirance, and ease.</p></div>
+          <div class="dp-detail why"><h4>Why</h4><p>To reduce cognitive load in order to prevent users from experiencing unnecessary complexity, user task friction, and attention fatigue.</p></div>
+        </div>
+
+        <div class="dp-card reveal">
+          <div class="dp-icon icon-guidance" aria-hidden="true">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 4v20" stroke="#2EAD6B" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 10l6-6 6 6" stroke="#2EAD6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="7" cy="20" r="3" fill="#E6F7EE" stroke="#2EAD6B" stroke-width="1.5"/>
+              <circle cx="21" cy="20" r="3" fill="#E6F7EE" stroke="#2EAD6B" stroke-width="1.5"/>
+              <path d="M10 20h8" stroke="#2EAD6B" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+            </svg>
+          </div>
+          <h3>Guidance</h3>
+          <p class="dp-summary">The design should bridge the gap between existing resources and the user needs.</p>
+          <div class="dp-detail how"><h4>How</h4><p>The guidance should support users in their journey throughout their wealth development by guiding the user to relevant resources, supportive user task flow, and clear information architecture.</p></div>
+          <div class="dp-detail why"><h4>Why</h4><p>To provide the right information at the right time within the Sharesies app, so that users can feel more confident in navigating wealth development.</p></div>
+        </div>
+
+        <div class="dp-card reveal">
+          <div class="dp-icon icon-connect" aria-hidden="true">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="8" cy="10" r="4" fill="#FFF0E6" stroke="#C45A20" stroke-width="1.5"/>
+              <circle cx="20" cy="10" r="4" fill="#FFF0E6" stroke="#C45A20" stroke-width="1.5"/>
+              <circle cx="14" cy="21" r="4" fill="#FFF0E6" stroke="#C45A20" stroke-width="1.5"/>
+              <path d="M11 12.5l3 5.5M17 12.5l-3 5.5" stroke="#C45A20" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 10h4" stroke="#C45A20" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Connection</h3>
+          <p class="dp-summary">The design should foster a community of empowered people practising wealth development.</p>
+          <div class="dp-detail how"><h4>How</h4><p>Provide ways for people to share their experiences and learnings, as well as relate to others' experiences.</p></div>
+          <div class="dp-detail why"><h4>Why</h4><p>Users are drawn to experiences that are personalised, relatable, and feel human.</p></div>
+        </div>
+
+      </div>
+
+      <span class="next-label">Next up: Early Concepting →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Sketches & Wireframes -->
+  <section id="ideation">
+    <div class="container">
+            <h2 class="section-title">Sketches &amp; Wireframes</h2>
+
+      <div class="story-text reveal" style="margin-bottom:32px;">
+        <p>With our design principles and insights in hand, we started exploring early concepts — sketching out ideas that combined our research findings with gamification principles. These concepts were also designed to build on Sharesies' existing Go-to Guides, a helpful resource already within the platform.</p>
+      </div>
+
+      <p class="section-body reveal" style="margin-bottom:0;">Some early sketches and concepts based on the gamification principles we researched.</p>
+
+      <div class="cards-grid-3" style="margin-top:28px;">
+        <div class="card reveal">
+          <h3>Learning via quiz</h3>
+          <p>Multiple choice quizzes could be used to teach the basics of wealth development to new users while being optional for experienced users so their experience isn't disrupted. If the user gets the answer correct they could be given a celebratory micro-interaction — a fun activity which helps them notice what they've learned and creates a sense of play within the experience.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Progress bars</h3>
+          <p>Progress bars could be used in various moments within the Sharesies experience. For example, when a user is signing up, when they are in the process of making an investment for the first time, or while learning new topic content. They indicate time or effort left to finish the task and give a sense of completion to the user.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Storyboards</h3>
+          <p>Storyboards helped frame particular scenarios for gamification — making abstract concepts more tangible. This included visualising the act of making investments and exploring the possibility of encouraging gambling behaviour. The team used these to test gamification concepts through storytelling before moving to higher fidelity.</p>
+        </div>
+      </div>
+
+      <div class="sketch-placeholder reveal" style="margin-top:40px;">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="32" height="28" rx="3" stroke="#999" stroke-width="1.5" fill="none"/><circle cx="14" cy="16" r="4" stroke="#999" stroke-width="1.5" fill="none"/><path d="M4 28l9-7 6 5 6-9 11 11" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        <span>Image placeholder</span>
+      </div>
+
+      <span class="next-label">Next up: The Concept →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- The Concept -->
+  <section id="concept">
+    <div class="container">
+            <h2 class="section-title">The Concept</h2>
+
+      <div class="story-text reveal" style="margin-bottom:0;">
+        <p>Our early concepts pointed us toward a clear direction — building on something Sharesies already had in place.</p>
+      </div>
+
+      <div class="concept-block reveal">
+        <h3>Go-to Guides &amp; our solution</h3>
+        <p class="concept-subtitle">The relationship between the Go-to Guides and our solution</p>
+        <p>The Go-to Guides are a helpful resource aimed to help users level up with investing knowledge and our solution will build off of this.</p>
+        <p>Our final design will aim to deliver this material in an interactive way, giving the user a sense of being coached through their first week with Sharesies to help them get started.</p>
+        <p>We realise that the existing Go-to Guides only cover the topic of investing, so while we may prototype our solution for Invest, our design principles will be product-agnostic and consider wealth development broadly.</p>
+      </div>
+
+      <span class="next-label">Next up: What's Next →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- What's Next -->
+  <section id="next">
+    <div class="container">
+            <h2 class="section-title">What's next?</h2>
+
+      <div class="story-text reveal" style="margin-bottom:40px;">
+        <p>With the concept defined, here's what comes next — consolidating our research, running workshops, and moving into prototyping.</p>
+      </div>
+
+      <div class="cards-grid-2">
+        <div class="card reveal">
+          <span class="step-phase phase-research">Research</span>
+          <h3>Consolidating our research</h3>
+          <p>Our next step will be to develop a set of design principles using our key findings and insights from both our primary and secondary research streams. These will guide how we design the solution.</p>
+        </div>
+        <div class="card reveal">
+          <span class="step-phase phase-design">Design</span>
+          <h3>Design workshop</h3>
+          <p>We will be facilitating a workshop with the Sharesies design team to generate early sketches, combine ideas, and prioritise key concepts to take forward.</p>
+        </div>
+        <div class="card reveal">
+          <span class="step-phase phase-research">Research</span>
+          <h3>Go-to Guide content mapping</h3>
+          <p>Alongside our research, we'll do a mapping exercise to compare the content in the Go-to Guides with our participants' profiles according to context. The aim is to identify what content suits and where more content is needed to support users.</p>
+        </div>
+        <div class="card reveal">
+          <span class="step-phase phase-design">Design</span>
+          <h3>Concepting</h3>
+          <p>Using concepts generated from the workshop, we'll develop and refine ideas into clearer directions for the solution.</p>
+        </div>
+        <div class="card reveal">
+          <span class="step-phase phase-prototype">Prototyping</span>
+          <h3>Low and mid fidelity iterations</h3>
+          <p>Using the concepts generated from the workshop, we'll go through two rounds of prototyping and usability testing before beginning work on the final design. The testing methods will depend on what features and flows are developed — this will inform our testing objectives.</p>
+        </div>
+        <div class="card reveal">
+          <span class="step-phase phase-research">Continued research</span>
+          <h3>Continued research</h3>
+          <p>Research doesn't stop at insights. We'll continue validating our assumptions through each iteration, making sure the solution stays grounded in real user needs.</p>
+        </div>
+      </div>
+
+      <span class="next-label">Next up: Concepting Workshop →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Concepting Workshop -->
+  <section id="workshop">
+    <div class="container">
+            <h2 class="section-title">Concepting Workshop</h2>
+
+      <div class="story-text reveal" style="margin-bottom:32px;">
+        <p>A major milestone in our project was collaborating directly with designers at Sharesies. We facilitated a concepting workshop to bring together our research with their product expertise and generate ideas grounded in both.</p>
+      </div>
+
+      <p class="section-body reveal" style="margin-bottom:0;">We conducted a concepting session with Sharesies to gather ideas based off the design principles.</p>
+
+      <div class="workshop-overview reveal">
+        <div class="workshop-col">
+          <h3>Workshop purpose</h3>
+          <p>We facilitated a collaborative workshop with the Sharesies design team, combining our qualitative research analysis and design experience with our problem space to come up with concepts and ideas to work on.</p>
+          <h3 style="margin-top:28px;">Workshop structure</h3>
+          <p>To start, we provided a recap and overview of the work we've done to date to get everyone up to speed and to establish the intended outcomes of the workshop. The second part was made up of the concepting exercises that included generating ideas and converging on the best.</p>
+        </div>
+        <div class="workshop-col">
+          <h3>Workshop outcomes</h3>
+          <p>During the workshop, we set out to:</p>
+          <ul class="outcomes-checklist">
+            <li>Generate concepts that aligned to our design principles</li>
+            <li>Generate concepts that would support users to build their confidence around making an investment</li>
+            <li>Incorporate Sharesies' Go-to Guides and Learn content into the concepts to support learning</li>
+            <li>Combine elements and concepts together into bigger ideas</li>
+          </ul>
+        </div>
+      </div>
+
+            <ul class="agenda-list reveal">
+        <li>Present findings &amp; design principles</li>
+        <li>Explore current Learn content flow</li>
+        <li>Crazy 8s exercise</li>
+        <li>Feedback &amp; align to principles</li>
+        <li>Converge strongest ideas</li>
+        <li>Prioritise by feasibility</li>
+      </ul>
+
+      <span class="next-label">Next up: Takeaways &amp; Retrospective →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Workshop Takeaways -->
+  <section id="retro">
+    <div class="container">
+            <h2 class="section-title">Workshop Takeaways &amp; Retrospective</h2>
+
+      <p class="section-body reveal" style="margin-bottom:0;">Learnings and main discussion points from the concepting workshop.</p>
+
+      <div class="image-placeholders reveal">
+        <div class="image-placeholder">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="26" height="22" rx="3" stroke="#999" stroke-width="1.5" fill="none"/><circle cx="11" cy="13" r="3" stroke="#999" stroke-width="1.5" fill="none"/><path d="M3 22l7-5 5 4 5-7 9 8" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <span>Image 1</span>
+        </div>
+        <div class="image-placeholder">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="26" height="22" rx="3" stroke="#999" stroke-width="1.5" fill="none"/><circle cx="11" cy="13" r="3" stroke="#999" stroke-width="1.5" fill="none"/><path d="M3 22l7-5 5 4 5-7 9 8" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <span>Image 2</span>
+        </div>
+        <div class="image-placeholder">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="26" height="22" rx="3" stroke="#999" stroke-width="1.5" fill="none"/><circle cx="11" cy="13" r="3" stroke="#999" stroke-width="1.5" fill="none"/><path d="M3 22l7-5 5 4 5-7 9 8" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <span>Image 3</span>
+        </div>
+      </div>
+
+      <div class="workshop-retro reveal">
+
+        <div class="retro-block">
+          <div class="retro-col">
+            <h3>Workshop reflection</h3>
+          </div>
+          <div class="retro-lists-row">
+            <div class="retro-sub">
+              <h4 class="went-well">What went well</h4>
+              <ul class="retro-list positive">
+                <li>The key things we achieved in our session were having the right people and expertise in the room</li>
+                <li>Facilitating a positive environment of engagement where everyone felt comfortable asking questions and sharing thoughts</li>
+                <li>Receiving interesting concepts and having common themes emerge among them</li>
+              </ul>
+            </div>
+            <div class="retro-sub">
+              <h4 class="improve">What could have been better</h4>
+              <ul class="retro-list improve">
+                <li>Having more resources available as printed off or on hand for participants, like the Go-to Guides for easy reference — especially to accommodate for those who may not have completed the pre-reading</li>
+                <li>Get a better understanding of the technology the developers use before planning the workshop</li>
+                <li>Going back further with context at the start of the workshop to introduce the problem statement to new participants</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="retro-block">
+          <div class="retro-col">
+            <h3>Key takeaways</h3>
+          </div>
+          <div class="takeaways-row">
+            <div class="takeaway-card">
+              <h4>The Go-to Guides (G2Gs) are not the right resource</h4>
+              <p>Initially our concept was based around the G2G content, however we found that some content was too advanced and didn't fit the direct needs of our target user group.</p>
+              <p>Going forward, our design will instead be based around the broader Sharesies Learn content — as it includes more foundational information for those new to developing their wealth.</p>
+            </div>
+            <div class="takeaway-card">
+              <h4>We want to build a potential pathway towards wealth development for users</h4>
+              <p>The products offered by Sharesies could form the basis of a pathway to building wealth for users. Our design is currently focused on Invest as the lowest barrier product, but could incorporate pathways between products in the future.</p>
+              <p>We want users to have the ability to personalise or choose their own path to these products, based on their own specified financial goals.</p>
+            </div>
+            <div class="takeaway-card">
+              <h4>Use the concepts and themes from the workshop to build a storyboarding framework</h4>
+              <p>While the scope of the workshop was limited to Sharesies' Invest product, we intend to design a framework of a system that could be applied to the other key products of KiwiSaver and Save.</p>
+              <p>As Sharesies' user needs and goals may change over time, the company may want to adapt new innovative features and products to this system in a fluid and adaptable way.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <span class="next-label">Next up: Convergent Concept →</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Convergent Concept -->
+  <section id="convergent">
+    <div class="container">
+            <h2 class="section-title">Workshop Convergent Concept</h2>
+
+      <div class="story-text reveal" style="margin-bottom:32px;">
+        <p>During the workshop, our SHMUXD team and the Sharesies design team ran a Crazy Eights session — rapidly sketching out ideas on paper with everyone bringing their own perspective to the table. Personally, I drew on my gaming experience to explore how game mechanics could translate into an onboarding context. From those individual sketches, we converged on the strongest elements and combined them into one concept.</p>
+      </div>
+
+      <p class="section-body reveal" style="margin-bottom:0;">This concept came from our workshop and combined the strongest elements from three different sketches.</p>
+
+      <div class="sketch-placeholder reveal">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="32" height="28" rx="3" stroke="#999" stroke-width="1.5" fill="none"/><circle cx="14" cy="16" r="4" stroke="#999" stroke-width="1.5" fill="none"/><path d="M4 28l9-7 6 5 6-9 11 11" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        <span>Workshop sketch / convergent concept image</span>
+      </div>
+
+      <div class="cards-grid-2">
+
+        <div class="convergent-card cc-preview reveal">
+          <h3><span class="cc-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#D83F6E" stroke-width="1.5" fill="none"/><path d="M6 7h8M6 10h5" stroke="#D83F6E" stroke-width="1.5" stroke-linecap="round"/></svg></span>Content preview</h3>
+          <p>The user can click on a module point to see what topics can be completed in order to progress to the next module. This allows the user to decide whether or not they want to commit to reviewing this topic before starting.</p>
+        </div>
+
+        <div class="convergent-card cc-media reveal">
+          <h3><span class="cc-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="7" height="5" rx="1" stroke="#6D28D9" stroke-width="1.5" fill="none"/><rect x="11" y="4" width="7" height="5" rx="1" stroke="#6D28D9" stroke-width="1.5" fill="none"/><rect x="2" y="11" width="16" height="5" rx="1" stroke="#6D28D9" stroke-width="1.5" fill="none"/></svg></span>Mixed media approach</h3>
+          <p>The user is presented with multiple media options: video, short form writing with visualisations, and long form articles to ensure we cover all methods of taking in information, and that the user can select their most preferable method.</p>
+        </div>
+
+        <div class="convergent-card cc-access reveal">
+          <h3><span class="cc-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7" stroke="#2EAD6B" stroke-width="1.5" fill="none"/><path d="M10 6v4l3 2" stroke="#2EAD6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Access to all content</h3>
+          <p>The user can access content from the other modules at any point, whether they have already completed them, or have yet to complete the previous module. This is to reduce restriction and allows the user to learn in the direction they desire. It also allows users to refer to content again when they might need to refresh themselves.</p>
+        </div>
+
+        <div class="convergent-card cc-custom reveal">
+          <h3><span class="cc-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2l2.5 5 5.5.8-4 3.9.9 5.3L10 14.5 5.1 17l.9-5.3-4-3.9 5.5-.8L10 2z" stroke="#C45A20" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg></span>Customised content</h3>
+          <p>Some modules could contain questionnaires where the user provides answers that then offer them customised content, or recommendations on types of investments to explore so that the user's experience feels customised.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Coming Next -->
+  <section class="reveal" style="padding:64px 0;">
+    <div class="container">
+      <p style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);margin-bottom:20px;">Coming Next</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Key Elements &amp; Prioritisation</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Modules — Learn Content</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Lo-fi Prototype Build &amp; Testing</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">User Flow</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Insights</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Lo-fi Features &amp; Findings</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Mid-fi Prototype Build &amp; Testing</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Affinity Mapping</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">The End</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="Landing_Page.html" class="footer-logo">Richie.</a>
+        <ul class="footer-links">
+          <li><a href="https://www.linkedin.com/in/richieprak/" target="_blank">LinkedIn</a></li>
+        </ul>
+        <p class="footer-copy">© 2025 Richie</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Page fade transition
+    document.querySelectorAll('a[href^="Landing_Page.html"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var href = this.href;
+        document.body.classList.add('fade-out');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = ((i % 4) * 60) + 'ms';
+      observer.observe(el);
+    });
+
+    // Hero title typing animation
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var heading = document.querySelector('.hero-title');
+      if (!heading) return;
+      var text = heading.textContent.trim();
+      var cursor = document.createElement('span');
+      cursor.className = 'type-cursor';
+      heading.style.opacity = '1';
+      heading.innerHTML = '';
+      heading.appendChild(cursor);
+      var i = 0;
+      setTimeout(function() {
+        var timer = setInterval(function() {
+          if (i < text.length) {
+            heading.insertBefore(document.createTextNode(text[i]), cursor);
+            i++;
+          } else {
+            clearInterval(timer);
+            setTimeout(function() {
+              if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+            }, 900);
+          }
+        }, 60);
+      }, 200);
+    })();
+  </script>
+</body>
+</html>
