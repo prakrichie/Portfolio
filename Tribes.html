@@ -1141,10 +1141,10 @@
 
   <!-- Nav -->
   <nav aria-label="Main navigation">
-    <a href="Landing_Page" class="nav-logo">Richie<span class="dot" aria-hidden="true"></span></a>
+    <a href="/" class="nav-logo">Richie<span class="dot" aria-hidden="true"></span></a>
     <ul class="nav-links">
-      <li><a href="Landing_Page#about">About</a></li>
-      <li><a href="Landing_Page#work">Work</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#work">Work</a></li>
     </ul>
   </nav>
 
@@ -1154,7 +1154,7 @@
   <div class="hero">
     <div class="hero-inner">
       <div class="breadcrumb" role="navigation" aria-label="Breadcrumb">
-        <a href="Landing_Page">Work</a>
+        <a href="/">Work</a>
         <span aria-hidden="true">/</span>
         <span aria-current="page">Tribes</span>
       </div>
@@ -1646,7 +1646,7 @@
   <footer>
     <div class="container">
       <div class="footer-inner">
-        <a href="Landing_Page" class="footer-logo">Richie.</a>
+        <a href="/" class="footer-logo">Richie.</a>
         <ul class="footer-links">
           <li><a href="https://www.linkedin.com/in/richieprak/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in new tab)">LinkedIn</a></li>
         </ul>
@@ -1683,7 +1683,7 @@
       targets.forEach(function (t) { io.observe(t); });
     })();
 
-    document.querySelectorAll('a[href^="Landing_Page"]').forEach(function(link) {
+    document.querySelectorAll('a[href^="/"]').forEach(function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         var href = this.href;
