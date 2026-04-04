@@ -333,10 +333,18 @@
     /* ─── Divider ─── */
     .divider {
       border: none;
-      border-top: 1px solid #C7C7C7;
       max-width: 1160px;
       margin: 0 auto;
       padding: 0 52px;
+      height: 4px;
+    }
+    .divider::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 4px;
+      background: var(--brand);
+      border-radius: 2px;
     }
 
     /* ─── Next label ─── */
@@ -425,27 +433,51 @@
 
     /* ─── Quote block ─── */
     .quote-block {
-      border-left: 3px solid #FFA51F;
-      padding: 20px 28px;
+      padding: 8px 0;
       margin: 32px 0;
-      background: rgba(27,26,23,0.03);
-      border-radius: 0 12px 12px 0;
+      position: relative;
+    }
+    .quote-block::before {
+      content: '\201C';
+      font-family: var(--ff-serif);
+      font-size: 120px;
+      line-height: 1;
+      color: var(--brand);
+      opacity: 0.35;
+      position: absolute;
+      top: -20px;
+      left: -5px;
     }
     .quote-block .speaker {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
+      font-family: var(--ff-serif);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 6px;
+      color: var(--ink);
+      margin-bottom: 8px;
+      position: relative;
     }
-    .quote-block blockquote {
+    .quote-block blockquote,
+    .quote-block p {
       font-family: var(--ff-serif);
       font-style: italic;
-      font-size: 17px;
+      font-size: 18px;
       color: var(--ink);
-      line-height: 1.5;
+      line-height: 1.65;
+      position: relative;
+    }
+    .quote-block p:last-child::after,
+    .quote-block blockquote::after {
+      content: '\201D';
+      font-family: var(--ff-serif);
+      font-size: 120px;
+      line-height: 1;
+      color: var(--brand);
+      opacity: 0.35;
+      position: absolute;
+      bottom: -40px;
+      right: 0;
     }
 
     /* ─── Stat highlight ─── */
@@ -886,17 +918,19 @@
 
     /* ─── Roster grid ─── */
     .roster-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-top: 20px;
     }
     .roster-card {
       background: rgba(255,255,255,0.5);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px;
-      text-align: center;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .roster-card:hover {
@@ -912,7 +946,6 @@
       font-family: var(--ff-serif);
       font-size: 18px;
       color: white;
-      margin-bottom: 12px;
     }
     .roster-avatar.new-user { background: var(--brand); }
     .roster-avatar.exp-user { background: #2EAD6B; }
@@ -921,7 +954,6 @@
       font-size: 13px;
       font-weight: 400;
       color: var(--ink);
-      margin-bottom: 3px;
     }
     .roster-detail {
       font-family: var(--ff-sans);
@@ -939,10 +971,20 @@
       text-transform: uppercase;
       padding: 2px 8px;
       border-radius: 100px;
-      margin-top: 8px;
     }
     .roster-type.new { background: var(--brand-light); color: var(--brand); }
     .roster-type.experienced { background: #E6F7EE; color: #1D7A4A; }
+
+    .roster-pill {
+      font-family: var(--ff-sans);
+      font-size: 12px;
+      font-weight: 400;
+      padding: 5px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .roster-pill.new { background: var(--brand-light); color: #7a1a3a; }
+    .roster-pill.exp { background: #E6F7EE; color: #0d4a2a; }
 
     /* ─── Insight cards ─── */
     .insight-card {
@@ -1394,13 +1436,13 @@
     .hmw-card::before {
       content: '\201C';
       font-family: var(--ff-serif);
-      font-size: 80px;
+      font-size: 120px;
       line-height: 1;
       color: var(--brand);
-      opacity: 0.18;
+      opacity: 0.35;
       position: absolute;
-      top: -8px;
-      left: 0;
+      top: -20px;
+      left: -5px;
     }
     .hmw-card p {
       font-family: var(--ff-serif);
@@ -1409,6 +1451,17 @@
       color: var(--ink);
       line-height: 1.65;
       position: relative;
+    }
+    .hmw-card p:last-child::after {
+      content: '\201D';
+      font-family: var(--ff-serif);
+      font-size: 120px;
+      line-height: 1;
+      color: var(--brand);
+      opacity: 0.35;
+      position: absolute;
+      bottom: -40px;
+      right: 0;
     }
 
     /* ─── Phase tags ─── */
@@ -1527,7 +1580,42 @@
       color: var(--mid);
     }
 
+    /* ─── Side Jump Nav ─── */
+    .side-jump {
+      position: fixed;
+      left: 200px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .side-jump a {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--mid);
+      text-decoration: none;
+      opacity: 0.5;
+      transition: opacity .2s, color .2s, font-weight .2s;
+      white-space: nowrap;
+    }
+    .side-jump a:hover {
+      opacity: 1;
+      color: #d83f6e;
+    }
+    .side-jump a.active {
+      opacity: 1;
+      color: #d83f6e;
+      font-weight: 600;
+    }
+
     /* ─── Responsive ─── */
+    @media (max-width: 1280px) {
+      .side-jump { display: none; }
+    }
+
     @media (max-width: 1024px) {
       nav { padding: 0 32px; }
       .hero-inner, .container, .divider { padding: 0 32px; }
@@ -1575,6 +1663,15 @@
       <li><a href="/">Work</a></li>
     </ul>
   </nav>
+
+  <!-- Side Jump Nav -->
+  <div class="side-jump" id="side-jump">
+    <a href="#expect">Intro</a>
+    <a href="#project-brief">Brief</a>
+    <a href="#design-process">Process</a>
+    <a href="#research">Research</a>
+    <a href="#principles">Ideation</a>
+  </div>
 
   <!-- Hero -->
   <div class="hero">
@@ -1705,7 +1802,7 @@
   <!-- Project Brief -->
   <section id="project-brief">
     <div class="container">
-      <h2 class="section-title reveal">Project Brief:</h2>
+      <h2 class="section-title reveal">Project Brief</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
         <p>Sharesies aims to provide equal opportunity for financial empowerment to everyone regardless of how much they are able to invest. Sharesies wants to move beyond 'just investing' and help users develop financial wealth. During this master study, we will be looking at two products: KiwiSaver and Invest.</p>
@@ -1754,7 +1851,7 @@
       <h2 class="section-title reveal">Design Process</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
-        <p>We followed the Double Diamond — a framework that keeps discovery and delivery clearly separated. The first diamond is about understanding the problem deeply before narrowing in. The second is about exploring solutions widely before committing to one.</p>
+        <p>We followed the Double Diamond to give us structure and direction through what was otherwise a pretty lengthy journey. That said, it wasn't a straight line from define to deliver, we found ourselves looping back between stages as new findings reshaped our understanding, which honestly is how it should work.</p>
       </div>
 
       <!-- Double Diamond dark card -->
@@ -1765,13 +1862,12 @@
 
       <!-- Double Diamond phases list -->
       <div class="reveal" style="margin-bottom:40px;">
-        <ol style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;margin-bottom:28px;">
+        <ol style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;">
           <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">1.</span> Discover/Research — insight into the problem</li>
           <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">2.</span> Define/Synthesis — the area to focus upon</li>
           <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">3.</span> Develop/Ideation — potential solutions</li>
           <li style="font-size:15px;color:var(--ink);line-height:1.6;padding-left:24px;position:relative;"><span style="position:absolute;left:0;color:#d83f6e;">4.</span> Deliver/Implementation — solutions that work</li>
         </ol>
-        <p style="font-size:15px;color:var(--ink);line-height:1.7;">Using the double diamond design process, we approached the brief by using process to guide and navigate us through a lengthy journey.</p>
       </div>
 
       <!-- Research list -->
@@ -1815,15 +1911,15 @@
       <div class="reveal" style="display:flex;flex-direction:column;gap:16px;">
         <div style="display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;">
           <img src="SHA_Screenshot/SHA_OB.svg" alt="Onboarding Research" style="width:100%;height:auto;display:block;" />
-          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We researched onboarding principles to understand what makes early user experiences effective — focusing on reducing friction and building confidence from day one.</p>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We researched onboarding principles to understand what makes early user experiences effective, focusing on reducing friction and building confidence from day one.</p>
         </div>
         <div style="display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;">
           <img src="SHA_Screenshot/SHA_Game.svg" alt="Game Design Principles" style="width:100%;height:auto;display:block;" />
-          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We explored game design principles — specifically how progress mechanics, rewards, and goal-setting can drive engagement and motivate continued learning within a product.</p>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We explored game design principles, specifically how progress mechanics, rewards, and goal-setting can drive engagement and motivate continued learning within a product.</p>
         </div>
         <div style="display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;">
           <img src="SHA_Screenshot/SHA_Book.svg" alt="Desk Research" style="width:100%;height:auto;display:block;" />
-          <p style="font-size:15px;color:var(--ink);line-height:1.7;">Secondary desk research helped us map the broader landscape — understanding competitor approaches, industry benchmarks, and best practices in financial product onboarding.</p>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">Secondary desk research helped us map the broader landscape, understanding competitor approaches, industry benchmarks, and best practices in financial product onboarding.</p>
         </div>
       </div>
 
@@ -1845,11 +1941,11 @@
       <div class="cards-grid-2">
         <div class="card reveal">
                     <h3>Guided Interactions</h3>
-          <p>Helpful info is woven into the experience at just the right moment — so it feels like a natural part of what the user is already doing, not a popup interrupting their flow.</p>
+          <p>Helpful info is woven into the experience at just the right moment, so it feels like a natural part of what the user is already doing, not a popup interrupting their flow.</p>
         </div>
         <div class="card reveal">
                     <h3>Reactive Guidance</h3>
-          <p>Instead of bombarding users with instructions upfront, this type of help only shows up when someone makes a mistake or gets stuck — meeting them exactly where they need it.</p>
+          <p>Instead of bombarding users with instructions upfront, this type of help only shows up when someone makes a mistake or gets stuck, meeting them exactly where they need it.</p>
         </div>
         <div class="card reveal">
                     <h3>On-Demand Support</h3>
@@ -1857,7 +1953,7 @@
         </div>
         <div class="card reveal">
                     <h3>Diverse Methods</h3>
-          <p>Not every user needs the same level of hand-holding. A first-time user and a tech-savvy one shouldn't have to follow the same path — personalised journeys let everyone move at the pace that suits them.</p>
+          <p>Not every user needs the same level of hand-holding. A first-time user and a tech-savvy one shouldn't have to follow the same path, personalised journeys let everyone move at the pace that suits them.</p>
         </div>
       </div>
 
@@ -1873,25 +1969,25 @@
             <h2 class="section-title">Game Design Principles</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
-        <p>Games have been solving this exact problem for years — getting players up to speed without them even noticing. So I looked at what we could borrow from game design.</p>
+        <p>Games have been solving this exact problem for years, getting players up to speed without them even noticing. So I looked at what we could borrow from game design.</p>
       </div>
 
       <div class="cards-grid-2">
         <div class="card reveal">
                     <h3>Copywriting</h3>
-          <p>The words on screen do the heavy lifting. Duolingo uses cheerful, encouraging language to nudge users forward — it feels like a friend cheering you on, not a textbook telling you what to do.</p>
+          <p>The words on screen do the heavy lifting. Duolingo uses cheerful, encouraging language to nudge users forward, it feels like a friend cheering you on, not a textbook telling you what to do.</p>
         </div>
         <div class="card reveal">
                     <h3>Celebration</h3>
-          <p>Those satisfying little moments — confetti, a level-up sound, a cheerful message — that reward you for making progress. Small wins keep users motivated and coming back.</p>
+          <p>Those satisfying little moments, confetti, a level-up sound, a cheerful message, that reward you for making progress. Small wins keep users motivated and coming back.</p>
         </div>
         <div class="card reveal">
                     <h3>Immersion</h3>
-          <p>Learning is baked right into the experience. Plants vs. Zombies 2 disguises its entire tutorial as a playable level — players are picking up mechanics without even realising they're being taught.</p>
+          <p>Learning is baked right into the experience. Plants vs. Zombies 2 disguises its entire tutorial as a playable level, players are picking up mechanics without even realising they're being taught.</p>
         </div>
         <div class="card reveal">
                     <h3>Progress Tracking</h3>
-          <p>Duolingo's lesson maps show you exactly how far you've come and what's ahead. It gives users a clear sense of direction without ever feeling overwhelming — just a friendly nudge to keep going.</p>
+          <p>Duolingo's lesson maps show you exactly how far you've come and what's ahead. It gives users a clear sense of direction without ever feeling overwhelming, just a friendly nudge to keep going.</p>
         </div>
       </div>
 
@@ -1907,33 +2003,42 @@
             <h2 class="section-title">Desk Research</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
-        <p>With all this secondary research in hand, it was time to see how things actually played out in the real world. Our team did some guerrilla testing — signing up for Sharesies ourselves and going through the current onboarding flow as if we were brand new users.</p>
+        <p>With all this secondary research in hand, it was time to see how things actually played out in the real world. Our team did some guerrilla testing, signing up for Sharesies ourselves and going through the current onboarding flow as if we were brand new users.</p>
       </div>
 
-      <div class="cards-grid-3">
-        <div class="card reveal">
-          <h3>Guerrilla Testing</h3>
-          <p>Each team member signed up and experienced the current Sharesies onboarding process first-hand — collectively analysing the flow to better understand the product from a user's perspective.</p>
-        </div>
-        <div class="card reveal">
-          <h3>What We Found</h3>
-          <span class="finding-label positive">What worked</span>
+      <!-- Method callout -->
+      <div class="reveal" style="border:1.5px dashed var(--border);border-radius:18px;padding:32px 36px;margin-bottom:48px;position:relative;">
+        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:12px;">Guerrilla Testing</span>
+        <p style="font-size:15px;color:var(--ink);line-height:1.7;">Each team member signed up and experienced the current Sharesies onboarding process first-hand, collectively analysing the flow to better understand the product from a user's perspective.</p>
+      </div>
+
+      <!-- Findings: side-by-side -->
+      <h3 class="reveal" style="font-family:var(--ff-serif);font-size:22px;color:var(--ink);margin-bottom:20px;">What We Found</h3>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px;">
+        <!-- Positive -->
+        <div style="border:1.5px solid #2EAD6B;border-radius:18px;padding:32px;background:rgba(46,173,107,0.04);">
+          <span class="finding-label positive" style="margin-top:0;">What worked</span>
           <ul class="findings-list finding-positive">
             <li>The content was delivered in a way that was easy to take in and understand</li>
-            <li>Users liked the colloquial language within micro-interactions — it felt humanising</li>
+            <li>Users liked the colloquial language within micro-interactions, it felt humanising</li>
             <li>Users were more willing to give information when an explanation was given as to why it's needed</li>
           </ul>
-          <span class="finding-label negative">Pain points</span>
+        </div>
+        <!-- Negative -->
+        <div style="border:1.5px solid var(--brand);border-radius:18px;padding:32px;background:rgba(216,63,110,0.04);">
+          <span class="finding-label negative" style="margin-top:0;">Pain points</span>
           <ul class="findings-list finding-negative">
             <li>Users felt unsupported when given unfamiliar terminology and couldn't link it to a meaningful action</li>
             <li>There were instances where users were taken out of the process and their focus was directed away from the task</li>
           </ul>
         </div>
-        <div class="card reveal">
-          <h3>Limitations</h3>
-          <p>After meeting with Sharesies, we learned there was a new onboarding flow already in development. Testing the new process wasn't an option yet, but we were able to see a demo of the prototype and how it addressed current challenges.</p>
-          <p>This pivot meant we needed to re-frame our problem — shifting from looking at the onboarding flow itself, to building guidance and coaching into a user's first week in Sharesies after sign-up.</p>
-        </div>
+      </div>
+
+      <!-- Limitations aside -->
+      <div class="reveal" style="border:1.5px dashed var(--border);border-radius:18px;padding:32px 36px;margin-bottom:32px;position:relative;">
+        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:12px;">Pivot point</span>
+        <p style="font-size:15px;color:var(--ink);line-height:1.7;margin-bottom:12px;">After meeting with Sharesies, we learned there was a new onboarding flow already in development. Testing the new process wasn't an option yet, but we were able to see a demo of the prototype and how it addressed current challenges.</p>
+        <p style="font-size:15px;color:var(--ink);line-height:1.7;">This pivot meant we needed to re-frame our problem, shifting from looking at the onboarding flow itself, to building guidance and coaching into a user's first week in Sharesies after sign-up.</p>
       </div>
 
       <span class="next-label">Next up: Problem Re-framing →</span>
@@ -1983,12 +2088,12 @@
             <h2 class="section-title">Research Objectives</h2>
 
       <div class="story-text reveal" style="margin-bottom:32px;">
-        <p>With our re-framed problem and clear outcomes in place, the next step was figuring out what we actually needed to learn. That's where research objectives came in — they gave us a focused direction so we weren't just asking questions for the sake of it.</p>
+        <p>With our re-framed problem and clear outcomes in place, the next step was figuring out what we actually needed to learn. That's where research objectives came in, they gave us a focused direction so we weren't just asking questions for the sake of it.</p>
       </div>
 
       <div class="objectives-intro reveal">
         <h4>Why do research objectives matter?</h4>
-        <p>Research objectives are the specific questions a team sets out to answer before jumping into user interviews or testing. They keep the research focused and purposeful — without them, it's easy to collect a lot of data that doesn't actually help you make design decisions. Think of them as a compass: they don't tell you the answer, but they make sure you're looking in the right direction.</p>
+        <p>Research objectives are the specific questions a team sets out to answer before jumping into user interviews or testing. They keep the research focused and purposeful, without them, it's easy to collect a lot of data that doesn't actually help you make design decisions. Think of them as a compass: they don't tell you the answer, but they make sure you're looking in the right direction.</p>
       </div>
 
       <p class="section-body reveal" style="margin-bottom:28px;">The re-framed problem helped guide our research objectives, which aimed to answer the question: what do we need to understand in order to build our solution?</p>
@@ -2006,7 +2111,7 @@
 
       <div class="info-callout reveal">
         <h3>What do we mean by wealth development?</h3>
-        <p>Wealth development is about more than just keeping your finances steady — it's moving beyond maintaining a level of financial wellbeing and actively growing it towards financial empowerment. For Sharesies users, this means feeling confident enough to take that next step, whether it's their first investment or choosing the right product for their goals.</p>
+        <p>Wealth development is about more than just keeping your finances steady, it's moving beyond maintaining a level of financial wellbeing and actively growing it towards financial empowerment. For Sharesies users, this means feeling confident enough to take that next step, whether it's their first investment or choosing the right product for their goals.</p>
       </div>
 
       <span class="next-label">Next up: Participant Groups →</span>
@@ -2021,7 +2126,7 @@
             <h2 class="section-title">Participant Groups &amp; Research Outcomes</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
-        <p>With our research objectives locked in, the next step was talking to real people. We identified two participant groups based on their experience with wealth development — and mapped out what we wanted to learn from each.</p>
+        <p>With our research objectives locked in, the next step was talking to real people. We identified two participant groups based on their experience with wealth development, and mapped out what we wanted to learn from each.</p>
       </div>
 
       <p class="section-body reveal" style="margin-bottom:28px;">Who our research participants are and what we want to understand from each group.</p>
@@ -2029,7 +2134,6 @@
       <div class="reveal">
         <div class="participant-group group-new">
           <div class="participant-group-header">
-            <div class="group-icon" aria-hidden="true">🌱</div>
             <h3 id="group-new-heading">People new to wealth development</h3>
             <span class="group-badge" aria-describedby="group-new-heading">Newer users</span>
           </div>
@@ -2051,7 +2155,6 @@
 
         <div class="participant-group group-experienced">
           <div class="participant-group-header">
-            <div class="group-icon" aria-hidden="true">📈</div>
             <h3 id="group-experienced-heading">People experienced in wealth development</h3>
             <span class="group-badge" aria-describedby="group-experienced-heading">Experienced users</span>
           </div>
@@ -2072,7 +2175,6 @@
 
         <div class="participant-group group-both">
           <div class="participant-group-header">
-            <div class="group-icon" aria-hidden="true">🔗</div>
             <h3 id="group-both-heading">Both groups</h3>
             <span class="group-badge" aria-describedby="group-both-heading">Shared questions</span>
           </div>
@@ -2104,36 +2206,61 @@
     <div class="container">
             <h2 class="section-title">Qualitative Research Process</h2>
 
-      <div class="story-text reveal" style="margin-bottom:32px;">
+      <div class="story-text reveal" style="margin-bottom:40px;">
         <p>Now that we knew who we wanted to talk to and what we needed to learn, it was time to actually get out there and have those conversations.</p>
       </div>
 
-      <div class="process-columns reveal">
-        <div class="process-column">
-          <h3>Participant Cohorts</h3>
-          <p>We wanted to speak to <strong>people who are new to wealth development</strong>, to better understand what their current barriers are to pursuing wealth development and what they might need to feel more confident in managing their wealth.</p>
-          <p>We also reached out to speak to <strong>people who are experienced in wealth development</strong>, to better understand how they gained their confidence and knowledge to push past the barriers at the beginning of their journey.</p>
+      <!-- Method overview -->
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px;">
+        <div style="border:1.5px dashed var(--border);border-radius:18px;padding:32px 36px;">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:12px;">Semi-structured interviews</span>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We conducted <strong>semi-structured interviews</strong> with nine participants. Our participants ranged in age, gender, background, and experience.</p>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;margin-top:12px;">We each recruited 2-3 participants from a range of professional backgrounds. To get the most out of the interviews, we deliberately interviewed each other's participants rather than our own, the idea being that speaking with someone unfamiliar would create a more natural dynamic and help us build confidence interviewing strangers.</p>
         </div>
-        <div class="process-column">
-          <h3>Methods</h3>
-          <p>We conducted <strong>semi-structured interviews</strong> with nine participants. Our participants ranged in age, gender, background, and experience.</p>
-          <p><strong>Six</strong> of the participants were new to wealth development and <strong>three</strong> were experienced in wealth development.</p>
-          <p>We each recruited 2–3 participants from a range of professional backgrounds. To get the most out of the interviews, we deliberately interviewed each other's participants rather than our own — the idea being that speaking with someone unfamiliar would create a more natural dynamic and help us build confidence interviewing strangers.</p>
-          <p>We used <strong>affinity mapping</strong> to organise and cluster interview notes to identify key findings and insights within our participants' experiences.</p>
+        <div style="border:1.5px dashed var(--border);border-radius:18px;padding:32px 36px;">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:12px;">Affinity mapping</span>
+          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We used <strong>affinity mapping</strong> to organise and cluster interview notes to identify key findings and insights within our participants' experiences.</p>
         </div>
       </div>
 
-      <div class="reveal" style="margin-top:48px;">
-                <div class="roster-grid">
-          <div class="roster-card"><div class="roster-avatar new-user">A</div><div class="roster-name">Participant A</div><div class="roster-detail">Female, Early 30s<br>Student</div><span class="roster-type new">New to wealth dev.</span></div>
-          <div class="roster-card"><div class="roster-avatar new-user">B</div><div class="roster-name">Participant B</div><div class="roster-detail">Female, Early 30s<br>Student</div><span class="roster-type new">New to wealth dev.</span></div>
-          <div class="roster-card"><div class="roster-avatar new-user">C</div><div class="roster-name">Participant C</div><div class="roster-detail">Male, Mid 20s<br>Software developer</div><span class="roster-type new">New to wealth dev.</span></div>
-          <div class="roster-card"><div class="roster-avatar new-user">D</div><div class="roster-name">Participant D</div><div class="roster-detail">Female, Early 30s<br>Stay-at-home mum</div><span class="roster-type new">New to wealth dev.</span></div>
-          <div class="roster-card"><div class="roster-avatar new-user">E</div><div class="roster-name">Participant E</div><div class="roster-detail">Female, Early 30s<br>UX designer</div><span class="roster-type new">New to wealth dev.</span></div>
-          <div class="roster-card"><div class="roster-avatar new-user">F</div><div class="roster-name">Participant F</div><div class="roster-detail">Male, Mid 20s<br>Govt admin</div><span class="roster-type new">New to wealth dev.</span></div>
-          <div class="roster-card"><div class="roster-avatar exp-user">G</div><div class="roster-name">Participant G</div><div class="roster-detail">Male, Late 30s<br>Executive chef</div><span class="roster-type experienced">Experienced</span></div>
-          <div class="roster-card"><div class="roster-avatar exp-user">H</div><div class="roster-name">Participant H</div><div class="roster-detail">Male, Late 30s<br>Software dev</div><span class="roster-type experienced">Experienced</span></div>
-          <div class="roster-card"><div class="roster-avatar exp-user">I</div><div class="roster-name">Participant I</div><div class="roster-detail">Male, Mid 20s<br>Product designer</div><span class="roster-type experienced">Experienced</span></div>
+      <!-- Cohorts -->
+      <h3 class="reveal" style="font-family:var(--ff-serif);font-size:22px;color:var(--ink);margin-bottom:20px;">Participant Cohorts</h3>
+
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px;">
+        <!-- New to wealth dev -->
+        <div>
+          <div style="border:1.5px solid var(--brand);border-radius:18px;padding:32px;background:rgba(216,63,110,0.04);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--brand);"></span>
+              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brand);">New to wealth development</span>
+              <span style="font-family:var(--ff-sans);font-size:22px;font-weight:500;color:var(--brand);margin-left:auto;">6</span>
+            </div>
+            <p style="font-size:15px;color:var(--ink);line-height:1.7;">We wanted to speak to people who are new to wealth development, to better understand what their current barriers are to pursuing wealth development and what they might need to feel more confident in managing their wealth.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+            <span class="roster-pill new">A · F, Early 30s · Student</span>
+            <span class="roster-pill new">B · F, Early 30s · Student</span>
+            <span class="roster-pill new">C · M, Mid 20s · Software dev</span>
+            <span class="roster-pill new">D · F, Early 30s · Stay-at-home mum</span>
+            <span class="roster-pill new">E · F, Early 30s · UX designer</span>
+            <span class="roster-pill new">F · M, Mid 20s · Govt admin</span>
+          </div>
+        </div>
+        <!-- Experienced -->
+        <div>
+          <div style="border:1.5px solid #2EAD6B;border-radius:18px;padding:32px;background:rgba(46,173,107,0.04);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#2EAD6B;"></span>
+              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#1D7A4A;">Experienced in wealth development</span>
+              <span style="font-family:var(--ff-sans);font-size:22px;font-weight:500;color:#1D7A4A;margin-left:auto;">3</span>
+            </div>
+            <p style="font-size:15px;color:var(--ink);line-height:1.7;">We also reached out to speak to people who are experienced in wealth development, to better understand how they gained their confidence and knowledge to push past the barriers at the beginning of their journey.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+            <span class="roster-pill exp">G · M, Late 30s · Executive chef</span>
+            <span class="roster-pill exp">H · M, Late 30s · Software dev</span>
+            <span class="roster-pill exp">I · M, Mid 20s · Product designer</span>
+          </div>
         </div>
       </div>
 
@@ -2149,7 +2276,7 @@
             <h2 class="section-title">Insights</h2>
 
       <div class="story-text reveal" style="margin-bottom:0;">
-        <p>Through affinity mapping, we identified shared patterns, behaviours, and attitudes across our interviews. This surfaced 38 individual findings, which we distilled down to 8 key insights — the ones we believed would be most impactful in shaping an ideal onboarding experience.</p>
+        <p>Through affinity mapping, we identified shared patterns, behaviours, and attitudes across our participants. There were plenty of findings to work through, but we wanted to highlight the ones that truly made us pause, the 'oh yeah, that tracks' moments and the surprising approaches we hadn't considered. These shaped the direction of our design, with the goal of creating something that feels positive and genuinely enjoyable to experience.</p>
       </div>
 
       <div class="stat-highlight reveal">
@@ -2162,7 +2289,7 @@
         <div class="insight-card reveal">
           <span class="insight-number">01</span>
           <h3>People want guidance that feels human</h3>
-          <p>People who are new to wealth development want customised, continual, and engaging financial guidance that feels human — whether from a real person or a program.</p>
+          <p>People who are new to wealth development want customised, continual, and engaging financial guidance that feels human, whether from a real person or a program.</p>
           <p>They are drawn to relatable content that comes from others' similar experience, which provides more opportunity for guidance that's suited to the context of their situations and goals.</p>
           <div class="insight-findings"><span>F05</span><span>F16</span><span>F17</span><span>F20</span></div>
         </div>
@@ -2235,18 +2362,12 @@
             <h2 class="section-title">Design Principles</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
-        <p>Analysis of our qualitative research gave us our design principles — the rules we'd use to guide every design decision from here on out.</p>
+        <p>Analysis of our qualitative research gave us our design principles, the rules we'd use to guide every design decision from here on out.</p>
       </div>
 
       <div class="cards-grid-2">
 
         <div class="dp-card reveal">
-          <div class="dp-icon icon-user" aria-hidden="true">
-            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="14" cy="9" r="5" stroke="#D83F6E" stroke-width="2" fill="none"/>
-              <path d="M4 25c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#D83F6E" stroke-width="2" stroke-linecap="round" fill="none"/>
-            </svg>
-          </div>
           <h3>User Centred</h3>
           <p class="dp-summary">The design should centre and adapt around the user's wealth development goals, needs, and preferences.</p>
           <div class="dp-detail how"><h4>How</h4><p>The design should consider diverse user journeys, multiple entry points, and personalised pathways to cater to users' varying needs and preferences.</p></div>
@@ -2254,13 +2375,6 @@
         </div>
 
         <div class="dp-card reveal">
-          <div class="dp-icon icon-simple" aria-hidden="true">
-            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="4" width="20" height="20" rx="4" stroke="#6D28D9" stroke-width="2" fill="none"/>
-              <circle cx="14" cy="14" r="4" fill="#EDE9FE" stroke="#6D28D9" stroke-width="1.5"/>
-              <path d="M10 14h8" stroke="#6D28D9" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
           <h3>Simplicity</h3>
           <p class="dp-summary">The design should be clear, approachable, and simple. Each component tries to function or guide to the experience.</p>
           <div class="dp-detail how"><h4>How</h4><p>Language should be jargon-free, approachable, and empathetic. UI should prioritise a "feeling first" approach using my feelings, aspirance, and ease.</p></div>
@@ -2268,15 +2382,6 @@
         </div>
 
         <div class="dp-card reveal">
-          <div class="dp-icon icon-guidance" aria-hidden="true">
-            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 4v20" stroke="#2EAD6B" stroke-width="2" stroke-linecap="round"/>
-              <path d="M8 10l6-6 6 6" stroke="#2EAD6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="7" cy="20" r="3" fill="#E6F7EE" stroke="#2EAD6B" stroke-width="1.5"/>
-              <circle cx="21" cy="20" r="3" fill="#E6F7EE" stroke="#2EAD6B" stroke-width="1.5"/>
-              <path d="M10 20h8" stroke="#2EAD6B" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
-            </svg>
-          </div>
           <h3>Guidance</h3>
           <p class="dp-summary">The design should bridge the gap between existing resources and the user needs.</p>
           <div class="dp-detail how"><h4>How</h4><p>The guidance should support users in their journey throughout their wealth development by guiding the user to relevant resources, supportive user task flow, and clear information architecture.</p></div>
@@ -2284,15 +2389,6 @@
         </div>
 
         <div class="dp-card reveal">
-          <div class="dp-icon icon-connect" aria-hidden="true">
-            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="10" r="4" fill="#FFF0E6" stroke="#C45A20" stroke-width="1.5"/>
-              <circle cx="20" cy="10" r="4" fill="#FFF0E6" stroke="#C45A20" stroke-width="1.5"/>
-              <circle cx="14" cy="21" r="4" fill="#FFF0E6" stroke="#C45A20" stroke-width="1.5"/>
-              <path d="M11 12.5l3 5.5M17 12.5l-3 5.5" stroke="#C45A20" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M12 10h4" stroke="#C45A20" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
           <h3>Connection</h3>
           <p class="dp-summary">The design should foster a community of empowered people practising wealth development.</p>
           <div class="dp-detail how"><h4>How</h4><p>Provide ways for people to share their experiences and learnings, as well as relate to others' experiences.</p></div>
@@ -2313,7 +2409,7 @@
             <h2 class="section-title">Sketches &amp; Wireframes</h2>
 
       <div class="story-text reveal" style="margin-bottom:32px;">
-        <p>With our design principles and insights in hand, we started exploring early concepts — sketching out ideas that combined our research findings with gamification principles. These concepts were also designed to build on Sharesies' existing Go-to Guides, a helpful resource already within the platform.</p>
+        <p>With our design principles and insights in hand, we started exploring early concepts, sketching out ideas that combined our research findings with gamification principles. These concepts were also designed to build on Sharesies' existing Go-to Guides, a helpful resource already within the platform.</p>
       </div>
 
       <p class="section-body reveal" style="margin-bottom:0;">Some early sketches and concepts based on the gamification principles we researched.</p>
@@ -2321,7 +2417,7 @@
       <div class="cards-grid-3" style="margin-top:28px;">
         <div class="card reveal">
           <h3>Learning via quiz</h3>
-          <p>Multiple choice quizzes could be used to teach the basics of wealth development to new users while being optional for experienced users so their experience isn't disrupted. If the user gets the answer correct they could be given a celebratory micro-interaction — a fun activity which helps them notice what they've learned and creates a sense of play within the experience.</p>
+          <p>Multiple choice quizzes could be used to teach the basics of wealth development to new users while being optional for experienced users so their experience isn't disrupted. If the user gets the answer correct they could be given a celebratory micro-interaction, a fun activity which helps them notice what they've learned and creates a sense of play within the experience.</p>
         </div>
         <div class="card reveal">
           <h3>Progress bars</h3>
@@ -2329,7 +2425,7 @@
         </div>
         <div class="card reveal">
           <h3>Storyboards</h3>
-          <p>Storyboards helped frame particular scenarios for gamification — making abstract concepts more tangible. This included visualising the act of making investments and exploring the possibility of encouraging gambling behaviour. The team used these to test gamification concepts through storytelling before moving to higher fidelity.</p>
+          <p>Storyboards helped frame particular scenarios for gamification, making abstract concepts more tangible. This included visualising the act of making investments and exploring the possibility of encouraging gambling behaviour. The team used these to test gamification concepts through storytelling before moving to higher fidelity.</p>
         </div>
       </div>
 
@@ -2350,7 +2446,7 @@
             <h2 class="section-title">The Concept</h2>
 
       <div class="story-text reveal" style="margin-bottom:0;">
-        <p>Our early concepts pointed us toward a clear direction — building on something Sharesies already had in place.</p>
+        <p>Our early concepts pointed us toward a clear direction, building on something Sharesies already had in place.</p>
       </div>
 
       <div class="concept-block reveal">
@@ -2373,7 +2469,7 @@
             <h2 class="section-title">What's next?</h2>
 
       <div class="story-text reveal" style="margin-bottom:40px;">
-        <p>With the concept defined, here's what comes next — consolidating our research, running workshops, and moving into prototyping.</p>
+        <p>With the concept defined, here's what comes next, consolidating our research, running workshops, and moving into prototyping.</p>
       </div>
 
       <div class="cards-grid-2">
@@ -2400,7 +2496,7 @@
         <div class="card reveal">
           <span class="step-phase phase-prototype">Prototyping</span>
           <h3>Low and mid fidelity iterations</h3>
-          <p>Using the concepts generated from the workshop, we'll go through two rounds of prototyping and usability testing before beginning work on the final design. The testing methods will depend on what features and flows are developed — this will inform our testing objectives.</p>
+          <p>Using the concepts generated from the workshop, we'll go through two rounds of prototyping and usability testing before beginning work on the final design. The testing methods will depend on what features and flows are developed, this will inform our testing objectives.</p>
         </div>
         <div class="card reveal">
           <span class="step-phase phase-research">Continued research</span>
@@ -2500,7 +2596,7 @@
             <div class="retro-sub">
               <h4 class="improve">What could have been better</h4>
               <ul class="retro-list improve">
-                <li>Having more resources available as printed off or on hand for participants, like the Go-to Guides for easy reference — especially to accommodate for those who may not have completed the pre-reading</li>
+                <li>Having more resources available as printed off or on hand for participants, like the Go-to Guides for easy reference, especially to accommodate for those who may not have completed the pre-reading</li>
                 <li>Get a better understanding of the technology the developers use before planning the workshop</li>
                 <li>Going back further with context at the start of the workshop to introduce the problem statement to new participants</li>
               </ul>
@@ -2516,7 +2612,7 @@
             <div class="takeaway-card">
               <h4>The Go-to Guides (G2Gs) are not the right resource</h4>
               <p>Initially our concept was based around the G2G content, however we found that some content was too advanced and didn't fit the direct needs of our target user group.</p>
-              <p>Going forward, our design will instead be based around the broader Sharesies Learn content — as it includes more foundational information for those new to developing their wealth.</p>
+              <p>Going forward, our design will instead be based around the broader Sharesies Learn content, as it includes more foundational information for those new to developing their wealth.</p>
             </div>
             <div class="takeaway-card">
               <h4>We want to build a potential pathway towards wealth development for users</h4>
@@ -2545,7 +2641,7 @@
             <h2 class="section-title">Workshop Convergent Concept</h2>
 
       <div class="story-text reveal" style="margin-bottom:32px;">
-        <p>During the workshop, our SHMUXD team and the Sharesies design team ran a Crazy Eights session — rapidly sketching out ideas on paper with everyone bringing their own perspective to the table. Personally, I drew on my gaming experience to explore how game mechanics could translate into an onboarding context. From those individual sketches, we converged on the strongest elements and combined them into one concept.</p>
+        <p>During the workshop, our SHMUXD team and the Sharesies design team ran a Crazy Eights session, rapidly sketching out ideas on paper with everyone bringing their own perspective to the table. Personally, I drew on my gaming experience to explore how game mechanics could translate into an onboarding context. From those individual sketches, we converged on the strongest elements and combined them into one concept.</p>
       </div>
 
       <p class="section-body reveal" style="margin-bottom:0;">This concept came from our workshop and combined the strongest elements from three different sketches.</p>
@@ -2587,7 +2683,7 @@
       <p style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);margin-bottom:20px;">Coming Next</p>
       <div style="display:flex;flex-wrap:wrap;gap:10px;">
         <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Key Elements &amp; Prioritisation</span>
-        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Modules — Learn Content</span>
+        <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Modules, Learn Content</span>
         <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Lo-fi Prototype Build &amp; Testing</span>
         <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">User Flow</span>
         <span style="font-family:var(--ff-sans);font-size:13px;color:var(--ink);padding:8px 18px;border-radius:10px;background:rgba(27,26,23,0.05);">Insights</span>
@@ -2663,6 +2759,37 @@
           }
         }, 60);
       }, 200);
+    })();
+  </script>
+
+  <script>
+    // Side jump nav: highlight active section & smooth scroll
+    (function() {
+      var links = document.querySelectorAll('.side-jump a');
+      var sections = [];
+
+      links.forEach(function(link) {
+        var id = link.getAttribute('href').replace('#', '');
+        var section = document.getElementById(id);
+        if (section) sections.push({ el: section, link: link });
+
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          var target = document.getElementById(id);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+          history.replaceState(null, '', window.location.pathname);
+        });
+      });
+
+      window.addEventListener('scroll', function() {
+        var scrollPos = window.scrollY + 200;
+        var current = null;
+        sections.forEach(function(s) {
+          if (s.el.offsetTop <= scrollPos) current = s;
+        });
+        links.forEach(function(l) { l.classList.remove('active'); });
+        if (current) current.link.classList.add('active');
+      });
     })();
   </script>
 </body>
