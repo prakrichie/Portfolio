@@ -1184,7 +1184,7 @@
     .retro-col h3 {
       font-family: var(--ff-serif);
       font-size: 22px;
-      color: var(--ink);
+      color: #47446D;
       margin-bottom: 20px;
     }
     .retro-lists-row {
@@ -1529,7 +1529,7 @@
     .workshop-col h3 {
       font-family: var(--ff-serif);
       font-size: 22px;
-      color: var(--ink);
+      color: #47446D;
       margin-bottom: 14px;
     }
     .workshop-col p {
@@ -1872,60 +1872,71 @@
 
       <!-- Research list -->
       <div class="reveal" style="margin-bottom:48px;">
-        <h3 style="font-size:22px;color:#d83f6e;margin-bottom:16px;">Research:</h3>
+        <h3 style="font-size:22px;color:#d83f6e;margin-bottom:16px;">Research</h3>
         <p style="font-size:15px;color:var(--ink);line-height:1.7;margin-bottom:20px;">These were some of the things we researched:</p>
 
         <!-- legend -->
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
-          <span style="display:inline-block;width:14px;height:14px;background:#6563FF;border-radius:3px;flex-shrink:0;"></span>
-          <span style="font-size:14px;color:var(--mid);">The highlighted text are the topics I focused my research on</span>
+          <span style="display:inline-block;width:14px;height:14px;background:#47446D;border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:14px;color:#1D1D1D;">The highlighted text are the topics I focused my research on</span>
         </div>
 
-        <ol style="list-style:none;padding:0;display:flex;flex-direction:column;gap:16px;">
-          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
-            <span style="background:#6563FF;color:#fff;border-radius:4px;padding:1px 8px;">1. Onboarding Principles</span>
-            <p style="color:#1b1a17;margin-top:6px;">Discovering what products and services have strong and intuitive onboarding interactions.</p>
-          </li>
-          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
-            <span style="background:#6563FF;color:#fff;border-radius:4px;padding:1px 8px;">2. Gamification Principles</span>
-            <p style="color:#1b1a17;margin-top:6px;">Discovering what principles developers use to create an engaging tutorial.</p>
-          </li>
-          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
-            <span>3. Sharesies' Existing Onboarding</span>
-            <p style="color:#1b1a17;margin-top:6px;">Discovering what Sharesies has created to help their customers confidently learn and understand investing.</p>
-          </li>
-          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
-            <span>4. Competitor Analysis</span>
-            <p style="color:#1b1a17;margin-top:6px;">Discovering competitors' onboarding process.</p>
-          </li>
-          <li style="font-size:15px;color:var(--ink);line-height:1.6;">
-            <span style="background:#6563FF;color:#fff;border-radius:4px;padding:1px 8px;">5. Books</span>
-            <p style="color:#1b1a17;margin-top:6px;">Discovering how authors and designers documented their journey for creating successful onboarding.</p>
-          </li>
-        </ol>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;">
+          <div style="padding:16px 24px 16px 0;border-right:1px solid var(--border);border-bottom:3px solid #47446D;">
+            <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
+            <h4 style="font-family:var(--ff-serif);font-size:15px;color:#47446D;margin-bottom:4px;">Onboarding Principles</h4>
+            <p style="font-size:13px;color:#1D1D1D;line-height:1.6;">Discovering what products and services have strong and intuitive onboarding interactions.</p>
+          </div>
+          <div style="padding:16px 24px;border-right:1px solid var(--border);border-bottom:3px solid #47446D;">
+            <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
+            <h4 style="font-family:var(--ff-serif);font-size:15px;color:#47446D;margin-bottom:4px;">Gamification Principles</h4>
+            <p style="font-size:13px;color:#1D1D1D;line-height:1.6;">Discovering what principles developers use to create an engaging tutorial.</p>
+          </div>
+          <div style="padding:16px 24px;border-right:1px solid var(--border);">
+            <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1D1D1D;background:rgba(27,26,23,0.15);display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">03</span>
+            <h4 style="font-family:var(--ff-serif);font-size:15px;color:var(--ink);margin-bottom:4px;">Sharesies' Existing Onboarding</h4>
+            <p style="font-size:13px;color:#1D1D1D;line-height:1.6;">Discovering what Sharesies has created to help their customers confidently learn and understand investing.</p>
+          </div>
+          <div style="padding:16px 24px;border-right:1px solid var(--border);">
+            <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1D1D1D;background:rgba(27,26,23,0.15);display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">04</span>
+            <h4 style="font-family:var(--ff-serif);font-size:15px;color:var(--ink);margin-bottom:4px;">Competitor Analysis</h4>
+            <p style="font-size:13px;color:#1D1D1D;line-height:1.6;">Discovering competitors' onboarding process.</p>
+          </div>
+          <div style="padding:16px 0 16px 24px;border-bottom:3px solid #47446D;">
+            <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">05</span>
+            <h4 style="font-family:var(--ff-serif);font-size:15px;color:#47446D;margin-bottom:4px;">Books</h4>
+            <p style="font-size:13px;color:#1D1D1D;line-height:1.6;">Discovering how authors and designers documented their journey for creating successful onboarding.</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Discovery icons row -->
-      <h3 style="font-size:22px;color:#d83f6e;margin-bottom:24px;" class="reveal">Discovery</h3>
+      <!-- Discovery -->
+      <h3 style="font-family:var(--ff-serif);font-size:22px;color:#d83f6e;margin-bottom:24px;" class="reveal">Discovery</h3>
 
-      <div class="cards-grid" style="grid-template-columns:repeat(3,1fr);gap:32px;">
+      <div class="reveal" style="display:flex;flex-direction:column;gap:0;">
 
-        <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
-          <div><img src="Icon_assets/onbo.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Onboarding</h3>
-          <p style="font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:16px;">My onboarding research started with 'Better Onboarding' by Krystal Higgins, a book that completely reframed how I thought about first-time user experiences. From there, I followed the thread into articles and videos that expanded on her ideas, and how it opened my eyes to just how many layers onboarding actually has. I also looked at other investment apps to see how they handled it, what felt smooth and confident, and what left you feeling a bit lost.</p>
+        <div style="display:flex;gap:24px;align-items:flex-start;padding:24px 0;">
+          <img src="Icon_assets/onbo.svg" alt="" style="width:40px;height:40px;flex-shrink:0;" />
+          <div>
+            <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Onboarding</h3>
+            <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">My onboarding research started with 'Better Onboarding' by Krystal Higgins, a book that completely reframed how I thought about first-time user experiences. From there, I followed the thread into articles and videos that expanded on her ideas, and how it opened my eyes to just how many layers onboarding actually has. I also looked at other investment apps to see how they handled it, what felt smooth and confident, and what left you feeling a bit lost.</p>
+          </div>
         </div>
 
-        <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
-          <div><img src="Icon_assets/book.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Better Onboarding</h3>
-          <p style="font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:16px;">'Better Onboarding' by Krystal Higgins was the spark for me. It made me realise the significance of keeping users not just informed, but genuinely interested and guided. Ideas like designing interactions over instructions, and thinking about what actually encourages someone to come back after their first experience. That stuck with me and carried how I approach this and future projects.</p>
+        <div style="display:flex;gap:24px;align-items:flex-start;padding:24px 0;">
+          <img src="Icon_assets/book.svg" alt="" style="width:40px;height:40px;flex-shrink:0;" />
+          <div>
+            <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Better Onboarding</h3>
+            <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">'Better Onboarding' by Krystal Higgins was the spark for me. It made me realise the significance of keeping users not just informed, but genuinely interested and guided. Ideas like designing interactions over instructions, and thinking about what actually encourages someone to come back after their first experience. That stuck with me and carried how I approach this and future projects.</p>
+          </div>
         </div>
 
-        <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
-          <div><img src="Icon_assets/game.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Gamification</h3>
-          <p style="font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:16px;">I looked into how games teach players without them even realising they're being taught. Duolingo's streak system and cheerful nudges keep you coming back, while Plants vs. Zombies disguises its entire tutorial as a playable level, you're learning mechanics just by playing. That kind of invisible guidance was exactly what we wanted to bring into the onboarding experience.</p>
+        <div style="display:flex;gap:24px;align-items:flex-start;padding:24px 0;">
+          <img src="Icon_assets/game.svg" alt="" style="width:40px;height:40px;flex-shrink:0;" />
+          <div>
+            <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Gamification</h3>
+            <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">I looked into how games teach players without them even realising they're being taught. Duolingo's streak system and cheerful nudges keep you coming back, while Plants vs. Zombies disguises its entire tutorial as a playable level, you're learning mechanics just by playing. That kind of invisible guidance was exactly what we wanted to bring into the onboarding experience.</p>
+          </div>
         </div>
 
       </div>
@@ -1947,24 +1958,24 @@
 
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">01</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Guided Interactions</h3>
-          <p style="font-size:14px;color:var(--mid);line-height:1.7;">Helpful info is woven into the experience at just the right moment, so it feels like a natural part of what the user is already doing, not a popup interrupting their flow.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Helpful info is woven into the experience at just the right moment, so it feels like a natural part of what the user is already doing, not a popup interrupting their flow.</p>
         </div>
         <div style="padding:24px 0 24px 32px;border-bottom:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">02</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Reactive Guidance</h3>
-          <p style="font-size:14px;color:var(--mid);line-height:1.7;">Instead of bombarding users with instructions upfront, this type of help only shows up when someone makes a mistake or gets stuck, meeting them exactly where they need it.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Instead of bombarding users with instructions upfront, this type of help only shows up when someone makes a mistake or gets stuck, meeting them exactly where they need it.</p>
         </div>
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">03</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">03</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">On-Demand Support</h3>
-          <p style="font-size:14px;color:var(--mid);line-height:1.7;">Users who want extra help can easily find it, while those who are confident aren't slowed down. It's about giving people control over their own learning pace.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Users who want extra help can easily find it, while those who are confident aren't slowed down. It's about giving people control over their own learning pace.</p>
         </div>
         <div style="padding:24px 0 24px 32px;">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">04</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">04</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Diverse Methods</h3>
-          <p style="font-size:14px;color:var(--mid);line-height:1.7;">Not every user needs the same level of hand-holding. A first-time user and a tech-savvy one shouldn't have to follow the same path, personalised journeys let everyone move at the pace that suits them.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Not every user needs the same level of hand-holding. A first-time user and a tech-savvy one shouldn't have to follow the same path, personalised journeys let everyone move at the pace that suits them.</p>
         </div>
       </div>
 
@@ -1985,22 +1996,22 @@
 
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">01</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Copywriting</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">The words on screen do the heavy lifting. Duolingo uses cheerful, encouraging language to nudge users forward, it feels like a friend cheering you on, not a textbook telling you what to do.</p>
         </div>
         <div style="padding:24px 0 24px 32px;border-bottom:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">02</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Celebration</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Those satisfying little moments, confetti, a level-up sound, a cheerful message, that reward you for making progress. Small wins keep users motivated and coming back.</p>
         </div>
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">03</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">03</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Immersion</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Learning is baked right into the experience. Plants vs. Zombies 2 disguises its entire tutorial as a playable level, players are picking up mechanics without even realising they're being taught.</p>
         </div>
         <div style="padding:24px 0 24px 32px;">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">04</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">04</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Progress Tracking</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Duolingo's lesson maps show you exactly how far you've come and what's ahead. It gives users a clear sense of direction without ever feeling overwhelming, just a friendly nudge to keep going.</p>
         </div>
@@ -2023,7 +2034,7 @@
 
       <!-- Method callout -->
       <div class="reveal" style="border-left:3px solid #47446D;padding-left:24px;margin-bottom:48px;">
-        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">Method</span>
+        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">Method</span>
         <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Guerrilla Testing</h3>
         <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Each team member signed up and experienced the current Sharesies onboarding process first-hand, collectively analysing the flow to better understand the product from a user's perspective.</p>
       </div>
@@ -2052,7 +2063,7 @@
 
       <!-- Pivot point -->
       <div class="reveal" style="border-left:3px solid #8b1d3f;padding-left:24px;margin-bottom:32px;">
-        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">Pivot point</span>
+        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">Pivot point</span>
         <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:8px;">After meeting with Sharesies, we learned there was a new onboarding flow already in development. Testing the new process wasn't an option yet, but we were able to see a demo of the prototype and how it addressed current challenges.</p>
         <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">This pivot meant we needed to re-frame our problem, shifting from looking at the onboarding flow itself, to building guidance and coaching into a user's first week in Sharesies after sign-up.</p>
       </div>
@@ -2085,11 +2096,11 @@
 
       <ol class="reveal" style="list-style:none;padding:0;margin:24px 0 0;border-left:3px solid #8b1d3f;padding-left:24px;display:flex;flex-direction:column;gap:24px;">
         <li>
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">01</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Users feel confident enough to start using a product within their first week of signing up with Sharesies.</p>
         </li>
         <li>
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">02</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Users are given effective guidance that helps them decide which product suits their needs within the first week of signing up with Sharesies.</p>
         </li>
       </ol>
@@ -2110,8 +2121,8 @@
       </div>
 
       <div class="reveal" style="border-left:3px solid #47446D;padding-left:24px;margin-bottom:40px;">
-        <div style="width:40px;height:40px;background:rgba(27,26,23,0.05);border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:11px;">[icon]</div>
-        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">Context</span>
+        <div style="margin-bottom:8px;"><img src="Icon_assets/r_obj.svg" alt="" style="width:40px;height:40px;" /></div>
+        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">Context</span>
         <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Why do research objectives matter?</h3>
         <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Research objectives are the specific questions a team sets out to answer before jumping into user interviews or testing. They keep the research focused and purposeful, without them, it's easy to collect a lot of data that doesn't actually help you make design decisions. Think of them as a compass: they don't tell you the answer, but they make sure you're looking in the right direction.</p>
       </div>
@@ -2120,20 +2131,20 @@
 
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:40px;">
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);">
-          <div style="width:40px;height:40px;background:rgba(27,26,23,0.05);border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:11px;">[icon]</div>
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">01</span>
+          <div style="margin-bottom:8px;"><img src="Icon_assets/att_beh.svg" alt="" style="width:40px;height:40px;" /></div>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">How might we better understand the attitudes and behaviours that users have towards confidence in managing or developing their wealth?</p>
         </div>
         <div style="padding:24px 0 24px 32px;">
-          <div style="width:40px;height:40px;background:rgba(27,26,23,0.05);border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:11px;">[icon]</div>
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">02</span>
+          <div style="margin-bottom:8px;"><img src="Icon_assets/fin_g.svg" alt="" style="width:40px;height:40px;" /></div>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">How might we better understand the attitudes and behaviours users have towards their financial goals to help them choose which product suits them best?</p>
         </div>
       </div>
 
       <div class="reveal" style="border-left:3px solid #8b1d3f;padding-left:24px;margin-bottom:32px;">
-        <div style="width:40px;height:40px;background:rgba(27,26,23,0.05);border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:11px;">[icon]</div>
-        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">Definition</span>
+        <div style="margin-bottom:8px;"><img src="Icon_assets/wealth_d.svg" alt="" style="width:40px;height:40px;" /></div>
+        <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">Definition</span>
         <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">What do we mean by wealth development?</h3>
         <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Wealth development is about more than just keeping your finances steady, it's moving beyond maintaining a level of financial wellbeing and actively growing it towards financial empowerment. For Sharesies users, this means feeling confident enough to take that next step, whether it's their first investment or choosing the right product for their goals.</p>
       </div>
@@ -2236,15 +2247,17 @@
       </div>
 
       <!-- Method overview -->
-      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px;">
-        <div style="border:1.5px dashed var(--border);border-radius:18px;padding:32px 36px;">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:12px;">Semi-structured interviews</span>
-          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We conducted <strong>semi-structured interviews</strong> with nine participants. Our participants ranged in age, gender, background, and experience.</p>
-          <p style="font-size:15px;color:var(--ink);line-height:1.7;margin-top:12px;">We each recruited 2-3 participants from a range of professional backgrounds. To get the most out of the interviews, we deliberately interviewed each other's participants rather than our own, the idea being that speaking with someone unfamiliar would create a more natural dynamic and help us build confidence interviewing strangers.</p>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:48px;">
+        <div style="padding:24px 32px 24px 0;">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
+          <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Semi-structured interviews</h3>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:10px;">We conducted <strong>semi-structured interviews</strong> with nine participants. Our participants ranged in age, gender, background, and experience.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">We each recruited 2-3 participants from a range of professional backgrounds. To get the most out of the interviews, we deliberately interviewed each other's participants rather than our own, the idea being that speaking with someone unfamiliar would create a more natural dynamic and help us build confidence interviewing strangers.</p>
         </div>
-        <div style="border:1.5px dashed var(--border);border-radius:18px;padding:32px 36px;">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:12px;">Affinity mapping</span>
-          <p style="font-size:15px;color:var(--ink);line-height:1.7;">We used <strong>affinity mapping</strong> to organise and cluster interview notes to identify key findings and insights within our participants' experiences.</p>
+        <div style="padding:24px 0 24px 32px;">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
+          <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Affinity mapping</h3>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">We used <strong>affinity mapping</strong> to organise and cluster interview notes to identify key findings and insights within our participants' experiences.</p>
         </div>
       </div>
 
@@ -2393,7 +2406,7 @@
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
 
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">01</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">User Centred</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:14px;">The design should centre and adapt around the user's wealth development goals, needs, and preferences.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -2409,7 +2422,7 @@
         </div>
 
         <div style="padding:24px 0 24px 32px;border-bottom:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">02</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Simplicity</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:14px;">The design should be clear, approachable, and simple. Each component tries to function or guide to the experience.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -2425,7 +2438,7 @@
         </div>
 
         <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">03</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">03</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Guidance</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:14px;">The design should bridge the gap between existing resources and the user needs.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -2441,7 +2454,7 @@
         </div>
 
         <div style="padding:24px 0 24px 32px;">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;display:block;margin-bottom:6px;">04</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">04</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Connection</h3>
           <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:14px;">The design should foster a community of empowered people practising wealth development.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -2475,18 +2488,21 @@
 
       <p class="section-body reveal" style="margin-bottom:0;">Some early sketches and concepts based on the gamification principles we researched.</p>
 
-      <div class="cards-grid-3" style="margin-top:28px;">
-        <div class="card reveal">
-          <h3>Learning via quiz</h3>
-          <p>Multiple choice quizzes could be used to teach the basics of wealth development to new users while being optional for experienced users so their experience isn't disrupted. If the user gets the answer correct they could be given a celebratory micro-interaction, a fun activity which helps them notice what they've learned and creates a sense of play within the experience.</p>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-top:28px;">
+        <div style="padding:24px 32px 24px 0;border-right:1px solid var(--border);">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">01</span>
+          <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Learning via quiz</h3>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Multiple choice quizzes could be used to teach the basics of wealth development to new users while being optional for experienced users so their experience isn't disrupted. If the user gets the answer correct they could be given a celebratory micro-interaction, a fun activity which helps them notice what they've learned and creates a sense of play within the experience.</p>
         </div>
-        <div class="card reveal">
-          <h3>Progress bars</h3>
-          <p>Progress bars could be used in various moments within the Sharesies experience. For example, when a user is signing up, when they are in the process of making an investment for the first time, or while learning new topic content. They indicate time or effort left to finish the task and give a sense of completion to the user.</p>
+        <div style="padding:24px 32px 24px 32px;border-right:1px solid var(--border);">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">02</span>
+          <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Progress bars</h3>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Progress bars could be used in various moments within the Sharesies experience. For example, when a user is signing up, when they are in the process of making an investment for the first time, or while learning new topic content. They indicate time or effort left to finish the task and give a sense of completion to the user.</p>
         </div>
-        <div class="card reveal">
-          <h3>Storyboards</h3>
-          <p>Storyboards helped frame particular scenarios for gamification, making abstract concepts more tangible. This included visualising the act of making investments and exploring the possibility of encouraging gambling behaviour. The team used these to test gamification concepts through storytelling before moving to higher fidelity.</p>
+        <div style="padding:24px 0 24px 32px;">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:6px;">03</span>
+          <h3 style="font-family:var(--ff-serif);font-size:18px;color:#47446D;margin-bottom:8px;">Storyboards</h3>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Storyboards helped frame particular scenarios for gamification, making abstract concepts more tangible. This included visualising the act of making investments and exploring the possibility of encouraging gambling behaviour. The team used these to test gamification concepts through storytelling before moving to higher fidelity.</p>
         </div>
       </div>
 
@@ -2510,12 +2526,17 @@
         <p>Our early concepts pointed us toward a clear direction, building on something Sharesies already had in place.</p>
       </div>
 
-      <div class="concept-block reveal">
-        <h3>Go-to Guides &amp; our solution</h3>
-        <p class="concept-subtitle">The relationship between the Go-to Guides and our solution</p>
-        <p>The Go-to Guides are a helpful resource aimed to help users level up with investing knowledge and our solution will build off of this.</p>
-        <p>Our final design will aim to deliver this material in an interactive way, giving the user a sense of being coached through their first week with Sharesies to help them get started.</p>
-        <p>We realise that the existing Go-to Guides only cover the topic of investing, so while we may prototype our solution for Invest, our design principles will be product-agnostic and consider wealth development broadly.</p>
+      <div class="reveal" style="display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;margin-top:32px;">
+        <!-- Icon placeholder -->
+        <div style="flex-shrink:0;"><img src="Icon_assets/open.svg" alt="" style="width:64px;height:64px;" /></div>
+        <!-- Content -->
+        <div>
+          <h3 style="font-family:var(--ff-serif);font-size:22px;color:#47446D;margin-bottom:8px;">Go-to Guides &amp; our solution</h3>
+          <p style="font-family:var(--ff-sans);font-size:12px;color:var(--mid);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:16px;">The relationship between the Go-to Guides and our solution</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:10px;">The Go-to Guides are a helpful resource aimed to help users level up with investing knowledge and our solution will build off of this.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:10px;">Our final design will aim to deliver this material in an interactive way, giving the user a sense of being coached through their first week with Sharesies to help them get started.</p>
+          <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">We realise that the existing Go-to Guides only cover the topic of investing, so while we may prototype our solution for Invest, our design principles will be product-agnostic and consider wealth development broadly.</p>
+        </div>
       </div>
 
       <span class="next-label">Next up: What's Next →</span>
@@ -2535,32 +2556,32 @@
 
       <ol style="list-style:none;padding:0;margin:0;border-left:3px solid var(--brand);padding-left:24px;display:flex;flex-direction:column;gap:24px;">
         <li class="reveal">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">Research</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">Research</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Consolidating our research</h3>
           <p style="font-size:14px;color:var(--mid);line-height:1.7;">Our next step will be to develop a set of design principles using our key findings and insights from both our primary and secondary research streams. These will guide how we design the solution.</p>
         </li>
         <li class="reveal">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">Design</span>
-          <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Design workshop</h3>
-          <p style="font-size:14px;color:var(--mid);line-height:1.7;">We will be facilitating a workshop with the Sharesies design team to generate early sketches, combine ideas, and prioritise key concepts to take forward.</p>
-        </li>
-        <li class="reveal">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">Research</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">Research</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Go-to Guide content mapping</h3>
           <p style="font-size:14px;color:var(--mid);line-height:1.7;">Alongside our research, we'll do a mapping exercise to compare the content in the Go-to Guides with our participants' profiles according to context. The aim is to identify what content suits and where more content is needed to support users.</p>
         </li>
         <li class="reveal">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">Design</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">Design</span>
+          <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Design workshop</h3>
+          <p style="font-size:14px;color:var(--mid);line-height:1.7;">We will be facilitating a workshop with the Sharesies design team to generate early sketches, combine ideas, and prioritise key concepts to take forward.</p>
+        </li>
+        <li class="reveal">
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">Design</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Concepting</h3>
           <p style="font-size:14px;color:var(--mid);line-height:1.7;">Using concepts generated from the workshop, we'll develop and refine ideas into clearer directions for the solution.</p>
         </li>
         <li class="reveal">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">Prototyping</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">Prototyping</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Low and mid fidelity iterations</h3>
           <p style="font-size:14px;color:var(--mid);line-height:1.7;">Using the concepts generated from the workshop, we'll go through two rounds of prototyping and usability testing before beginning work on the final design. The testing methods will depend on what features and flows are developed, this will inform our testing objectives.</p>
         </li>
         <li class="reveal">
-          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">Continued research</span>
+          <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">Continued research</span>
           <h3 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Continued research</h3>
           <p style="font-size:14px;color:var(--mid);line-height:1.7;">Research doesn't stop at insights. We'll continue validating our assumptions through each iteration, making sure the solution stays grounded in real user needs.</p>
         </li>
@@ -2671,22 +2692,22 @@
           </div>
           <ol style="list-style:none;padding:0;margin:0;border-left:3px solid var(--brand);padding-left:24px;display:flex;flex-direction:column;gap:28px;">
             <li class="reveal">
-              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">01</span>
+              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">01</span>
               <h4 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">The Go-to Guides (G2Gs) are not the right resource</h4>
-              <p style="font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:6px;">Initially our concept was based around the G2G content, however we found that some content was too advanced and didn't fit the direct needs of our target user group.</p>
-              <p style="font-size:14px;color:var(--mid);line-height:1.7;">Going forward, our design will instead be based around the broader Sharesies Learn content, as it includes more foundational information for those new to developing their wealth.</p>
+              <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:6px;">Initially our concept was based around the G2G content, however we found that some content was too advanced and didn't fit the direct needs of our target user group.</p>
+              <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">Going forward, our design will instead be based around the broader Sharesies Learn content, as it includes more foundational information for those new to developing their wealth.</p>
             </li>
             <li class="reveal">
-              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">02</span>
+              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">02</span>
               <h4 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">We want to build a potential pathway towards wealth development for users</h4>
-              <p style="font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:6px;">The products offered by Sharesies could form the basis of a pathway to building wealth for users. Our design is currently focused on Invest as the lowest barrier product, but could incorporate pathways between products in the future.</p>
-              <p style="font-size:14px;color:var(--mid);line-height:1.7;">We want users to have the ability to personalise or choose their own path to these products, based on their own specified financial goals.</p>
+              <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:6px;">The products offered by Sharesies could form the basis of a pathway to building wealth for users. Our design is currently focused on Invest as the lowest barrier product, but could incorporate pathways between products in the future.</p>
+              <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">We want users to have the ability to personalise or choose their own path to these products, based on their own specified financial goals.</p>
             </li>
             <li class="reveal">
-              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#47446D;margin-bottom:4px;display:block;">03</span>
+              <span style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:#47446D;display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:4px;">03</span>
               <h4 style="font-family:var(--ff-serif);font-size:18px;color:var(--ink);margin-bottom:6px;">Use the concepts and themes from the workshop to build a storyboarding framework</h4>
-              <p style="font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:6px;">While the scope of the workshop was limited to Sharesies' Invest product, we intend to design a framework of a system that could be applied to the other key products of KiwiSaver and Save.</p>
-              <p style="font-size:14px;color:var(--mid);line-height:1.7;">As Sharesies' user needs and goals may change over time, the company may want to adapt new innovative features and products to this system in a fluid and adaptable way.</p>
+              <p style="font-size:14px;color:#1D1D1D;line-height:1.7;margin-bottom:6px;">While the scope of the workshop was limited to Sharesies' Invest product, we intend to design a framework of a system that could be applied to the other key products of KiwiSaver and Save.</p>
+              <p style="font-size:14px;color:#1D1D1D;line-height:1.7;">As Sharesies' user needs and goals may change over time, the company may want to adapt new innovative features and products to this system in a fluid and adaptable way.</p>
             </li>
           </ol>
         </div>
@@ -2733,25 +2754,25 @@
 
         <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
           <div style="margin-bottom:16px;"><img src="Icon_assets/cog.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Content preview</h3>
+          <h3 style="font-family:var(--ff-serif);font-size:20px;color:#47446D;margin-bottom:10px;">Content preview</h3>
           <p style="font-size:14px;color:var(--ink);line-height:1.7;max-width:85%;">The user can click on a module point to see what topics can be completed in order to progress to the next module. This allows the user to decide whether or not they want to commit to reviewing this topic before starting.</p>
         </div>
 
         <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
           <div style="margin-bottom:16px;"><img src="Icon_assets/visual.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Mixed media approach</h3>
+          <h3 style="font-family:var(--ff-serif);font-size:20px;color:#47446D;margin-bottom:10px;">Mixed media approach</h3>
           <p style="font-size:14px;color:var(--ink);line-height:1.7;max-width:85%;">The user is presented with multiple media options: video, short form writing with visualisations, and long form articles to ensure we cover all methods of taking in information, and that the user can select their most preferable method.</p>
         </div>
 
         <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
           <div style="margin-bottom:16px;"><img src="Icon_assets/guide.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Access to all content</h3>
+          <h3 style="font-family:var(--ff-serif);font-size:20px;color:#47446D;margin-bottom:10px;">Access to all content</h3>
           <p style="font-size:14px;color:var(--ink);line-height:1.7;max-width:85%;">The user can access content from the other modules at any point, whether they have already completed them, or have yet to complete the previous module. This is to reduce restriction and allows the user to learn in the direction they desire. It also allows users to refer to content again when they might need to refresh themselves.</p>
         </div>
 
         <div class="reveal" style="display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
           <div style="margin-bottom:16px;"><img src="Icon_assets/heart_hand.svg" alt="" style="width:48px;height:48px;" /></div>
-          <h3 style="font-family:var(--ff-serif);font-size:20px;color:var(--ink);margin-bottom:10px;">Customised content</h3>
+          <h3 style="font-family:var(--ff-serif);font-size:20px;color:#47446D;margin-bottom:10px;">Customised content</h3>
           <p style="font-size:14px;color:var(--ink);line-height:1.7;max-width:85%;">Some modules could contain questionnaires where the user provides answers that then offer them customised content, or recommendations on types of investments to explore so that the user's experience feels customised.</p>
         </div>
 
