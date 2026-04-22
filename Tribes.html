@@ -1,1941 +1,1354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tribes — Case Study · Richie</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tribes — Designing a gesture-led social MVP</title>
+<meta name="description" content="A case study on designing an MVP for Tribes — a personalised social app built around gesture-based interactions and curated content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ───────────────────────────────────────
+     TOKENS — Tribes dark mode, AAA contrast
+     Brand: purple #b44fe0, cyan #5ac4d4
+  ─────────────────────────────────────── */
+  :root {
+    --bg:       #1b1a17;
+    --bg-2:     #252420;
+    --bg-page:  #141311;
+    --ink:      #f4f2ec;   /* 14.3:1 on --bg — AAA */
+    --ink-mid:  #d8d3c8;   /* 10.4:1 on --bg — AAA */
+    --ink-light:#b8b3a8;   /* 7.4:1 on --bg — AAA normal text */
+    --border:   rgba(244,242,236,0.12);
+    --border-strong: rgba(244,242,236,0.26);
+    --mute:     rgba(244,242,236,0.36);
+    --green:    #7ed49a;
+    --red:      #ff8a8a;
 
-  <!-- Open Graph / Link Preview -->
-  <meta property="og:title" content="Tribes — Case Study · Richie" />
-  <meta property="og:description" content="Empowering self-discovery and meaningful connections through personalised AI and curated search." />
-  <meta property="og:image" content="/Tribe_assets/TRI_hero.jpg" />
-  <meta property="og:type" content="article" />
+    /* Tribes brand palette */
+    --accent:       #b44fe0;   /* purple — headings, active states (large-text AAA) */
+    --accent-deep:  #5ac4d4;   /* cyan — pills, small accents (AAA w/ --bg text) */
+    --accent-tint:  rgba(180,79,224,0.14);
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tribes — Case Study · Richie" />
-  <meta name="twitter:description" content="Empowering self-discovery and meaningful connections through personalised AI and curated search." />
-  <meta name="twitter:image" content="/Tribe_assets/TRI_hero.jpg" />
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  <link rel="icon" type="image/png" href="/v2_uni.png" />
-  <link rel="apple-touch-icon" href="/v2_uni.png" />
+    --topnav-h: 56px;
+    --sidebar-w: 260px;
+    --content-max: 900px;
+  }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    /* ─── Reset & Base ─────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    * { font-weight: 400; }
+  /* ───────────────────────────────────────
+     RESET / BASE
+  ─────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--font-mono);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  a { color: inherit; text-decoration: none; }
+  svg { display: block; }
 
-/* Focus visible */
-    :focus-visible {
-      outline: 3px solid var(--brand);
-      outline-offset: 3px;
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-2); }
+  ::-webkit-scrollbar-thumb { background: var(--mute); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(244,242,236,0.5); }
+
+  /* ───────────────────────────────────────
+     APP SHELL
+  ─────────────────────────────────────── */
+  .app {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+
+  .topnav {
+    height: var(--topnav-h);
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: relative;
+    z-index: 20;
+  }
+  .topnav .crumb-work { font-size: 13px; color: var(--ink-light); }
+  .topnav .crumb-sep  { font-size: 13px; color: var(--border-strong); margin: 0 10px; }
+  .topnav .crumb-now  { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .topnav .topnav-spacer { flex: 1; }
+  .topnav .topnav-links { display: flex; gap: 28px; }
+  .topnav .topnav-links a { font-size: 13px; color: var(--ink-light); }
+  .topnav .topnav-links a:hover { color: var(--ink); }
+  .topnav .menu-btn {
+    display: none;
+    width: 40px; height: 40px;
+    margin-left: auto;
+    align-items: center; justify-content: center;
+    border-radius: 8px;
+  }
+  .topnav .menu-btn:hover { background: var(--bg-2); }
+  .topnav .menu-btn svg { width: 18px; height: 18px; }
+
+  .layout {
+    flex: 1 1 auto;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex: 0 0 auto;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-head {
+    padding: 22px 22px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-head .kicker { font-size: 12px; color: var(--ink); margin-bottom: 4px; letter-spacing: .01em; }
+  .sidebar-head .title  { font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -.005em; }
+
+  .progress { padding: 14px 22px 4px; }
+  .progress-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .progress-row span { font-size: 11px; color: var(--ink); font-weight: 500; }
+  .progress-row .pct { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+  .progress-track {
+    height: 8px; background: var(--border); border-radius: 99px; overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%; width: 0;
+    background: var(--accent);
+    border-radius: 99px;
+  }
+
+  .nav-groups { padding: 8px 0 24px; }
+  .nav-group { margin-top: 14px; }
+  .nav-group-label {
+    font-size: 11px; font-weight: 600;
+    color: var(--ink-light);
+    padding: 0 22px;
+    margin-bottom: 4px;
+    letter-spacing: .02em;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 22px;
+    border-right: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+  }
+  .nav-item:hover { background: var(--accent-tint); }
+  .nav-item:hover .nav-label { color: var(--ink); }
+  .nav-item:hover .nav-dot { border-color: var(--ink); }
+  .nav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1.5px solid var(--border-strong);
+  }
+  .nav-label {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: var(--ink-mid);
+    line-height: 1.35;
+  }
+
+  .nav-item.is-done .nav-dot {
+    background: var(--mute);
+    border-color: var(--mute);
+  }
+  .nav-item.is-done .nav-label { color: var(--ink-light); }
+
+  .nav-item.is-active {
+    background: var(--accent-tint);
+    border-right-color: var(--accent);
+  }
+  .nav-item.is-active .nav-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .nav-item.is-active .nav-label {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* Content pane */
+  .content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background: var(--bg);
+    min-width: 0;
+  }
+  .content-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 48px 56px 96px;
+  }
+  .content-inner[data-section="intro"],
+  .content-inner[data-section="brief"],
+  .content-inner[data-section="story"],
+  .content-inner[data-section="research"],
+  .content-inner[data-section="findings"],
+  .content-inner[data-section="principles"],
+  .content-inner[data-section="ideation"],
+  .content-inner[data-section="testing"],
+  .content-inner[data-section="hifi"],
+  .content-inner[data-section="centrenav"],
+  .content-inner[data-section="final"],
+  .content-inner[data-section="reflection"] { max-width: 1080px; }
+
+  .section { display: none; }
+  .section.is-visible { display: block; }
+
+  /* ───────────────────────────────────────
+     CONTENT ATOMS
+  ─────────────────────────────────────── */
+  .eyebrow {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 14px;
+  }
+  h1.section-title {
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -.03em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .accent-pink { color: var(--accent); }
+  .lede {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    margin-bottom: 32px;
+  }
+  h2.sub-head {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+  h2.sub-head span { color: var(--ink-light); }
+  .rule { height: 1px; background: var(--border); margin: 32px 0; border: 0; }
+  .rule-accent { height: 2px; background: var(--accent); margin: 32px 0; border: 0; width: 60px; }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 14px;
+  }
+  .section-label .sublabel {
+    font-weight: 400;
+    font-size: 10px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .card {
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+  }
+  .card.is-muted { background: var(--bg-2); }
+  .card-h { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  .card-body { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
+  .card-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-light);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .list-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    background: var(--bg);
+  }
+  .list-row {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .list-row:last-child { border-bottom: 0; }
+  .list-row.is-mine { background: var(--accent-tint); grid-template-columns: 40px 1fr auto; }
+  .list-row .icon-box {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px; flex-shrink: 0;
+  }
+  .list-row.is-mine .icon-box { background: var(--accent); border-color: var(--accent); }
+  .list-row .icon-box svg rect { fill: rgba(244,242,236,0.5); }
+  .list-row.is-mine .icon-box svg rect { fill: #fff; }
+  .list-row .row-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .list-row .row-body { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
+  .list-row .row-pill {
+    font-size: 10px; font-weight: 600;
+    background: var(--accent-deep); color: var(--bg);
+    padding: 3px 9px; border-radius: 20px;
+    white-space: nowrap; margin-top: 3px;
+    letter-spacing: .04em;
+    align-self: start;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .grid-gap-lg { gap: 16px; }
+
+  .img-ph {
+    background: var(--bg-2);
+    border: 1px dashed var(--border-strong);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-light);
+    font-size: 11px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  .avatars { display: flex; gap: 10px; align-items: flex-start; }
+  .avatar { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .avatar-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: var(--ink-mid);
+  }
+  .avatar.is-me .avatar-circle { background: var(--accent-deep); color: var(--bg); border-color: var(--accent-deep); }
+  .avatar-name { font-size: 12px; color: var(--ink-mid); }
+  .avatar.is-me .avatar-name { color: var(--ink); font-weight: 600; }
+
+  .prose-p {
+    font-size: 16px; color: var(--ink-mid); line-height: 1.75;
+    margin-bottom: 28px;
+  }
+  .prose-p:last-child { margin-bottom: 0; }
+
+  .pm-check {
+    display: flex; gap: 8px; margin-bottom: 8px;
+    font-size: 14px; color: var(--ink-mid); line-height: 1.55;
+  }
+  .pm-check .sym { font-size: 14px; margin-top: -1px; flex: 0 0 12px; font-weight: 700; }
+  .pm-check.is-plus .sym { color: var(--accent-deep); }
+  .pm-check.is-minus .sym { color: var(--accent); }
+
+  .quote-card {
+    padding: 16px 18px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+  }
+  .quote-card .q { font-size: 15px; color: var(--ink); line-height: 1.6; font-weight: 500; }
+  .quote-card cite {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    font-style: normal;
+    color: var(--ink-light);
+    letter-spacing: .04em;
+  }
+
+  .termlist { display: flex; flex-direction: column; margin-bottom: 28px; }
+  .termlist-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    align-items: start;
+  }
+  .termlist-item:last-child { border-bottom: 1px solid var(--border); }
+  .termlist-term {
+    font-size: 14px; font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -.005em;
+  }
+  .termlist-def {
+    font-size: 16px; line-height: 1.75;
+    color: var(--ink);
+  }
+  @media (max-width: 700px) {
+    .termlist-item { grid-template-columns: 1fr; gap: 6px; padding: 16px 0; }
+  }
+
+  /* ───────────────────────────────────────
+     BRIEF — typographic product layout
+  ─────────────────────────────────────── */
+  .brief-products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 40px;
+    margin-bottom: 40px;
+  }
+  .brief-product-name {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+  }
+  .brief-product-body {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .principle-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--bg-2);
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+
+  .attention-block {
+    background: var(--bg-2);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 28px;
+  }
+  .attention-block-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .attention-block-body {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .attention-block-body p { margin-bottom: 24px; }
+  .attention-block-body p:last-child { margin-bottom: 0; }
+  .attention-block-body ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+
+  /* ───────────────────────────────────────
+     BY THE NUMBERS
+  ─────────────────────────────────────── */
+  .by-numbers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .by-numbers-item { border-top: 2px solid var(--accent); padding-top: 8px; }
+  .by-numbers-num {
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .by-numbers-lbl {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  @media (max-width: 900px) {
+    .by-numbers { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .by-numbers-num { font-size: 32px; }
+  }
+  @media (max-width: 480px) {
+    .by-numbers { grid-template-columns: 1fr; }
+  }
+
+  /* Flow step */
+  .flow-step {
+    padding: 14px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    background: var(--bg);
+  }
+  .flow-step .num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg-2); border: 1px solid var(--border);
+    margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+  }
+  .flow-step .label { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  /* Participant card */
+  .participant-card {
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    text-align: center;
+    min-width: 100px;
+  }
+  .participant-card .p { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .participant-card .d { font-size: 12px; color: var(--ink-mid); }
+  .participant-card .r { font-size: 12px; color: var(--ink-light); }
+
+  /* Screen card (Feedback & Testing) */
+  .screen-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .screen-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    padding: 18px 18px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .screen-card.is-priority {
+    border: 1.5px solid var(--accent);
+    background: var(--accent-tint);
+  }
+  .screen-card .ph {
+    height: 120px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 8px;
+    background: var(--bg-2);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    color: var(--ink-light);
+    font-size: 11px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .screen-card .t { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .screen-card ul { list-style: disc; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .screen-card li { font-size: 13px; line-height: 1.55; color: var(--ink-mid); }
+  .priority-legend {
+    font-size: 12px;
+    color: var(--ink-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .priority-legend .chip {
+    display: inline-block;
+    width: 12px; height: 12px; border-radius: 3px;
+    border: 1.5px solid var(--accent);
+    background: var(--accent-tint);
+  }
+  @media (max-width: 900px) {
+    .screen-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .screen-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Gesture group (Centre Navigation) */
+  .gesture-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .gesture-group-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    background: var(--bg);
+  }
+  .gesture-group-item .ttl {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 12px;
+  }
+  .gesture-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .gesture-tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  @media (max-width: 700px) {
+    .gesture-group { grid-template-columns: 1fr; }
+  }
+
+  /* Nav strip (next/prev) */
+  .navstrip {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .navstrip .prev { font-size: 12px; color: var(--ink-light); }
+  .navstrip .prev:hover { color: var(--ink); }
+  .navstrip .next { text-align: right; }
+  .navstrip .next .next-label { font-size: 10.5px; color: var(--ink-light); margin-bottom: 3px; }
+  .navstrip .next .next-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+  /* ───────────────────────────────────────
+     RESPONSIVE
+  ─────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .content-inner { padding: 36px 32px 80px; }
+    h1.section-title { font-size: 28px; }
+    .lede { font-size: 14px; }
+    .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
+    .brief-products { grid-template-columns: 1fr; row-gap: 28px; column-gap: 0; }
+  }
+  @media (max-width: 760px) {
+    :root { --sidebar-w: 240px; --topnav-h: 52px; }
+    .topnav { padding: 0 18px; }
+    .topnav .topnav-links { display: none; }
+    .topnav .menu-btn { display: flex; }
+
+    .sidebar {
+      position: fixed;
+      top: var(--topnav-h);
+      left: 0;
+      height: calc(100dvh - var(--topnav-h));
+      transform: translateX(-100%);
+      z-index: 15;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
     }
+    .sidebar.is-open { transform: translateX(0); }
 
-    body { animation: pageFadeIn .4s ease forwards; }
-    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
-    body.fade-out { opacity: 0; transition: opacity .3s ease; }
-
-    /* ─── Scroll reveals (Skill: Design mode motion) ───────────────────────── */
-    .reveal {
+    .scrim {
+      position: fixed;
+      top: var(--topnav-h); left: 0; right: 0; bottom: 0;
+      background: rgba(13,13,13,0.3);
       opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
-      transition-delay: var(--delay, 0ms);
-    }
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    :root {
-      --cream: #f4f2ec;
-      --ink:   #f4f2ec;
-      --bg:    #1b1a17;
-      --mid:   #a09d96;
-      --rule:  #5ac4d4;
-      --brand: #b44fe0;
-      --border: rgba(244,242,236,0.13);
-      --card-bg: #252420;
-      --ff-serif: 'JetBrains Mono', monospace;
-      --ff-sans:  'JetBrains Mono', monospace;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--ff-sans);
-      font-size: 16px;
-      line-height: 1.65;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ─── Nav ──────────────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      height: 62px;
-      padding: 0 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(27,26,23,0.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: var(--ff-serif);
-      font-size: 17.6px;
-      color: var(--ink);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .nav-logo .dot {
-      width: 7px; height: 7px;
-      border-radius: 3.5px;
-      background: var(--brand);
-      display: inline-block;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--ink);
-      text-decoration: none;
-      opacity: 0.7;
-      transition: opacity .2s;
-    }
-    .nav-links a:hover { opacity: 1; }
-
-    .nav-cta {
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--ink);
-      text-decoration: none;
-      border: 1.5px solid var(--ink);
-      border-radius: 100px;
-      padding: 7px 20px;
-      transition: background .2s, color .2s;
-    }
-    .nav-cta:hover { background: var(--ink); color: var(--bg); }
-
-    /* ─── Layout ───────────────────────────────────────── */
-    .container {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 52px;
-    }
-
-
-    /* ─── Hero / Header ────────────────────────────────── */
-    .hero {
-      padding-top: 62px; /* nav height */
-    }
-
-    .hero-inner {
-      padding: 72px 52px 0;
-      max-width: 1160px;
-      margin: 0 auto;
-    }
-
-    /* Breadcrumb */
-    .breadcrumb {
-      font-family: var(--ff-sans);
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .breadcrumb a { color: var(--mid); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--brand); }
-    .breadcrumb span[aria-hidden] { opacity: 0.5; }
-    .breadcrumb span[aria-current] { opacity: 1; }
-
-    /* Hero card — large bordered frame */
-    .hero-card {
-      border: 1.5px solid var(--border);
-      border-radius: 24px;
-      overflow: hidden;
-      background: none;
-      margin-bottom: 0;
-    }
-
-    .hero-card-top {
-      padding: 52px 64px 48px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 48px;
-      align-items: start;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 4px 14px;
-      margin-bottom: 20px;
-    }
-
-    .hero-title {
-      font-family: var(--ff-serif);
-      font-size: 80px;
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      color: var(--brand);
-      margin-bottom: 28px;
-      opacity: 0;
-    }
-    .type-cursor {
-      display: inline-block;
-      width: 3px;
-      height: 0.85em;
-      background: var(--brand);
-      margin-left: 4px;
-      vertical-align: text-bottom;
-      animation: blink-cursor .75s step-end infinite;
-    }
-    @keyframes blink-cursor {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-title { opacity: 1; }
-      .type-cursor { animation: none; }
-    }
-
-    .hero-quote {
-      font-family: var(--ff-serif);
-      font-style: italic;
-      font-size: 18px;
-      line-height: 1.6;
-      color: var(--ink);
-      max-width: 640px;
-    }
-
-    /* PTTP metadata */
-    .pttp {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .pttp-item {
-      padding: 28px 32px;
-      border-right: 1px solid var(--border);
-    }
-    .pttp-item:last-child { border-right: none; }
-
-    .pttp-label {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 8px;
-    }
-
-    .pttp-value {
-      font-family: var(--ff-sans);
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.5;
-    }
-
-    /* Image strip */
-    .hero-image-strip {
-      background: #252420;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .hero-image-strip img {
-      width: 100%;
-      height: auto;
-      display: block;
-      opacity: 0.9;
-    }
-
-    /* Role block (right side of hero-card-top) */
-    .hero-role {
-      min-width: 260px;
-    }
-
-    .hero-role-label {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 14px;
-    }
-
-    .hero-role ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .hero-role ul li {
-      font-family: var(--ff-sans);
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.5;
-      padding-left: 16px;
-      position: relative;
-    }
-    .hero-role ul li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--rule);
-      font-size: 12px;
-    }
-
-    /* ─── Sections ─────────────────────────────────────── */
-    section {
-      padding: 80px 0;
-    }
-
-    .section-eyebrow {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-family: var(--ff-serif);
-      font-size: 32px;
-      font-weight: 700;
-      font-style: italic;
-      line-height: 1.1;
-      color: var(--brand);
-      margin-bottom: 28px;
-    }
-
-    .section-body {
-      font-family: var(--ff-sans);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.75;
-      max-width: 680px;
-    }
-
-    .section-body p + p { margin-top: 20px; }
-
-    #story .section-body,
-    #research .section-body,
-    #ideation .section-body,
-    #testing .section-body,
-    #hifi .section-body { max-width: none; }
-
-    /* Two-col layout */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: start;
-    }
-
-    .three-col {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-
-    /* ─── What to expect ───────────────────────────────── */
-    .wte-brief-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 32px;
-    }
-
-    .wte-brief-block {
-      background: none;
-      border-radius: 0;
-      padding: 0;
-    }
-
-    .wte-brief-block .objectives-list,
-    .wte-brief-block .challenges-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 6px 24px;
-      margin-top: 12px;
-    }
-
-    .wte-brief-label {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 4px;
-    }
-
-    .wte-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 64px;
-      padding: 64px 0 56px;
-    }
-
-    .wte-left { padding-top: 6px; }
-
-    .wte-jump-nav {
-      padding: 0;
-      margin-top: 36px;
-    }
-
-    .wte-jump-nav-label {
-      font-family: var(--ff-serif);
-      font-size: 32px;
-      line-height: 1.1;
-      font-weight: 400;
-      color: var(--brand);
-      text-align: left;
-      padding: 10px 0 0;
-      margin-bottom: 12px;
-    }
-
-    .wte-jump-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .wte-jump-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--ink);
-      text-decoration: none;
-      padding: 6px 16px;
-      border-radius: 10px;
-      background: rgba(244,242,236,0.06);
-      cursor: pointer;
-      transition: background .2s, color .2s, transform .15s;
-      white-space: nowrap;
-    }
-
-    .wte-jump-pill:hover {
-      background: var(--ink);
-      color: var(--bg);
-      transform: translateY(-2px);
-    }
-
-    .jump-links-label {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .read-time {
-      display: inline-block;
-      font-family: var(--ff-sans);
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink);
-      background: #3a5a00; color: #d4f04a;
-      border: none;
-      border-radius: 100px;
-      padding: 5px 14px;
-      margin-top: 16px;
-    }
-
-    /* ─── Project Brief ────────────────────────────────── */
-    .objectives-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .objectives-list li {
-      font-family: var(--ff-sans);
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--ink);
-      padding-left: 24px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .objectives-list li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--rule);
-    }
-
-    .challenges-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .challenges-list li {
-      font-family: var(--ff-sans);
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--ink);
-      padding-left: 24px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .challenges-list li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--rule);
-    }
-
-    .next-label {
-      display: inline-block;
-      font-family: var(--ff-sans);
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #B7B7B7;
-      margin-top: 40px;
-    }
-
-    /* ─── How I Got Here ───────────────────────────────── */
-    .story-text {
-      font-family: var(--ff-sans);
-      font-size: 17px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.85;
-      max-width: none;
-    }
-    .story-text p + p { margin-top: 24px; }
-
-    /* ─── Research ─────────────────────────────────────── */
-    .research-intro {
-      font-family: var(--ff-sans);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.7;
-      max-width: none;
-      margin-bottom: 40px;
-    }
-
-    .research-goals {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 48px;
-    }
-    .research-goals li {
-      font-family: var(--ff-sans);
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--ink);
-      list-style: none;
-      padding-left: 24px;
-      position: relative;
-    }
-    .research-goals li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--rule);
-    }
-
-    .findings-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .findings-card {
-      background: none;
-      padding: 0;
-    }
-
-    .findings-card-icon {
-      width: 120px;
-      height: auto;
-      display: block;
-      margin-bottom: 20px;
-    }
-
-    .findings-card ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 24px;
-    }
-    .findings-card ul li {
-      font-family: var(--ff-sans);
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--ink);
-      padding-left: 20px;
-      position: relative;
-      line-height: 1.65;
-    }
-    .findings-card ul li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--rule);
-    }
-
-    .future-steps {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-    .future-steps p {
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--mid);
-      line-height: 1.65;
-    }
-
-    /* ─── Dark image blocks ────────────────────────────── */
-    .dark-card {
-      background: var(--card-bg);
-      border-radius: 22px;
-      border: 2px solid rgba(244,242,236,0.1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 320px;
-      transition: transform .22s ease, box-shadow .22s ease;
-    }
-    .dark-card-label {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-    .dark-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* ─── Ideation ─────────────────────────────────────── */
-    .principles-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-      margin-bottom: 40px;
-    }
-
-    .principle-tag {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .principle-icon {
-      width: 100%;
-    }
-
-    .principle-icon img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .quote-block {
-      padding: 8px 0;
-      margin: 32px 0;
-      position: relative;
-    }
-    .quote-block::before {
-      content: '\201C';
-      font-family: var(--ff-serif);
-      font-size: 120px;
-      line-height: 1;
-      color: var(--brand);
-      opacity: 0.35;
-      position: absolute;
-      top: -20px;
-      left: -5px;
-    }
-
-    .quote-block .speaker {
-      font-family: var(--ff-serif);
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 8px;
-      position: relative;
-    }
-
-    .quote-block p {
-      font-family: var(--ff-serif);
-      font-style: italic;
-      font-size: 18px;
-      color: var(--ink);
-      line-height: 1.65;
-      position: relative;
-    }
-    .quote-block p:last-child::after {
-      content: '\201D';
-      font-family: var(--ff-serif);
-      font-size: 120px;
-      line-height: 1;
-      color: var(--brand);
-      opacity: 0.35;
-      position: absolute;
-      bottom: -40px;
-      right: 0;
-    }
-
-    .sketches-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px 12px;
-      margin: 16px 0 28px;
-    }
-    .sketches-list li {
-      font-family: var(--ff-sans);
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--ink);
-      padding-left: 20px;
-      position: relative;
-    }
-    .sketches-list li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--rule);
-      font-size: 18px;
-      line-height: 1;
-      top: 4px;
-    }
-
-    .two-image-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    /* ─── Feedback & Testing ───────────────────────────── */
-    .feedback-intro {
-      font-family: var(--ff-serif);
-      font-style: italic;
-      font-size: 22px;
-      line-height: 1.5;
-      color: var(--ink);
-      max-width: none;
-      margin-bottom: 32px;
-      position: relative;
-    }
-    .feedback-intro::before {
-      content: '\201C';
-      font-family: var(--ff-serif);
-      font-size: 120px;
-      line-height: 1;
-      color: var(--brand);
-      opacity: 0.35;
-      position: absolute;
-      top: -20px;
-      left: -5px;
-    }
-    .feedback-intro::after {
-      content: '\201D';
-      font-family: var(--ff-serif);
-      font-size: 120px;
-      line-height: 1;
-      color: var(--brand);
-      opacity: 0.35;
-      position: absolute;
-      bottom: -40px;
-      right: 0;
-    }
-
-    .screens-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      margin-top: 40px;
-    }
-
-    .screen-card {
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(244,242,236,0.04);
-      transition: transform .22s ease, box-shadow .22s ease;
-    }
-
-    .screen-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 46px rgba(0,0,0,0.4);
-    }
-
-    .screen-card--priority {
-      border: 2px solid #6563ff;
-      box-shadow: 0 0 0 6px rgba(101,99,255,0.2);
-    }
-
-    .screen-card-dark {
-      border-radius: 18px;
-      min-height: 200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: rgba(244,242,236,0.04);
-      border: 1.5px dashed rgba(244,242,236,0.15);
-      color: var(--mid);
-    }
-
-    .screen-card-dark svg {
-      opacity: 0.4;
-    }
-
-    .screen-card-dark img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 14px;
-    }
-
-    .screen-card-dark span {
-      font-family: var(--ff-sans);
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--mid);
-      opacity: 0.6;
-      letter-spacing: 0.04em;
-    }
-
-    .screen-card-body {
-      padding: 24px;
-    }
-
-    .screen-title {
-      font-family: var(--ff-serif);
-      font-size: 22px;
-      color: var(--brand);
-      margin-bottom: 8px;
-    }
-
-    .screen-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .screen-tag {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--mid);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 3px 12px;
-    }
-
-    .screen-desc {
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.6;
-      list-style: none;
-    }
-    .screen-desc li { padding-left: 0; }
-    .screen-desc li::before { display: none; }
-
-    /* ─── Hi-Fi ─────────────────────────────────────────── */
-    .style-guide-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin: 40px 0;
-    }
-
-    .guide-block {
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 32px;
-      background: rgba(244,242,236,0.04);
-    }
-
-    .guide-block h4 {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 16px;
-    }
-
-    .colour-swatches {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .swatch {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .swatch-circle {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-    }
-
-    .swatch-name {
-      font-family: var(--ff-sans);
-      font-size: 10px;
-      color: var(--mid);
-      text-align: center;
-    }
-
-    .spec-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .spec-list li {
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--ink);
-      display: flex;
-      gap: 8px;
-    }
-    .spec-list li span {
-      color: var(--mid);
-      font-size: 11px;
-      min-width: 6px;
-    }
-
-    /* centre navigation */
-    .centre-nav-block {
-      background: var(--card-bg);
-      border-radius: 22px;
-      padding: 48px;
-      margin-top: 40px;
-      color: var(--ink);
-    }
-
-    .centre-nav-block h3 {
-      font-family: var(--ff-serif);
-      font-size: 28px;
-      color: var(--brand);
-      margin-bottom: 16px;
-    }
-
-    .centre-nav-block p {
-      font-family: var(--ff-sans);
-      font-size: 15px;
-      font-weight: 400;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.9);
-      max-width: none;
-      margin-bottom: 24px;
-    }
-
-    .gesture-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .gesture-tag {
-      font-family: var(--ff-sans);
-      font-size: 12px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.8);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 100px;
-      padding: 6px 16px;
-    }
-
-    .gesture-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-      margin-top: 16px;
-    }
-
-    .gesture-group-item label {
-      display: block;
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 10px;
-    }
-
-    /* ─── Final ─────────────────────────────────────────── */
-    .final-screens {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .final-screen-row {
-      background: none;
-      border-radius: 0;
-      min-height: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 0;
-      margin: 0;
-      padding: 0;
-      position: relative;
-      overflow: visible;
-    }
-
-    .final-screen-row img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .final-screen-label {
-      font-family: var(--ff-sans);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-    }
-
-    /* ─── Footer ────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 48px 0;
-      margin-top: 40px;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-    }
-
-    .footer-logo {
-      font-family: var(--ff-serif);
-      font-size: 17.6px;
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-    .footer-links a {
-      font-family: var(--ff-sans);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--mid);
-      text-decoration: none;
-      transition: color .2s;
-    }
-    .footer-links a:hover { color: var(--brand); }
-
-    .footer-copy {
-      font-family: var(--ff-sans);
-      font-size: 12.8px;
-      font-weight: 400;
-      color: var(--mid);
-    }
-
-    /* ─── Back to top ──────────────────────────────────── */
-    .back-to-top {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      color: var(--ink);
-      text-decoration: none;
-      margin: 40px auto 0;
-      transition: background .2s, color .2s, transform .2s;
-    }
-    .back-to-top:hover {
-      background: var(--ink);
-      color: var(--bg);
-      transform: translateY(-3px);
-    }
-
-    /* ─── Lightbox ──────────────────────────────────────── */
-    .lightbox-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      align-items: center;
-      justify-content: center;
-      cursor: zoom-out;
-    }
-    .lightbox-overlay.active {
-      display: flex;
-    }
-    .lightbox-overlay img {
-      max-width: 90vw;
-      max-height: 90vh;
-      border-radius: 16px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
-    }
-    .dark-card img {
-      cursor: zoom-in;
-    }
-
-    /* ─── Divider ───────────────────────────────────────── */
-    .divider {
-      border: none;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 52px;
-      height: 4px;
-    }
-    .divider::before {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 4px;
-      background: var(--brand);
-      border-radius: 2px;
-    }
-
-    /* ─── Side Jump Nav ──────────────────────────────────── */
-    .side-jump {
-      position: fixed;
-      left: 200px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 90;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .side-jump a {
-      font-family: var(--ff-sans);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--mid);
-      text-decoration: none;
-      opacity: 0.5;
-      transition: opacity .2s, color .2s, font-weight .2s;
-      white-space: nowrap;
-    }
-    .side-jump a:hover {
-      opacity: 1;
-      color: #b44fe0;
-    }
-    .side-jump a.active {
-      opacity: 1;
-      color: var(--brand);
-      font-weight: 600;
-    }
-
-    @media (max-width: 1280px) {
-      .side-jump { display: none; }
-    }
-
-    /* ─── Responsive ────────────────────────────────────── */
-    @media (max-width: 1024px) {
-      nav { padding: 0 32px; }
-      .hero-inner, .container, .divider { padding: 0 32px; }
-      .hero-card-top { padding: 40px 40px 36px; gap: 32px; }
-      .hero-title { font-size: 60px; }
-      .pttp { grid-template-columns: repeat(2, 1fr); }
-      .pttp-item:nth-child(2) { border-right: none; }
-      .pttp-item:nth-child(3) { border-top: 1px solid var(--border); }
-      .pttp-item:nth-child(4) { border-top: 1px solid var(--border); }
-      .two-col { gap: 40px; }
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
-      .hero-inner, .container, .divider { padding: 0 20px; }
-      .hero-card-top { grid-template-columns: 1fr; padding: 32px; }
-      .hero-role { min-width: unset; }
-      .hero-title { font-size: 48px; }
-      .pttp { grid-template-columns: 1fr 1fr; }
-      .two-col { grid-template-columns: 1fr; }
-      .screens-grid { grid-template-columns: 1fr 1fr; }
-      .findings-grid { grid-template-columns: 1fr; }
-      .two-image-row { grid-template-columns: 1fr; }
-      .style-guide-grid { grid-template-columns: 1fr; }
-      .wte-layout { grid-template-columns: 1fr; gap: 32px; padding: 40px 0; }
-      .wte-brief-grid { grid-template-columns: 1fr; }
-      .gesture-group { grid-template-columns: 1fr; }
-      section { padding: 56px 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      body { animation: none; }
-      .reveal {
-        opacity: 1;
-        transform: none;
-        transition: none;
-      }
-    }
-  </style>
+      pointer-events: none;
+      z-index: 14;
+    }
+    .scrim.is-open { opacity: 1; pointer-events: auto; }
+
+    .content-inner { padding: 28px 22px 72px; }
+    h1.section-title { font-size: 24px; }
+  }
+  @media (max-width: 480px) {
+    .content-inner { padding: 24px 18px 64px; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- Nav -->
-  <nav aria-label="Main navigation">
-    <a href="/" class="nav-logo">Richie<span class="dot" aria-hidden="true"></span></a>
-    <ul class="nav-links">
-      <li><a href="/">About</a></li>
-      <li><a href="/">Work</a></li>
-    </ul>
-  </nav>
+<div class="app">
 
-  <!-- Side Jump Nav -->
-  <div class="side-jump" id="side-jump">
-    <a href="#expect">Intro</a>
-    <a href="#story">Story</a>
-    <a href="#research">Research</a>
-    <a href="#ideation">Ideation</a>
-    <a href="#testing">Testing</a>
-    <a href="#hifi">Hi-fi</a>
-    <a href="#final">Final</a>
-    <a href="#reflection">Reflection</a>
+  <!-- ─── TOP NAV ─── -->
+  <header class="topnav" role="banner">
+    <span class="crumb-work">Work</span>
+    <span class="crumb-sep" aria-hidden="true">/</span>
+    <span class="crumb-now">Tribes</span>
+    <div class="topnav-spacer"></div>
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="#">About</a>
+      <a href="#">Work</a>
+    </nav>
+    <button class="menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="3" y1="6" x2="17" y2="6"/>
+        <line x1="3" y1="10" x2="17" y2="10"/>
+        <line x1="3" y1="14" x2="17" y2="14"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="layout">
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar" id="sidebar" aria-label="Case study sections">
+      <div class="sidebar-head">
+        <div class="kicker">Case study</div>
+        <div class="title">Tribes</div>
+      </div>
+      <div class="progress">
+        <div class="progress-row">
+          <span>Progress</span>
+          <span class="pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </div>
+      <nav class="nav-groups" id="nav-groups" aria-label="Sections"></nav>
+    </aside>
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <!-- ─── CONTENT ─── -->
+    <main class="content" id="content" tabindex="-1">
+      <div class="content-inner" id="content-inner">
+        <!-- sections injected by JS -->
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+/* ───────────────────────────────────────
+   DATA
+─────────────────────────────────────── */
+const NAV_ORDER = [
+  'intro','brief','story',
+  'research','findings',
+  'principles','ideation','testing','hifi','centrenav',
+  'final','reflection',
+];
+
+const SECTION_META = {
+  intro:      { label:'Intro',              group:'Overview' },
+  brief:      { label:'Project Brief',      group:'Overview' },
+  story:      { label:'How I Got Here',     group:'Overview' },
+  research:   { label:'Research Approach',  group:'Research' },
+  findings:   { label:'Findings',           group:'Research' },
+  principles: { label:'Design Principles',  group:'Design'   },
+  ideation:   { label:'Ideation',           group:'Design'   },
+  testing:    { label:'Feedback & Testing', group:'Design'   },
+  hifi:       { label:'Hi-fidelity',        group:'Design'   },
+  centrenav:  { label:'Centre Navigation',  group:'Design'   },
+  final:      { label:'Final',              group:'Outcome'  },
+  reflection: { label:'Reflection',         group:'Outcome'  },
+};
+
+const GROUPS = [
+  { group:'Overview', ids:['intro','brief','story'] },
+  { group:'Research', ids:['research','findings'] },
+  { group:'Design',   ids:['principles','ideation','testing','hifi','centrenav'] },
+  { group:'Outcome',  ids:['final','reflection'] },
+];
+
+const PROGRESS_PCT = NAV_ORDER.reduce((acc, id, i) => {
+  acc[id] = Math.round((i / (NAV_ORDER.length - 1)) * 100);
+  return acc;
+}, {});
+
+/* ───────────────────────────────────────
+   HELPERS
+─────────────────────────────────────── */
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+const dotsSvg = () => `
+  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+    <rect x="1" y="1" width="4.5" height="4.5" rx="1"/>
+    <rect x="7.5" y="1" width="4.5" height="4.5" rx="1"/>
+    <rect x="1" y="7.5" width="4.5" height="4.5" rx="1"/>
+    <rect x="7.5" y="7.5" width="4.5" height="4.5" rx="1"/>
+  </svg>`;
+
+function listCardHTML(items) {
+  const rows = items.map(it => {
+    const mine = it.mine ? ' is-mine' : '';
+    const pill = it.mine ? `<span class="row-pill">My focus</span>` : '';
+    return `
+      <div class="list-row${mine}">
+        <div class="icon-box">${dotsSvg()}</div>
+        <div>
+          <div class="row-title">${esc(it.title)}</div>
+          <div class="row-body">${esc(it.body)}</div>
+        </div>
+        ${pill}
+      </div>`;
+  }).join('');
+  return `<div class="list-card">${rows}</div>`;
+}
+
+function callout(title, bodyHTML) {
+  const t = title ? `<div class="attention-block-title">${esc(title)}</div>` : '';
+  return `<div class="attention-block">${t}<div class="attention-block-body">${bodyHTML}</div></div>`;
+}
+
+function termlistHTML(items) {
+  const rows = items.map(it => `
+    <div class="termlist-item">
+      <div class="termlist-term">${esc(it.title)}</div>
+      <div class="termlist-def">${esc(it.body)}</div>
+    </div>`).join('');
+  return `<div class="termlist">${rows}</div>`;
+}
+
+function quote(q, speaker) {
+  return `
+    <div class="quote-card" style="margin-bottom:28px;">
+      <p class="q">&ldquo;${esc(q)}&rdquo;</p>
+      ${speaker ? `<cite>&mdash; ${esc(speaker)}</cite>` : ''}
+    </div>`;
+}
+
+function rule() { return `<hr class="rule" />`; }
+function ruleAccent() { return `<hr class="rule-accent" />`; }
+
+function sLabel(text, sub) {
+  const s = sub ? ` <span class="sublabel">— ${esc(sub)}</span>` : '';
+  return `<div class="section-label">${esc(text)}${s}</div>`;
+}
+
+function img(label, h = 140) {
+  return `<div class="img-ph" style="height:${h}px; margin-bottom: 16px;">${esc(label)}</div>`;
+}
+
+/* shared section header */
+function header(eyebrow, title, lede) {
+  const titleHTML = esc(title).replace(/\*\*(.+?)\*\*/g, '<span class="accent-pink">$1</span>');
+  return `
+    <div class="eyebrow">${esc(eyebrow)}</div>
+    <h1 class="section-title">${titleHTML}</h1>
+    <p class="lede">${esc(lede)}</p>
+    ${rule()}
+  `;
+}
+
+/* ───────────────────────────────────────
+   CONTENT TEMPLATES
+─────────────────────────────────────── */
+const CONTENT = {
+
+intro: () => `
+  ${header('Overview · Intro', 'Tribes — designing a gesture-led social **MVP.**', 'Tribes is a social app built around personalised AI, curated search, and gesture-based interaction. I led the UX/UI for the MVP — shaping the first interactive prototype investors would see.')}
+
+  <img src="Tribe_assets/TRI_hero.jpg" alt="Tribes hero — MiPage and Tribe screens" style="width: 100%; display: block; border-radius: 10px; margin-bottom: 16px;" />
+
+  ${sLabel('By the numbers')}
+  <div class="by-numbers" role="list">
+    ${[
+      ['4',  'Months working with Victor and Hank on the MVP'],
+      ['2',  'Lo-fi prototypes tested side-by-side (proto_a, proto_b)'],
+      ['5',  'Design principles guiding every decision'],
+      ['4',  'Core screens in scope — MiPage, Tribe, Media, Add Users'],
+    ].map(([n, l]) => `
+      <div class="by-numbers-item" role="listitem">
+        <div class="by-numbers-num">${n}</div>
+        <div class="by-numbers-lbl">${esc(l)}</div>
+      </div>`).join('')}
   </div>
 
-  <main id="main-content">
-
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-inner">
-      <div class="breadcrumb" role="navigation" aria-label="Breadcrumb">
-        <a href="/">Work</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">Tribes</span>
-      </div>
-
-      <div class="hero-card">
-        <div class="hero-card-top">
-          <div>
-            <span class="hero-tag">Start-up</span>
-            <h1 class="hero-title">Tribes</h1>
-            <p class="hero-quote">"Empowering self-discovery and promoting meaningful connections through personalised AI and curated search. Tribes is a decentralised network and universal clipboard of our personal archives. Add friends to your Tribe and search from this trusted content pool. Discover your friends multidimensionality and get search results that are personalised and curated from those whose opinions we value. Save time and get straight to all that is relevant."</p>
-          </div>
-
-        </div>
-
-        <div class="pttp">
-          <div class="pttp-item">
-            <p class="pttp-label">Position</p>
-            <p class="pttp-value">UX/UI Designer</p>
-          </div>
-          <div class="pttp-item">
-            <p class="pttp-label">Team</p>
-            <p class="pttp-value">Victor — Co-founder<br>Hank — Software Engineer<br>Me!</p>
-          </div>
-          <div class="pttp-item">
-            <p class="pttp-label">My role</p>
-            <p class="pttp-value">MVP Development<br>UX/UI Introduction<br>Concepting<br>Prototyping</p>
-          </div>
-          <div class="pttp-item">
-            <p class="pttp-label">Project Duration</p>
-            <p class="pttp-value">4 Months</p>
-          </div>
-        </div>
-
-        <div class="hero-image-strip">
-          <img src="Tribe_assets/Tribes.png" alt="Tribes app screens" />
-        </div>
+  <div class="grid-2" style="margin-bottom: 28px;">
+    ${[
+      ['Role', 'UX/UI Designer · MVP lead, concepting, prototyping'],
+      ['Duration', '4 months · Start-up engagement'],
+      ['Output', 'Lo-fi and hi-fi prototypes for investor-ready MVP'],
+    ].map(([l,v]) => `<div class="card"><div class="card-label">${l}</div><div class="card-body">${esc(v)}</div></div>`).join('')}
+    <div class="card">
+      <div class="card-label" style="margin-bottom:10px;">Team</div>
+      <div class="avatars">
+        ${[['Victor','V'],['Hank','H'],['Me','M']].map(([n,i], idx) => `
+          <div class="avatar${idx === 2 ? ' is-me' : ''}">
+            <div class="avatar-circle">${i}</div>
+            <div class="avatar-name">${n}</div>
+          </div>`).join('')}
       </div>
     </div>
   </div>
+`,
 
-  <div class="divider" style="margin-top:80px;"></div>
+brief: () => `
+  ${header('Overview · Brief', 'Project Brief', "Aligning start-up vision with design principles — shaping an MVP that could stand in front of investors. The big question going in: what even is an MVP, and where do I start?")}
 
-  <!-- What to expect + Project Brief -->
-  <section id="expect" class="reveal" style="--delay: 0ms;">
-    <div class="container">
-      <div class="wte-layout">
+  ${sLabel('Objectives')}
+  <div class="brief-products" style="grid-template-columns:repeat(2,1fr); row-gap:24px;">
+    ${[
+      ['Develop an MVP', 'Shape an investor-ready prototype grounded in start-up goals.'],
+      ['Research social platforms', 'Study what makes existing social apps feel polished and engaging.'],
+      ['Desk & user research', 'Build a base of secondary research to inform design decisions.'],
+      ['Sketching & ideation', 'Explore structure, layout, and gesture patterns on paper first.'],
+      ['Lo- and hi-fi prototypes', 'Take the strongest direction from lo-fi into hi-fi for investor review.'],
+      ['Gesture interactions', 'Identify effective gesture-based interaction patterns for a future-proof UI.'],
+    ].map(([n,d]) => `
+      <div class="brief-product">
+        <div class="brief-product-name">${esc(n)}</div>
+        <div class="brief-product-body">${esc(d)}</div>
+      </div>`).join('')}
+  </div>
 
-        <!-- Left: heading + badge -->
-        <div class="wte-left">
-          <h2 class="section-title" style="margin-bottom:12px;">What to expect</h2>
-          <p class="read-time">15–20 minute read</p>
-        </div>
-
-        <!-- Right: content -->
-        <div class="wte-right">
-
-          <p class="section-body" style="margin-bottom:32px;">
-            I led the UX/UI development of Tribes — an interactive social app built around personalised content, shared media, and meaningful connections. Working closely with Victor and Hank, the goal was to align design principles with the start-up's vision and shape an MVP ready to present to investors. The big question going in: what even is an MVP, and where do I start?
-          </p>
-
-          <div class="wte-brief-grid">
-
-            <div class="wte-brief-block">
-              <p class="wte-brief-label">Objectives</p>
-              <ul class="objectives-list" style="margin-top:12px;">
-                <li>Develop an MVP</li>
-                <li>Research existing social media platforms</li>
-                <li>Desk and user research</li>
-                <li>Sketching and ideating</li>
-                <li>Develop lo and hi-fidelity prototypes</li>
-                <li>Weekly collaborative meetings</li>
-                <li>Identifying effective methods for gesture-based interactions</li>
-                <li>Interactive and scalable product</li>
-              </ul>
-            </div>
-
-            <div class="wte-brief-block">
-              <p class="wte-brief-label">Challenges</p>
-              <ul class="challenges-list" style="margin-top:12px;">
-                <li>What's an MVP?</li>
-                <li>Finding time between projects and study</li>
-                <li>Future-proofing design decisions</li>
-                <li>Keeping in mind how mobile UI will parallel to VR</li>
-                <li>Proposing improvements and validating design decisions</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <!-- Jump nav aligned to content column -->
-          <div class="wte-jump-nav">
-            <h3 class="wte-jump-nav-label">Jump to section</h3>
-            <div class="wte-jump-grid">
-              <a href="#research" class="wte-jump-pill">Research</a>
-              <a href="#ideation" class="wte-jump-pill">Ideation</a>
-              <a href="#testing" class="wte-jump-pill">Feedback &amp; Testing</a>
-              <a href="#hifi" class="wte-jump-pill">Hi-fidelity</a>
-              <a href="#final" class="wte-jump-pill">Final</a>
-              <a href="#reflection" class="wte-jump-pill">Reflection</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
-  
-  <div class="divider"></div>
-
-  <!-- How I Got Here -->
-  <section id="story" class="reveal" style="--delay: 60ms;">
-    <div class="container">
-            <h2 class="section-title">How I got here</h2>
-      <div class="story-text">
-        <p>I had the amazing opportunity to collaborate with Victor and Hank who are leading the mission to empower users with a personalised curation of content, discovering, and building meaningful connections with other users, friends, and family.</p>
-        <p>Through frequently visiting a local café I ended up connecting with the owner, Victor. He was interested in my projects and I shared with him previous and work in progress work. A few months down the road, he ended up recruiting me to lead the UX/UI development.</p>
-        <p>I was super interested with the vision of this app being grown into a large social network between users, friends, and family. With plans to bring it into virtual reality and using AI to guide and assist users.</p>
-        <p>With the rapid growth of AI and how it is effecting our daily lives in different ways, this was a perfect opportunity for me to jump on board and learn how AI can be used as a learning tool.</p>
-      </div>
-      <span class="next-label">Next up: Project Brief →</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Research -->
-  <section id="research" class="reveal" style="--delay: 180ms;">
-    <div class="container">
-            <h2 class="section-title">Research</h2>
-
-      <p class="research-intro">It is emphasised by Victor to have gesture controls as the main interaction pattern as part of future-proofing.</p>
-
-      <ul class="research-goals">
-        <li>Conducting desk research on successful social media platforms and discovering what makes their product polished and defined</li>
-        <li>Discovering what patterns, design systems, and navigations these platforms share</li>
-        <li>Products and games that use virtual reality</li>
+  ${sLabel('Challenges')}
+  <div class="attention-block">
+    <div class="attention-block-title">The honest constraints going in</div>
+    <div class="attention-block-body">
+      <ul>
+        ${[
+          "What's an MVP? — starting from scratch with no prior product work to inherit.",
+          'Finding time between this, other projects, and full-time study.',
+          'Future-proofing decisions so mobile UI could extend into VR down the line.',
+          'Proposing improvements to founders and validating decisions without a design team to check with.',
+        ].map(q => `<li>${esc(q)}</li>`).join('')}
       </ul>
-
-      <div class="findings-grid">
-        <div class="findings-card">
-          <img class="findings-card-icon" src="Icon_assets/ic_be.svg" alt="Behaviour icon" />
-          <ul>
-            <li>Personalised algorithms keep users engaged</li>
-            <li>Short-term content has minimal cognitive effort, keeping user attention</li>
-            <li>Social validation, likes, shares, and reposts</li>
-          </ul>
-        </div>
-
-        <div class="findings-card">
-          <img class="findings-card-icon" src="Icon_assets/ic_ds.svg" alt="Design Systems icon" />
-          <ul>
-            <li>Simple and guided onboarding</li>
-            <li>Build familiar systems so users don't have to re-learn</li>
-            <li>Building with accessibility such as colours and fonts</li>
-            <li>Approachable and familiar colours</li>
-            <li>Tons of space for breathing</li>
-          </ul>
-          <div class="future-steps">
-            <p>Future steps: Since there was time constraints, I was unable to conduct own user interviews or surveys.</p>
-          </div>
-        </div>
-      </div>
-
-      <span class="next-label">Next up: Ideation →</span>
     </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Ideation -->
-  <section id="ideation" class="reveal" style="--delay: 240ms;">
-    <div class="container">
-            <h2 class="section-title">Ideation</h2>
-
-      <p class="section-body" style="margin-bottom:28px;">My design principles:</p>
-
-      <div class="principles-grid">
-        <div class="principle-tag">
-          <div class="principle-icon">
-            <img src="SVGS/ic_access.svg" alt="Accessibility" />
-          </div>
-        </div>
-        <div class="principle-tag">
-          <div class="principle-icon">
-            <img src="SVGS/ic_empower.svg" alt="Empowering" />
-          </div>
-        </div>
-        <div class="principle-tag">
-          <div class="principle-icon">
-            <img src="SVGS/ic_engage.svg" alt="Engaging" />
-          </div>
-        </div>
-        <div class="principle-tag">
-          <div class="principle-icon">
-            <img src="SVGS/ic_mean.svg" alt="Meaningful" />
-          </div>
-        </div>
-        <div class="principle-tag">
-          <div class="principle-icon">
-            <img src="SVGS/ic_inter.svg" alt="Interactive" />
-          </div>
-        </div>
-      </div>
-
-      <div class="quote-block">
-        <p class="speaker">Victor</p>
-        <p>"Please add these as screens, a homepage, group page, content exploration and adding users!"</p>
-      </div>
-
-      <p class="section-body" style="margin-bottom:16px;">With direction and clarity, these sketches will contain the contents below:</p>
-
-      <ul class="sketches-list">
-        <li>Structure</li>
-        <li>Component layout</li>
-        <li>Content layout</li>
-        <li>Interaction patterns, like gesture controls</li>
-        <li>Navigation</li>
-        <li>User flow</li>
-        <li>Pinpointing potential pain points</li>
-        <li>Create a task for Victor and Hank to complete</li>
-      </ul>
-
-      <div class="quote-block">
-        <p class="speaker">Victor</p>
-        <p>"Are we able to make the home screen different from traditional pages, such as a quadrant view?"</p>
-      </div>
-
-      <p class="section-body" style="margin:28px 0 12px;">Results weren't satisfactory, not much inspiration to go off so I decided to create my own rendition of a page that meets requirements and align with UX and UI principles. It was a challenge, but a fun one.</p>
-
-      <p class="section-body" style="margin-bottom:8px;"><strong style="font-weight: 400;">Sketches:</strong> For clearer insight for me, I decided to develop two strong sketches into lo-fidelity prototyping to present animations and test gesture controls on a real mobile device.</p>
-
-      <h2 class="section-title" style="margin-top:48px;">Sketches</h2>
-      <p class="section-body" style="margin-bottom:24px;">Hold the scroll wheel to scroll and view the sketches and click to enlarge images!</p>
-
-      <div>
-        <div class="dark-card" style="min-height:380px;max-height:600px;overflow-y:auto;padding:16px;gap:12px;align-items:stretch;scrollbar-width:auto;scrollbar-color:rgba(255,255,255,0.4) rgba(255,255,255,0.1);">
-          <img src="Sketch_sc/sketch (1).jpeg" alt="Sketch 1" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (2).jpeg" alt="Sketch 2" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (3).jpeg" alt="Sketch 3" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (4).jpeg" alt="Sketch 4" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (5).jpeg" alt="Sketch 5" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (6).jpeg" alt="Sketch 6" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (7).jpeg" alt="Sketch 7" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (8).jpeg" alt="Sketch 8" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (9).jpeg" alt="Sketch 9" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (10).jpeg" alt="Sketch 10" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (11).jpeg" alt="Sketch 11" style="width:100%;border-radius:12px;" />
-          <img src="Sketch_sc/sketch (12).jpeg" alt="Sketch 12" style="width:100%;border-radius:12px;" />
-        </div>
-      </div>
-
-      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Feedback and Testing →</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Feedback & Testing -->
-  <section id="testing" class="reveal" style="--delay: 300ms;">
-    <div class="container">
-            <h2 class="section-title">Feedback &amp; Testing</h2>
-
-      <p class="feedback-intro">"…Because gesture controls are key, I wanted to observe how users would interact."</p>
-
-      <div class="section-body" style="max-width:none;">
-        <p>To achieve this, I presented 2 strong lo-fidelity prototypes (named proto_a and proto_b.) and created a task for Victor and Hank. I created these tasks to observe and study their behaviour and attitude.</p>
-        <p style="margin-top:20px;">The task was simple — I handed my phone with the prototypes to experience the authentic gesture controls, from point A (the homepage) to point B (the contents).</p>
-        <p style="margin-top:20px;">Through observing their actions, I knew what prototype caught their eye as they were constantly interacting with it as if it was a mini-game and not having to interrupt and guide them on how to complete the task. Satisfied with the outcome, proto_a was sent in to hi-fidelity prototyping.</p>
-      </div>
-
-            <p style="font-family:var(--ff-sans);font-size:13px;font-weight: 400;color:var(--mid);margin-top:8px;display:flex;align-items:center;gap:8px;">
-        <span style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #6563ff;flex-shrink:0;"></span>
-        The highlighted screens were prioritised in prototyping
-      </p>
-
-      <div class="screens-grid">
-
-        <!-- MiPage — priority -->
-        <div class="screen-card screen-card--priority">
-          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
-            <img src="SVGS/ic_miPage.svg" alt="MiPage screen" />
-          </div>
-          <div class="screen-card-body">
-            <h3 class="screen-title">MiPage</h3>
-            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
-              <li>Central hub</li>
-              <li>Your curation</li>
-              <li>Users can see your 'MiPage'</li>
-              <li>Adding content</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Tribe — priority -->
-        <div class="screen-card screen-card--priority">
-          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
-            <img src="SVGS/ic_Tribe.svg" alt="Tribe screen" />
-          </div>
-          <div class="screen-card-body">
-            <h3 class="screen-title">Tribe</h3>
-            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
-              <li>Your group</li>
-              <li>See shared content</li>
-              <li>Share content</li>
-              <li>Message members</li>
-              <li>Cycle through multiple Tribes</li>
-              <li>Add members</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Media -->
-        <div class="screen-card">
-          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
-            <img src="SVGS/ic_Media.svg" alt="Media screen" />
-          </div>
-          <div class="screen-card-body">
-            <h3 class="screen-title">Media</h3>
-            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
-              <li>Content exploration</li>
-              <li>Liked and shared content</li>
-              <li>See what other Tribe members have liked and shared</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Add Users -->
-        <div class="screen-card">
-          <div class="screen-card-dark" style="min-height:200px;padding:0;border:none;background:none;">
-            <img src="SVGS/ic_addUsers.svg" alt="Add Users screen" />
-          </div>
-          <div class="screen-card-body">
-            <h3 class="screen-title">Add Users</h3>
-            <ul class="screen-desc" style="list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
-              <li>Find and add registered users</li>
-              <li>Find mutual friends</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-
-      <span class="next-label" style="margin-top:48px;display:inline-block;">Next up: Lo-fidelity Prototyping →</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Hi-fidelity Prototyping -->
-  <section id="hifi" class="reveal" style="--delay: 360ms;">
-    <div class="container">
-            <h2 class="section-title">Hi-fidelity Prototyping</h2>
-
-      <div class="two-col" style="margin-bottom:48px;">
-        <p class="section-body">The MiPage and Tribes page are prioritised because the features will be what separates itself from other social media platforms — integrating complex UX and UI decisions. The media and adding user page is lower on the list as it is not the feature that will capture the audience.</p>
-        <p class="section-body">Due to time restrictions, making a refined and polished style guide was a difficult task. However, since it was a guide for just myself, it was easier to create and follow.</p>
-      </div>
-
-      <h2 class="section-title" style="margin-bottom:16px;">Constraints</h2>
-      <p class="section-body" style="margin-bottom:48px;">Due to limited time, making a polished and refined style guide would have proven difficult, however since the guide was just for my own viewing, I didn't have to create a guide where developers would have required very specific styles and spacing styles. So a mini style-guide was developed anyway for myself to have a direction.</p>
-
-      
-      <div style="background:#252420;border-radius:22px;padding:48px;margin:40px 0;">
-        <h2 class="section-title" style="margin-bottom:24px;color:#ffa51f;">Style Guide</h2>
-        <img src="Tribes_Styleguide.jpg" alt="Tribes Style Guide" style="width:100%;border-radius:12px;display:block;">
-      </div>
-
-      <div class="quote-block" style="margin-top:0;">
-        <p class="speaker">Victor</p>
-        <p>"Are we able to add a quora push animation? The user's friends receiving a notification from the user asking a question about dining suggestions?"</p>
-      </div>
-
-            <div class="principles-grid" style="margin-top:12px;margin-bottom:32px;grid-template-columns:repeat(4,1fr);">
-        <span class="principle-tag">MiPage</span>
-        <span class="principle-tag">Tribe</span>
-        <span class="principle-tag">Media Content</span>
-        <span class="principle-tag">User Discovery</span>
-      </div>
-
-      <p class="section-body" style="margin-bottom:8px;"><strong style="font-weight: 400;">New additions:</strong> Adding a Quora push animation, showcasing users receiving a notification from a Tribe member.</p>
-
-      <div class="centre-nav-block">
-        <h3 style="color:#ffa51f;">Centre Navigation</h3>
-        <p>Located in the MiPage, the centre navigation will be the interactive element with gesture controls. The purpose of this demonstration and achieving its brief, is to go from the homepage to your Tribe and from there, the user will —</p>
-
-        <div class="gesture-group">
-          <div class="gesture-group-item">
-            <label>On tap → Expand</label>
-            <div class="gesture-tags">
-              <span class="gesture-tag">Cycle through different Tribes</span>
-              <span class="gesture-tag">Content exploration</span>
-              <span class="gesture-tag">Discover users</span>
-              <span class="gesture-tag">Add users</span>
-              <span class="gesture-tag">Ask other users and search for recommendations</span>
-            </div>
-          </div>
-          <div class="gesture-group-item">
-            <label>Drag and hold</label>
-            <div class="gesture-tags">
-              <span class="gesture-tag">Tribes</span>
-            </div>
-          </div>
-        </div>
-
-        <img src="Tribe_assets/Center_Nav.png" alt="Centre Navigation diagram" style="width:100%;border-radius:12px;margin-top:32px;display:block;" />
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Final -->
-  <section id="final" class="reveal" style="--delay: 420ms;">
-    <div class="container">
-            <h2 class="section-title">Final</h2>
-    </div>
-
-    <!-- Full-bleed presentation wrapper -->
-    <div style="background:#252420;border-radius:32px;max-width:1160px;margin:0 auto;padding:48px;position:relative;overflow:hidden;">
-
-      <!-- Subtle gradient accent -->
-      <div style="position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(162,45,210,0.12) 0%,transparent 70%);pointer-events:none;"></div>
-      <div style="position:absolute;bottom:-100px;left:-60px;width:350px;height:350px;background:radial-gradient(circle,rgba(90,196,212,0.1) 0%,transparent 70%);pointer-events:none;"></div>
-
-      <!-- Section label -->
-      <p style="font-family:var(--ff-sans);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:24px;">Final Deliverables</p>
-
-      <div class="final-screens" style="gap:16px;">
-
-        <!-- Hero shot -->
-        <div class="final-screen-row">
-          <img src="Tribe_assets/TRI_hero.jpg" alt="MiPage & Tribe Page" style="border-radius:24px;width:100%;" />
-        </div>
-
-        <!-- Row 1: 2-col asymmetric -->
-        <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;height:320px;">
-          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
-            <img src="Tribe_assets/F_Gesture.jpg" alt="Tap and swipe gestures" style="border-radius:24px;width:100%;height:320px;object-fit:cover;" />
-          </div>
-          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
-            <img src="Tribe_assets/F_Tribe.jpg" alt="MiPage to your Tribe or content" style="border-radius:24px;width:100%;height:320px;object-fit:cover;object-position:10% center;" />
-          </div>
-        </div>
-
-        <!-- Row 2: 3-col equal -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
-            <img src="Tribe_assets/F_Talk.jpg" alt="Talk or ask your Tribe" style="border-radius:24px;width:100%;height:100%;object-fit:cover;" />
-          </div>
-          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
-            <img src="Tribe_assets/F_Add.jpg" alt="Invite or add a friend to your Tribe" style="border-radius:24px;width:100%;height:100%;object-fit:cover;" />
-          </div>
-          <div class="final-screen-row" style="overflow:hidden;border-radius:24px;">
-            <img src="Tribe_assets/F_SC.jpg" alt="Screenshot to your MiPage" style="border-radius:24px;width:100%;height:100%;object-fit:cover;" />
-          </div>
-        </div>
-        <!-- Video placeholder -->
-        <div style="border-radius:24px;background:rgba(255,255,255,0.06);border:1.5px dashed rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;min-height:400px;margin-top:16px;cursor:pointer;transition:background .2s;">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-            <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-left:3px;">
-                <path d="M8 5.14v13.72a1 1 0 001.5.86l11.04-6.86a1 1 0 000-1.72L9.5 4.28a1 1 0 00-1.5.86z" fill="rgba(255,255,255,0.5)"/>
-              </svg>
-            </div>
-            <p style="font-family:var(--ff-sans);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Video Coming Soon</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Reflection -->
-  <section id="reflection" class="reveal" style="--delay: 480ms;">
-    <div class="container">
-            <h2 class="section-title">Reflection</h2>
-      <div class="section-body" style="max-width:none;">
-        <p>Working on Tribes taught me that gesture-based UX isn’t just a cool interaction — it’s a promise. If the prototypes don’t clearly communicate affordances and signifiers, users hesitate, and the whole experience loses momentum.</p>
-        <p>I also learned how much clarity matters during collaboration. Aligning with Victor and Hank early helped me translate business goals into interaction priorities, but the time constraints meant I didn’t run as many user interviews as I wanted — and that’s the main thing I would improve.</p>
-        <p>If I had more time, I’d iterate through additional usability sessions, refine the feedback loop around errors and misunderstandings, and push the hi-fidelity stage further so the animations feel as intentional as the layout.</p>
-      </div>
-    </div>
-  </section>
-
-  </main>
-
-  <!-- Back to top -->
-  <a href="#" class="back-to-top" aria-label="Back to top">
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <path d="M9 15V3M9 3L3 9M9 3l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </a>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <a href="/" class="footer-logo">Richie.</a>
-        <ul class="footer-links">
-          <li><a href="https://www.linkedin.com/in/richieprak/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in new tab)">LinkedIn</a></li>
-        </ul>
-        <p class="footer-copy">© 2025 Richie</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Skill: scroll-triggered reveals + reduced motion support.
-    (function () {
-      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return;
-
-      var targets = document.querySelectorAll('section.reveal');
-      if (!targets.length) return;
-
-      if (!('IntersectionObserver' in window)) {
-        targets.forEach(function (t) { t.classList.add('is-visible'); });
-        return;
-      }
-
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        });
-      }, {
-        threshold: 0.08,
-        rootMargin: '0px 0px -48px 0px'
-      });
-
-      targets.forEach(function (t) { io.observe(t); });
-    })();
-
-    document.querySelectorAll('a[href^="/"]').forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        var href = this.href;
-        document.body.classList.add('fade-out');
-        setTimeout(function() { window.location.href = href; }, 300);
-      });
-    });
-
-    // Hero title typing animation
-    (function() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var heading = document.querySelector('.hero-title');
-      if (!heading) return;
-      var text = heading.textContent.trim();
-      var cursor = document.createElement('span');
-      cursor.className = 'type-cursor';
-      heading.style.opacity = '1';
-      heading.innerHTML = '';
-      heading.appendChild(cursor);
-      var i = 0;
-      setTimeout(function() {
-        var timer = setInterval(function() {
-          if (i < text.length) {
-            heading.insertBefore(document.createTextNode(text[i]), cursor);
-            i++;
-          } else {
-            clearInterval(timer);
-            setTimeout(function() {
-              if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
-            }, 900);
-          }
-        }, 60);
-      }, 200);
-    })();
-  </script>
-
-  <!-- Lightbox -->
-  <div class="lightbox-overlay" id="lightbox">
-    <img src="" alt="Enlarged view" />
   </div>
-  <script>
-    (function() {
-      var overlay = document.getElementById('lightbox');
-      var overlayImg = overlay.querySelector('img');
+`,
 
-      document.querySelectorAll('.dark-card img').forEach(function(img) {
-        img.addEventListener('click', function() {
-          overlayImg.src = this.src;
-          overlayImg.alt = this.alt;
-          overlay.classList.add('active');
-        });
-      });
+story: () => `
+  ${header('Overview · How I Got Here', 'How I got here', 'The personal backstory — how I ended up on the Tribes team.')}
 
-      overlay.addEventListener('click', function() {
-        overlay.classList.remove('active');
-        overlayImg.src = '';
-      });
+  <p class="prose-p">Through frequently visiting a local cafe, I ended up connecting with the owner, Victor. He was interested in my projects, and I shared previous and in-progress work. A few months down the road, he recruited me to lead the UX/UI on Tribes alongside Hank, the software engineer.</p>
 
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          overlay.classList.remove('active');
-          overlayImg.src = '';
-        }
-      });
-    })();
-  </script>
+  <p class="prose-p">What pulled me in was the vision — a social app grown into a large network between users, friends, and family, with plans to extend into virtual reality and use AI to guide and assist users along the way.</p>
 
-  <script>
-    // Side jump nav: highlight active section & smooth scroll
-    (function() {
-      var links = document.querySelectorAll('.side-jump a');
-      var sections = [];
+  <p class="prose-p">With AI rapidly changing how we interact with everyday tools, this was a perfect opportunity to jump on board and learn how AI could be used as a learning and guidance tool — not just a novelty feature.</p>
+`,
 
-      links.forEach(function(link) {
-        var id = link.getAttribute('href').replace('#', '');
-        var section = document.getElementById(id);
-        if (section) sections.push({ el: section, link: link });
+research: () => `
+  ${header('Research · Approach', 'Research approach', "Victor emphasised gesture controls as the main interaction pattern — part of future-proofing for VR. Research started there.")}
 
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          var target = document.getElementById(id);
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
-          history.replaceState(null, '', window.location.pathname);
-        });
-      });
+  ${sLabel('Research goals')}
+  ${listCardHTML([
+    {title:'Polished social platforms', body:'Conducting desk research on successful social media platforms and what makes their product feel defined and intentional.', mine:true},
+    {title:'Shared patterns & systems', body:'Discovering what patterns, design systems, and navigations these platforms have in common.', mine:true},
+    {title:'VR products & games', body:'Looking at products and games that use virtual reality — how they handle space, input, and onboarding.'},
+  ])}
 
-      window.addEventListener('scroll', function() {
-        var scrollPos = window.scrollY + 200;
-        var current = null;
-        sections.forEach(function(s) {
-          if (s.el.offsetTop <= scrollPos) current = s;
-        });
-        links.forEach(function(l) { l.classList.remove('active'); });
-        if (current) current.link.classList.add('active');
-      });
-    })();
-  </script>
+  <div class="attention-block">
+    <div class="attention-block-title">What I couldn't get to</div>
+    <div class="attention-block-body">Time constraints meant I wasn't able to run my own user interviews or surveys at this stage. That's called out honestly — it's the first thing I'd fix with more runway.</div>
+  </div>
+`,
 
+findings: () => `
+  ${header('Research · Findings', 'What the research turned up', "Two threads came out of the desk research — user behaviour patterns, and shared design-system moves across successful social apps.")}
+
+  ${sLabel('Behaviour')}
+  ${termlistHTML([
+    {title:'Personalised algorithms', body:'Personalised algorithms keep users engaged — the feed feels like it was made for them.'},
+    {title:'Short-term content', body:'Short-form content has minimal cognitive effort and holds attention longer than long-form equivalents.'},
+    {title:'Social validation', body:'Likes, shares, and reposts give users lightweight feedback loops that reinforce re-engagement.'},
+  ])}
+
+  ${sLabel('Design systems')}
+  ${termlistHTML([
+    {title:'Simple onboarding', body:'Guided, forgiving onboarding — users never feel dropped into complexity on day one.'},
+    {title:'Familiar patterns', body:"Reuse of system conventions means users don't have to re-learn how to navigate."},
+    {title:'Accessibility built in', body:'Colours and typography that meet contrast and readability standards from the start.'},
+    {title:'Approachable colour', body:'Familiar, warm palettes rather than stark or alarming combinations.'},
+    {title:'Breathing room', body:'Generous spacing — content can stretch without feeling cramped.'},
+  ])}
+`,
+
+principles: () => `
+  ${header('Design · Principles', 'Design principles', 'The rules I used to guide every design decision from sketches onward.')}
+
+  <div class="brief-products" style="grid-template-columns:repeat(2,1fr); row-gap:32px;">
+    ${[
+      ['Accessibility', 'Colour, typography, and interaction patterns that work for the widest range of users — from first-time sign-ups to long-term members.'],
+      ['Empowering',    'Every screen should leave the user feeling more capable — not more confused. Interactions give users real control over what they see and share.'],
+      ['Engaging',      'Movement, feedback, and content density that keeps users exploring without overwhelming them.'],
+      ['Meaningful',    'Content and connections feel personal, not performative — shaped around people users actually trust.'],
+      ['Interactive',   'Gesture-first interactions that reward exploration and future-proof the experience for VR.'],
+    ].map(([n,d]) => `
+      <div class="brief-product">
+        <div class="principle-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="20" height="20" rx="3"/>
+            <path d="M9 14 L13 18 L19 10"/>
+          </svg>
+        </div>
+        <div class="brief-product-name">${esc(n)}</div>
+        <div class="brief-product-body">${esc(d)}</div>
+      </div>`).join('')}
+  </div>
+`,
+
+ideation: () => `
+  ${header('Design · Ideation', 'From principles to sketches', 'With direction and clarity from Victor, ideation focused on structure, navigation, and interaction patterns before anything visual.')}
+
+  ${quote("Please add these as screens: a homepage, group page, content exploration, and adding users.", 'Victor — Co-founder')}
+
+  ${sLabel('What the sketches covered')}
+  <div class="grid-2" style="margin-bottom: 28px;">
+    <div>
+      ${listCardHTML([
+        {title:'Structure', body:'How the app is organised — what lives where.'},
+        {title:'Component layout', body:'Placement and hierarchy of UI elements per screen.'},
+        {title:'Content layout', body:'How content stacks, flows, and surfaces to the user.'},
+        {title:'Interaction patterns', body:'Gesture controls and how users would discover them.'},
+      ])}
+    </div>
+    <div>
+      ${listCardHTML([
+        {title:'Navigation', body:'How users move between MiPage, Tribe, Media, and Users.'},
+        {title:'User flow', body:'End-to-end journeys from homepage to content.'},
+        {title:'Pain points', body:'Pinpointing where users might get lost or stuck.'},
+        {title:'Tasks for founders', body:'Setting up something concrete Victor and Hank could test.'},
+      ])}
+    </div>
+  </div>
+
+  ${quote("Are we able to make the home screen different from traditional pages — something like a quadrant view?", 'Victor — Co-founder')}
+
+  <div class="attention-block">
+    <div class="attention-block-title">Reframing the homepage</div>
+    <div class="attention-block-body">Existing references didn't give me enough to work with. I took Victor's quadrant-view prompt and sketched my own rendition of a homepage that met the brief and aligned with UX principles. It was a challenge, but a fun one — and it became the basis for what we'd test.</div>
+  </div>
+
+  ${sLabel('Sketches')}
+  ${img('Sketch strip — 12 pages of homepage, gestures, and flows', 260)}
+`,
+
+testing: () => `
+  ${header('Design · Feedback & Testing', 'Observing how gestures actually land', "Because gesture controls are the key interaction, I wanted to observe how users would react without being told what to do.")}
+
+  <p class="prose-p">I built two lo-fi prototypes — <strong>proto_a</strong> and <strong>proto_b</strong> — and set up a task for Victor and Hank. Each was handed my phone with the prototypes loaded, and asked to get from point A (the homepage) to point B (the contents) using only gestures.</p>
+
+  <p class="prose-p">Watching their hands told me more than any survey would. One prototype had them interacting like it was a mini-game — they didn't need to be prompted, didn't ask for help, didn't stop. That was proto_a. It moved on to hi-fi.</p>
+
+  ${ruleAccent()}
+
+  ${sLabel('The four screens')}
+  <div class="priority-legend">
+    <span class="chip" aria-hidden="true"></span>
+    <span>Priority screens that moved into hi-fi prototyping</span>
+  </div>
+
+  <div class="screen-grid">
+
+    <div class="screen-card is-priority">
+      <div class="ph">MiPage</div>
+      <div class="t">MiPage</div>
+      <ul>
+        <li>Central hub</li>
+        <li>Your curation</li>
+        <li>Users can see your MiPage</li>
+        <li>Adding content</li>
+      </ul>
+    </div>
+
+    <div class="screen-card is-priority">
+      <div class="ph">Tribe</div>
+      <div class="t">Tribe</div>
+      <ul>
+        <li>Your group</li>
+        <li>See shared content</li>
+        <li>Share content</li>
+        <li>Message members</li>
+        <li>Cycle through multiple Tribes</li>
+        <li>Add members</li>
+      </ul>
+    </div>
+
+    <div class="screen-card">
+      <div class="ph">Media</div>
+      <div class="t">Media</div>
+      <ul>
+        <li>Content exploration</li>
+        <li>Liked and shared content</li>
+        <li>See what Tribe members liked and shared</li>
+      </ul>
+    </div>
+
+    <div class="screen-card">
+      <div class="ph">Add Users</div>
+      <div class="t">Add Users</div>
+      <ul>
+        <li>Find and add registered users</li>
+        <li>Find mutual friends</li>
+      </ul>
+    </div>
+
+  </div>
+
+  ${sLabel('Participants')}
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    ${[['Victor','Co-founder','Gesture test'],['Hank','Engineer','Gesture test']]
+      .map(([p,d,r]) => `<div class="participant-card"><div class="p">${esc(p)}</div><div class="d">${esc(d)}</div><div class="r">${esc(r)}</div></div>`).join('')}
+  </div>
+`,
+
+hifi: () => `
+  ${header('Design · Hi-fidelity', 'Hi-fi prototyping', 'The MiPage and Tribe screens went into hi-fi first — those are the features that differentiate Tribes from other social apps. Media and Add Users are lower-priority and could be polished later.')}
+
+  ${sLabel('Constraints')}
+  <p class="prose-p">Time restrictions meant I couldn't build a fully polished, dev-ready style guide. Since I was the only designer using it, a lightweight version was enough — specs tight enough to keep me consistent, loose enough not to slow the team down.</p>
+
+  ${sLabel('Style guide')}
+  ${img('Tribes style guide — type, colour, components', 220)}
+
+  ${quote("Are we able to add a quora push animation? The user's friends receive a notification asking for dining suggestions.", 'Victor — Co-founder')}
+
+  ${sLabel('Screens in scope')}
+  <div class="grid-4" style="margin-bottom:28px;">
+    ${['MiPage','Tribe','Media Content','User Discovery'].map(t => `
+      <div class="flow-step">
+        <div class="label">${esc(t)}</div>
+      </div>`).join('')}
+  </div>
+
+  <div class="attention-block">
+    <div class="attention-block-title">New addition</div>
+    <div class="attention-block-body">A Quora-style push animation — users receive notifications from Tribe members asking for recommendations. Brought requests out of chat and into the main flow.</div>
+  </div>
+`,
+
+centrenav: () => `
+  ${header('Design · Centre Navigation', 'The Centre Navigation', 'The centre element on MiPage is the main gesture surface. The goal: go from homepage to your Tribe without leaving the screen, using gestures only.')}
+
+  ${sLabel('How it behaves')}
+  <div class="gesture-group">
+
+    <div class="gesture-group-item">
+      <div class="ttl">On tap → expand</div>
+      <div class="gesture-tags">
+        <span class="gesture-tag">Cycle through Tribes</span>
+        <span class="gesture-tag">Content exploration</span>
+        <span class="gesture-tag">Discover users</span>
+        <span class="gesture-tag">Add users</span>
+        <span class="gesture-tag">Ask for recommendations</span>
+      </div>
+    </div>
+
+    <div class="gesture-group-item">
+      <div class="ttl">Drag and hold</div>
+      <div class="gesture-tags">
+        <span class="gesture-tag">Tribes</span>
+      </div>
+    </div>
+
+  </div>
+
+  ${img('Centre Navigation diagram — gesture states', 280)}
+
+  <div class="attention-block">
+    <div class="attention-block-title">Why gestures instead of tabs</div>
+    <div class="attention-block-body">Tabs work for mobile, but they don't translate to VR. A single interactive centre element — one that responds to tap and hold — keeps the mobile UX coherent today and maps cleanly to future spatial interactions.</div>
+  </div>
+`,
+
+final: () => `
+  ${header('Outcome · Final', 'The final build', "The hi-fi prototype brought the strongest lo-fi direction to life, extended by Victor's push animation and the Centre Navigation interaction.")}
+
+  ${sLabel('Final deliverables')}
+  <div class="grid-2" style="margin-bottom: 28px;">
+    ${[
+      ['Hero shot', 'MiPage + Tribe side-by-side'],
+      ['Gestures', 'Tap and swipe demonstrations'],
+      ['MiPage to Tribe', 'Core navigation flow'],
+      ['Ask your Tribe', 'Quora-style recommendation push'],
+      ['Add a friend', 'Inviting users into your Tribe'],
+      ['Screenshot to MiPage', 'Content capture flow'],
+    ].map(([t, d]) => `
+      <div class="card">
+        <div class="card-h">${esc(t)}</div>
+        <div class="card-body">${esc(d)}</div>
+      </div>`).join('')}
+  </div>
+
+  ${img('Final hero — MiPage & Tribe', 320)}
+
+  <div class="grid-2 grid-gap-lg" style="margin-bottom: 28px;">
+    ${img('Tap & swipe gestures', 220)}
+    ${img('MiPage to Tribe', 220)}
+  </div>
+
+  <div class="grid-3" style="margin-bottom: 28px;">
+    ${img('Ask your Tribe', 180)}
+    ${img('Add a friend', 180)}
+    ${img('Screenshot to MiPage', 180)}
+  </div>
+
+  ${callout('Video walkthrough', 'A full interactive walkthrough video is in progress — it will cover the MiPage &rarr; Tribe flow end-to-end, with gesture annotations.')}
+`,
+
+reflection: () => `
+  ${header('Outcome · Reflection', "What Tribes taught me", "Four months, two founders, one MVP — here's what I'd take with me.")}
+
+  ${termlistHTML([
+    {title:'Gestures are a promise', body:"Gesture-based UX isn't just a cool interaction — it's a commitment to communicate affordances clearly. If the prototype doesn't show users how to move, the whole thing loses momentum."},
+    {title:'Alignment beats artefacts', body:'Aligning with Victor and Hank early mattered more than having polished deliverables. Translating business goals into interaction priorities week-by-week kept us from drifting.'},
+    {title:'User research was the gap', body:"Time constraints meant I ran fewer user interviews than I wanted. That's the single biggest thing I'd change with more runway — real users, not just founder stand-ins."},
+    {title:"What I'd push further", body:'With more time, I would iterate through additional usability sessions, refine the feedback loop around errors, and push hi-fi further so the animations feel as intentional as the layout.'},
+  ])}
+`,
+
+};
+
+/* NavStrip at bottom of every section */
+function navStripHTML(active) {
+  const idx = NAV_ORDER.indexOf(active);
+  const prevId = idx > 0 ? NAV_ORDER[idx-1] : null;
+  const nextId = idx < NAV_ORDER.length - 1 ? NAV_ORDER[idx+1] : null;
+  const prev = prevId
+    ? `<button class="prev" data-nav="${prevId}">&larr; ${esc(SECTION_META[prevId].label)}</button>`
+    : `<span></span>`;
+  const next = nextId
+    ? `<button class="next" data-nav="${nextId}">
+         <div class="next-label">Next up</div>
+         <div class="next-title">${esc(SECTION_META[nextId].label)} &rarr;</div>
+       </button>`
+    : '';
+  return `<div class="navstrip">${prev}${next}</div>`;
+}
+
+/* ───────────────────────────────────────
+   RENDER
+─────────────────────────────────────── */
+const contentInner = document.getElementById('content-inner');
+const navGroupsEl  = document.getElementById('nav-groups');
+const progressBar  = document.getElementById('progress-bar');
+const progressPct  = document.getElementById('progress-pct');
+const contentPane  = document.getElementById('content');
+const sidebarEl    = document.getElementById('sidebar');
+const scrimEl      = document.getElementById('scrim');
+const menuBtn      = document.getElementById('menu-btn');
+
+let active = 'intro';
+
+function buildSidebar() {
+  navGroupsEl.innerHTML = GROUPS.map(g => `
+    <div class="nav-group">
+      <div class="nav-group-label">${esc(g.group)}</div>
+      ${g.ids.map(id => `
+        <button class="nav-item" data-nav="${id}" type="button">
+          <span class="nav-dot" aria-hidden="true"></span>
+          <span class="nav-label">${esc(SECTION_META[id].label)}</span>
+        </button>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function updateNavStates() {
+  const activeIdx = NAV_ORDER.indexOf(active);
+  navGroupsEl.querySelectorAll('.nav-item').forEach(btn => {
+    const id = btn.dataset.nav;
+    const idx = NAV_ORDER.indexOf(id);
+    btn.classList.toggle('is-active', id === active);
+    btn.classList.toggle('is-done', idx < activeIdx);
+    if (id === active) btn.setAttribute('aria-current', 'true');
+    else btn.removeAttribute('aria-current');
+  });
+}
+
+function updateProgress() {
+  const pct = PROGRESS_PCT[active] || 0;
+  progressBar.style.width = pct + '%';
+  progressPct.textContent = pct + '%';
+}
+
+function render(id) {
+  if (!CONTENT[id]) return;
+  active = id;
+
+  const html = `
+    <section class="section is-visible" id="section-${id}" aria-labelledby="title-${id}">
+      ${CONTENT[id]()}
+      ${navStripHTML(id)}
+    </section>
+  `;
+  contentInner.innerHTML = html;
+  contentInner.setAttribute('data-section', id);
+  contentPane.scrollTop = 0;
+  updateNavStates();
+  updateProgress();
+
+  if (history.replaceState) {
+    history.replaceState(null, '', '#' + id);
+  }
+
+  closeSidebar();
+}
+
+function openSidebar() {
+  sidebarEl.classList.add('is-open');
+  scrimEl.classList.add('is-open');
+  menuBtn.setAttribute('aria-expanded', 'true');
+}
+function closeSidebar() {
+  sidebarEl.classList.remove('is-open');
+  scrimEl.classList.remove('is-open');
+  menuBtn.setAttribute('aria-expanded', 'false');
+}
+
+/* ───────────────────────────────────────
+   EVENTS
+─────────────────────────────────────── */
+document.addEventListener('click', (e) => {
+  const navBtn = e.target.closest('[data-nav]');
+  if (navBtn) {
+    render(navBtn.dataset.nav);
+  }
+});
+
+menuBtn.addEventListener('click', () => {
+  if (sidebarEl.classList.contains('is-open')) closeSidebar();
+  else openSidebar();
+});
+scrimEl.addEventListener('click', closeSidebar);
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+  const idx = NAV_ORDER.indexOf(active);
+  if (e.key === 'ArrowRight' && idx < NAV_ORDER.length - 1) {
+    e.preventDefault();
+    render(NAV_ORDER[idx + 1]);
+  } else if (e.key === 'ArrowLeft' && idx > 0) {
+    e.preventDefault();
+    render(NAV_ORDER[idx - 1]);
+  } else if (e.key === 'Escape') {
+    closeSidebar();
+  }
+});
+
+/* ───────────────────────────────────────
+   INIT
+─────────────────────────────────────── */
+buildSidebar();
+
+const hashId = (location.hash || '').replace('#', '');
+render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
+</script>
 </body>
 </html>
