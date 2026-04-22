@@ -1163,8 +1163,8 @@
     <span class="crumb-now">Sharesies</span>
     <div class="topnav-spacer"></div>
     <nav class="topnav-links" aria-label="Primary">
-      <a href="#">About</a>
-      <a href="#">Work</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#work">Work</a>
     </nav>
     <button class="menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -2398,9 +2398,9 @@ function render(id) {
   updateNavStates();
   updateProgress();
 
-  // update URL hash (no scroll jump)
+  // keep URL clean — no hash
   if (history.replaceState) {
-    history.replaceState(null, '', '#' + id);
+    history.replaceState(null, '', window.location.pathname);
   }
 
   // close mobile sidebar if open
