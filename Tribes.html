@@ -684,6 +684,10 @@
   @media (max-width: 480px) {
     .content-inner { padding: 24px 18px 64px; }
   }
+
+  /* Image fade-in on load */
+  img:not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
+  img:not(.avatar-circle).is-loaded { opacity: 1; }
 </style>
 </head>
 <body>
@@ -697,8 +701,8 @@
     <span class="crumb-now">Tribes</span>
     <div class="topnav-spacer"></div>
     <nav class="topnav-links" aria-label="Primary">
-      <a href="#">About</a>
-      <a href="#">Work</a>
+      <a href="/">About</a>
+      <a href="/">Work</a>
     </nav>
     <button class="menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -863,7 +867,7 @@ const CONTENT = {
 intro: () => `
   ${header('Overview · Intro', 'Tribes — designing a gesture-led social **MVP.**', 'Tribes is a social app built around personalised AI, curated search, and gesture-based interaction. I led the UX/UI for the MVP — shaping the first interactive prototype investors would see.')}
 
-  <img src="Tribe_assets/TRI_hero.jpg" alt="Tribes hero — MiPage and Tribe screens" style="width: 100%; display: block; border-radius: 10px; margin-bottom: 16px;" />
+  <img src="Tribe_assets/TRI_hero.jpg" alt="Tribes hero — MiPage and Tribe screens" loading="lazy" decoding="async" style="width: 100%; display: block; border-radius: 10px; margin-bottom: 16px;" />
 
   ${sLabel('By the numbers')}
   <div class="by-numbers" role="list">
@@ -1278,6 +1282,17 @@ function updateProgress() {
   progressPct.textContent = pct + '%';
 }
 
+function setupImgFade() {
+  contentInner.querySelectorAll('img:not(.avatar-circle)').forEach(function(img) {
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('is-loaded');
+    } else {
+      img.addEventListener('load',  function() { this.classList.add('is-loaded'); }, { once: true });
+      img.addEventListener('error', function() { this.classList.add('is-loaded'); }, { once: true });
+    }
+  });
+}
+
 function render(id) {
   if (!CONTENT[id]) return;
   active = id;
@@ -1293,9 +1308,10 @@ function render(id) {
   contentPane.scrollTop = 0;
   updateNavStates();
   updateProgress();
+  setupImgFade();
 
   if (history.replaceState) {
-    history.replaceState(null, '', '#' + id);
+    history.replaceState(null, '', window.location.pathname);
   }
 
   closeSidebar();
