@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Richie — Product Designer</title>
+    <title>Richie</title>
 
     <!-- Open Graph / Link Preview -->
     <meta property="og:title" content="Richie — UX/UI & Multimedia Designer" />
@@ -823,12 +823,12 @@
 
     <!-- ══ NAV ══════════════════════════════════════ -->
     <nav>
-        <a href="#" class="nav-logo">
+        <a href="/" class="nav-logo">
             Richie<span class="nav-logo-dot"></span>
         </a>
         <ul class="nav-links">
-            <li><a href="#about" class="nav-link">About</a></li>
-            <li><a href="#work"  class="nav-link">Work</a></li>
+            <li><a href="javascript:void(0)" data-scroll="about" class="nav-link">About</a></li>
+            <li><a href="javascript:void(0)" data-scroll="work"  class="nav-link">Work</a></li>
         </ul>
     </nav>
 
@@ -860,7 +860,7 @@
                 <!-- actions row: gap 20px -->
                 <div class="hero-actions stack-block">
                     <!-- Component 2 variant-1: dark pill -->
-                    <a href="#work" class="btn-dark">
+                    <a href="javascript:void(0)" data-scroll="work" class="btn-dark">
                         View my work
                         <svg class="arrow-icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
                             <path d="M2.5 12.5L12.5 2.5M12.5 2.5H5.5M12.5 2.5V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1015,7 +1015,7 @@
 
     <!-- ══ FOOTER ═════════════════════════════════════ -->
     <footer>
-        <a href="#" class="footer-logo">
+        <a href="/" class="footer-logo">
             Richie<span class="footer-logo-dot"></span>
         </a>
         <ul class="footer-links">
@@ -1110,17 +1110,12 @@
                 });
             }, 300);
         })();
-    // Clean URL: scroll without adding # to the URL
-    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+    // Scroll to section without adding hash to URL
+    document.querySelectorAll('a[data-scroll]').forEach(function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        var target = document.querySelector(this.getAttribute('href'));
-        if (this.getAttribute('href') === '#') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-        history.replaceState(null, '', window.location.pathname);
+        var target = document.getElementById(this.getAttribute('data-scroll'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     });
     </script>
