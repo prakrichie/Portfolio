@@ -1150,6 +1150,10 @@
   @media (max-width: 480px) {
     .content-inner { padding: 24px 18px 64px; }
   }
+
+  /* Image fade-in on load (standalone images outside .reveal) */
+  img:not(.reveal):not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
+  img:not(.reveal):not(.avatar-circle).is-loaded { opacity: 1; }
 </style>
 </head>
 <body>
@@ -2124,7 +2128,7 @@ deliverables: () => `
 
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center; margin-bottom:28px;">
     ${callout('The animation moment', 'During the demo, a micro-interaction on the values selection screen got an audible reaction from the Sharesies team. It was the moment the prototype stopped feeling like a student project and started feeling real.')}
-    <video src="box stacking.mp4" autoplay loop muted playsinline style="width:100%; border-radius:12px; display:block;"></video>
+    <video src="box stacking.mp4" autoplay loop muted playsinline preload="metadata" style="width:100%; border-radius:12px; display:block;"></video>
   </div>
 `,
 
@@ -2204,6 +2208,17 @@ const menuBtn      = document.getElementById('menu-btn');
 
 let active = 'intro';
 let revealObserver = null;
+
+function setupImgFade() {
+  contentInner.querySelectorAll('img:not(.reveal):not(.avatar-circle)').forEach(function(img) {
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('is-loaded');
+    } else {
+      img.addEventListener('load',  function() { this.classList.add('is-loaded'); }, { once: true });
+      img.addEventListener('error', function() { this.classList.add('is-loaded'); }, { once: true });
+    }
+  });
+}
 
 function setupReveals() {
   if (revealObserver) { revealObserver.disconnect(); revealObserver = null; }
@@ -2395,6 +2410,7 @@ function render(id) {
   contentPane.scrollTop = 0;
   setupReveals();
   setupCarousel();
+  setupImgFade();
   updateNavStates();
   updateProgress();
 

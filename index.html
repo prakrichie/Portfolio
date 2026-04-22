@@ -817,6 +817,10 @@
 
             footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
         }
+
+        /* Image fade-in on load */
+        img { opacity: 0; transition: opacity 0.45s ease; }
+        img.is-loaded { opacity: 1; }
     </style>
 </head>
 <body>
@@ -944,7 +948,7 @@
             <!-- Card 1: Sharesies ──────────────── -->
             <a class="card" href="Sharesies">
                 <div class="card-image">
-                    <img src="Sharesies.png" alt="Sharesies — Investment Platform">
+                    <img src="Sharesies.png" alt="Sharesies — Investment Platform" loading="lazy" decoding="async">
                 </div>
                 <div class="card-body">
                     <div class="card-tags">
@@ -968,7 +972,7 @@
             <!-- Card 2: Tribes ─────────────────── -->
             <a class="card" href="Tribes">
                 <div class="card-image">
-                    <img src="Tribe_assets/Tribes.png" alt="Tribes — Social Discovery App">
+                    <img src="Tribe_assets/Tribes.png" alt="Tribes — Social Discovery App" loading="lazy" decoding="async">
                 </div>
                 <div class="card-body">
                     <div class="card-tags">
@@ -992,7 +996,7 @@
             <!-- Card 3: Munchies ───────────────── -->
             <a class="card card--inactive" href="#">
                 <div class="card-image">
-                    <img src="Munchies.png" alt="Munchies — Food Delivery App">
+                    <img src="Munchies.png" alt="Munchies — Food Delivery App" loading="lazy" decoding="async">
                 </div>
                 <div class="card-body">
                     <div class="card-tags">
@@ -1110,6 +1114,16 @@
                 });
             }, 300);
         })();
+    // Image fade-in on load
+    document.querySelectorAll('img').forEach(function(img) {
+      if (img.complete && img.naturalWidth > 0) {
+        img.classList.add('is-loaded');
+      } else {
+        img.addEventListener('load',  function() { this.classList.add('is-loaded'); }, { once: true });
+        img.addEventListener('error', function() { this.classList.add('is-loaded'); }, { once: true });
+      }
+    });
+
     // Scroll to section without adding hash to URL
     document.querySelectorAll('a[data-scroll]').forEach(function(link) {
       link.addEventListener('click', function(e) {
