@@ -66,37 +66,39 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   4. CURSOR — shared across all pages
+   4. CURSOR — shared across all pages, desktop / fine-pointer only
    Ring follows instantly; dot lags for organic feel.
    Scoped to the portfolio shell — doesn't break external links.
 ───────────────────────────────────────────────────────── */
-.portfolio-page,
-.portfolio-page * { cursor: none !important; }
+@media (hover: hover) and (pointer: fine) {
+  .portfolio-page,
+  .portfolio-page * { cursor: none !important; }
 
-#ds-cursor-ring {
-  position: fixed;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: exclusion;
-  color: inherit;
-  transition: width .18s ease, height .18s ease, border-color .18s ease;
-}
-#ds-cursor-dot {
-  position: fixed;
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--roughy, #c94a1a);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-}
-.portfolio-page:has(a:hover) #ds-cursor-ring,
-.portfolio-page:has(button:hover) #ds-cursor-ring {
-  width: 30px; height: 30px;
+  #ds-cursor-ring {
+    position: fixed;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: exclusion;
+    color: inherit;
+    transition: width .18s ease, height .18s ease, border-color .18s ease;
+  }
+  #ds-cursor-dot {
+    position: fixed;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--roughy, #c94a1a);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+  .portfolio-page:has(a:hover) #ds-cursor-ring,
+  .portfolio-page:has(button:hover) #ds-cursor-ring {
+    width: 30px; height: 30px;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────

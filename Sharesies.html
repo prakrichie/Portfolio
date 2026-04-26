@@ -1155,27 +1155,36 @@
   img:not(.reveal):not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
   img:not(.reveal):not(.avatar-circle).is-loaded { opacity: 1; }
 
-  /* ── Custom cursor ── */
-  body { cursor: none !important; }
-  #cur-ring {
-    position: fixed; pointer-events: none; z-index: 9999;
-    width: 14px; height: 14px;
-    border: 1.5px solid #0D0D0D;
-    border-radius: 50%;
-    transform: translate(-50%,-50%);
-    transition: width .18s, height .18s, border-color .18s, opacity .18s;
-    mix-blend-mode: exclusion;
+  /* ── Custom cursor — desktop / fine-pointer only ── */
+  @media (hover: hover) and (pointer: fine) {
+    body { cursor: none !important; }
+    #cur-ring {
+      position: fixed; pointer-events: none; z-index: 9999;
+      width: 14px; height: 14px;
+      border: 1.5px solid #0D0D0D;
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+      transition: width .18s, height .18s, border-color .18s, opacity .18s;
+      mix-blend-mode: exclusion;
+    }
+    #cur-dot {
+      position: fixed; pointer-events: none; z-index: 9999;
+      width: 4px; height: 4px;
+      background: #E8366A;
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+      transition: transform .08s;
+    }
+    body:has(a:hover) #cur-ring,
+    body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #E8366A; }
   }
-  #cur-dot {
-    position: fixed; pointer-events: none; z-index: 9999;
-    width: 4px; height: 4px;
-    background: #E8366A;
-    border-radius: 50%;
-    transform: translate(-50%,-50%);
-    transition: transform .08s;
+
+  /* ── Touch reset — neutralise hover-driven transforms on touch ── */
+  @media (hover: none) {
+    .hifi-nav:hover { transform: translateY(-50%); background: transparent; color: inherit; }
+    .navstrip .next:hover { transform: none; }
+    .poster-wrap:hover { opacity: 1; }
   }
-  body:has(a:hover) #cur-ring,
-  body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #E8366A; }
 
   /* ── Pixel canvas overlay ── */
   .px-canvas {
@@ -2526,8 +2535,9 @@ render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
 </script>
 
 <script>
-/* ── Custom cursor ── */
+/* ── Custom cursor — skip on touch devices ── */
 (function() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
   const dot  = document.createElement('div'); dot.id  = 'cur-dot';  document.body.appendChild(dot);
   let mx=0,my=0,cx=0,cy=0;
@@ -2570,10 +2580,12 @@ function runReveal(canvas, fill) {
   }
   setTimeout(()=>requestAnimationFrame(step),60);
 }
-document.querySelectorAll('img').forEach(img => {
-  if (img.complete) pixelReveal(img);
-  else img.addEventListener('load', () => pixelReveal(img), {once:true});
-});
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.querySelectorAll('img').forEach(img => {
+    if (img.complete) pixelReveal(img);
+    else img.addEventListener('load', () => pixelReveal(img), {once:true});
+  });
+}
 
 /* ── Scroll reveal sections ── */
 const revObs = new IntersectionObserver(entries => {
@@ -2597,8 +2609,9 @@ document.querySelectorAll('p, li, .body-text, .stack-body').forEach(el => { if(e
 </script>
 
 <script>
-/* ── DS Cursor ── */
+/* ── DS Cursor — skip on touch devices ── */
 (function() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'ds-cursor-ring'; document.body.appendChild(ring);
   const dot  = document.createElement('div'); dot.id  = 'ds-cursor-dot';  document.body.appendChild(dot);
   let mx=0,my=0,cx=0,cy=0;

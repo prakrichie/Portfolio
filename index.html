@@ -1276,30 +1276,49 @@
         }
 
         /* ════════════════════════════════════════════
-           CUSTOM CURSOR
+           CUSTOM CURSOR — desktop / fine-pointer only
         ════════════════════════════════════════════ */
-        body { cursor: none; }
-        #cur-ring {
-            position: fixed; pointer-events: none; z-index: 9999;
-            width: 14px; height: 14px;
-            border: 1.5px solid var(--rangoon);
-            border-radius: 50%;
-            transform: translate(-50%,-50%);
-            transition: width .2s, height .2s, border-color .2s, background .2s;
-            mix-blend-mode: multiply;
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+            #cur-ring {
+                position: fixed; pointer-events: none; z-index: 9999;
+                width: 14px; height: 14px;
+                border: 1.5px solid var(--rangoon);
+                border-radius: 50%;
+                transform: translate(-50%,-50%);
+                transition: width .2s, height .2s, border-color .2s, background .2s;
+                mix-blend-mode: multiply;
+            }
+            #cur-dot {
+                position: fixed; pointer-events: none; z-index: 9999;
+                width: 4px; height: 4px;
+                background: var(--roughy);
+                border-radius: 50%;
+                transform: translate(-50%,-50%);
+            }
+            body:has(a:hover) #cur-ring,
+            body:has(button:hover) #cur-ring {
+                width: 32px; height: 32px;
+                border-color: var(--roughy);
+                background: rgba(201,74,26,.06);
+            }
         }
-        #cur-dot {
-            position: fixed; pointer-events: none; z-index: 9999;
-            width: 4px; height: 4px;
-            background: var(--roughy);
-            border-radius: 50%;
-            transform: translate(-50%,-50%);
-        }
-        body:has(a:hover) #cur-ring,
-        body:has(button:hover) #cur-ring {
-            width: 32px; height: 32px;
-            border-color: var(--roughy);
-            background: rgba(201,74,26,.06);
+
+        /* ════════════════════════════════════════════
+           TOUCH RESET — neutralise hover-driven effects
+           on devices without a real pointer so iOS
+           doesn't "stick" hover state after a tap.
+        ════════════════════════════════════════════ */
+        @media (hover: none) {
+            .card:hover { transform: none; box-shadow: none; border-color: var(--line); }
+            .card:hover .media-inner { transform: none; }
+            .card--locked:hover .munchies-mock { filter: blur(6px) saturate(0.6); }
+            .card--locked:hover .lock-overlay { background: rgba(244, 242, 236, 0.5); }
+            .card--locked:hover .lock-icon { transform: none; }
+            .card:hover .foot-cta .arrow { transform: none; }
+            .card:hover::before { opacity: 0; }
+            .card:hover::after { opacity: 0; animation: none; }
+            .creative-ig-btn:hover { transform: none; background: rgba(244,242,236,.1); border-color: rgba(244,242,236,.2); }
         }
 
         /* ════════════════════════════════════════════
@@ -1957,7 +1976,9 @@
       setTimeout(() => requestAnimationFrame(step), 80);
     }
 
-    document.querySelectorAll('.card').forEach(pixelReveal);
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.card').forEach(pixelReveal);
+    }
 
     /* ── Scroll-triggered word highlights ── */
     const hlObs = new IntersectionObserver(entries => {
@@ -1973,17 +1994,20 @@
 
     document.querySelectorAll('.stack-body').forEach(el => hlObs.observe(el));
 
-    /* ── Custom cursor ── */
-    const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
-    const dot  = document.createElement('div'); dot.id  = 'cur-dot';  document.body.appendChild(dot);
-    let mx = 0, my = 0, cx = 0, cy = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    (function loop() {
-      cx += (mx - cx) * 0.14; cy += (my - cy) * 0.14;
-      ring.style.left = mx + 'px'; ring.style.top = my + 'px';
-      dot.style.left  = cx + 'px'; dot.style.top  = cy + 'px';
-      requestAnimationFrame(loop);
-    })();
+    /* ── Custom cursor — skip on touch devices ── */
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover) {
+      const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
+      const dot  = document.createElement('div'); dot.id  = 'cur-dot';  document.body.appendChild(dot);
+      let mx = 0, my = 0, cx = 0, cy = 0;
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+      (function loop() {
+        cx += (mx - cx) * 0.14; cy += (my - cy) * 0.14;
+        ring.style.left = mx + 'px'; ring.style.top = my + 'px';
+        dot.style.left  = cx + 'px'; dot.style.top  = cy + 'px';
+        requestAnimationFrame(loop);
+      })();
+    }
 
     /* ── Typewriter ── */
     const roles = [
