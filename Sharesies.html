@@ -258,7 +258,7 @@
 
   .content-inner[data-section="brief"] .brief-products .brief-product {
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 20px 22px;
     background: var(--bg);
   }
@@ -322,7 +322,7 @@
   .lightbox-overlay.is-open { opacity: 1; pointer-events: all; }
   .lightbox-overlay img {
     max-width: 100%; max-height: 100%;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 32px 80px rgba(0,0,0,.4);
     transform: scale(.94);
     transition: transform .35s cubic-bezier(.22,.61,.36,1);
@@ -508,7 +508,7 @@
   .card {
     padding: 16px 18px;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: var(--bg);
   }
   .card.is-muted { background: var(--bg-2); }
@@ -534,7 +534,7 @@
 
   .list-card {
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     margin-bottom: 28px;
     background: var(--bg);
@@ -577,7 +577,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     margin-bottom: 28px;
   }
@@ -669,7 +669,7 @@
   .participant-card {
     padding: 16px 18px;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: var(--bg);
     text-align: center;
     min-width: 100px;
@@ -680,7 +680,7 @@
 
   /* Participant groups — tinted cards */
   .pgroups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px; }
-  .pgroup { border: 1px solid; border-radius: 14px; padding: 22px 26px; }
+  .pgroup { border: 1px solid; border-radius: 12px; padding: 22px 26px; }
   .pgroup.is-pink { background: #FCE9EC; border-color: #F4C8D1; }
   .pgroup.is-teal { background: #E8F4ED; border-color: #B8DDC5; }
   .pgroup-head {
@@ -722,7 +722,7 @@
     align-items: center;
     gap: 22px;
     background: #161616;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 24px 28px;
     margin-bottom: 20px;
   }
@@ -751,7 +751,7 @@
     display: flex;
     flex-direction: column;
     background: #F5F1EB;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 24px 26px 22px;
   }
   .ins-num {
@@ -917,7 +917,7 @@
   .flow-step {
     padding: 14px 12px;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     text-align: center;
     background: var(--bg);
   }
@@ -933,7 +933,7 @@
   .dd-card {
     padding: 14px 14px;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: var(--bg);
   }
   .dd-card .n  { font-size: 11px; font-weight: 700; color: var(--ink-light); margin-bottom: 6px; letter-spacing: .02em; }
@@ -1154,9 +1154,60 @@
   /* Image fade-in on load (standalone images outside .reveal) */
   img:not(.reveal):not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
   img:not(.reveal):not(.avatar-circle).is-loaded { opacity: 1; }
-</style>
+
+  /* ── Custom cursor ── */
+  body { cursor: none !important; }
+  #cur-ring {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 14px; height: 14px;
+    border: 1.5px solid #0D0D0D;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: width .18s, height .18s, border-color .18s, opacity .18s;
+    mix-blend-mode: exclusion;
+  }
+  #cur-dot {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 4px; height: 4px;
+    background: #E8366A;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: transform .08s;
+  }
+  body:has(a:hover) #cur-ring,
+  body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #E8366A; }
+
+  /* ── Pixel canvas overlay ── */
+  .px-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 5;
+    display: block; border-radius: inherit;
+  }
+
+  /* ── Scroll highlight words ── */
+  .hl-word {
+    display: inline;
+    background-image: linear-gradient(#E8366A, #E8366A);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    background-position: left center;
+    border-radius: 3px;
+    padding: 0 3px; margin: 0 -3px;
+    transition: background-size .55s cubic-bezier(.22,1,.36,1), color .4s ease;
+  }
+  .hl-word.lit { background-size: 100% 100%; color: #fff; }
+
+  /* ── Section fade-in on scroll ── */
+  .scroll-reveal {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);
+  }
+  .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  </style>
+<link rel="stylesheet" href="design-system.css">
 </head>
-<body>
+<body class="portfolio-page">
 
 <div class="app">
 
@@ -1913,7 +1964,7 @@ midfi: () => `
   <h2 class="sub-head">Progression redesign</h2>
   <div class="grid-2 grid-gap-lg">
     <div>
-      <div style="background:#f4f2ec; border-radius:10px; padding:20px; margin-bottom:16px; display:flex; justify-content:center;">
+      <div style="background:#f4f2ec; border-radius: 12px; padding:20px; margin-bottom:16px; display:flex; justify-content:center;">
         <img src="SVGS/q_map.svg" alt="Lo-fi progression" style="width:100%; max-width:180px; display:block; border-radius:6px;">
       </div>
       <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">Before (Lo-fi)</div>
@@ -1921,7 +1972,7 @@ midfi: () => `
       <p class="prose-p">Simple linear list. Users understood order but couldn't tell how far along they were or how long each step would take.</p>
     </div>
     <div>
-      <div style="background:#f4f2ec; border-radius:10px; padding:20px; margin-bottom:16px; display:flex; justify-content:center;">
+      <div style="background:#f4f2ec; border-radius: 12px; padding:20px; margin-bottom:16px; display:flex; justify-content:center;">
         <img src="SVGS/q_m_map.svg" alt="Mid-fi progression" style="width:100%; max-width:180px; display:block; border-radius:6px;">
       </div>
       <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">After (Mid-fi)</div>
@@ -2472,6 +2523,88 @@ buildSidebar();
 
 const hashId = (location.hash || '').replace('#', '');
 render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
+</script>
+
+<script>
+/* ── Custom cursor ── */
+(function() {
+  const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
+  const dot  = document.createElement('div'); dot.id  = 'cur-dot';  document.body.appendChild(dot);
+  let mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function loop(){ cx+=(mx-cx)*.14; cy+=(my-cy)*.14; ring.style.left=mx+'px'; ring.style.top=my+'px'; dot.style.left=cx+'px'; dot.style.top=cy+'px'; requestAnimationFrame(loop); })();
+})();
+
+/* ── Pixel dissolve on images ── */
+function pixelReveal(el) {
+  const wrap = el.parentElement;
+  const pos = getComputedStyle(wrap).position;
+  if (pos === 'static') wrap.style.position = 'relative';
+  const canvas = document.createElement('canvas');
+  canvas.className = 'px-canvas';
+  wrap.appendChild(canvas);
+  let done = false;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting && !done) { done=true; obs.disconnect(); runReveal(canvas,'#F7F6F3'); } });
+  }, { threshold: 0.15 });
+  obs.observe(wrap);
+}
+function runReveal(canvas, fill) {
+  const W = canvas.parentElement.offsetWidth;
+  const H = canvas.parentElement.offsetHeight;
+  if (!W || !H) { canvas.remove(); return; }
+  canvas.width=W; canvas.height=H;
+  const ctx = canvas.getContext('2d');
+  const BS = 14, cols=Math.ceil(W/BS), rows=Math.ceil(H/BS), total=cols*rows;
+  const blocks=[];
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) blocks.push([c,r]);
+  for(let i=blocks.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [blocks[i],blocks[j]]=[blocks[j],blocks[i]]; }
+  ctx.fillStyle=fill; ctx.fillRect(0,0,W,H);
+  const batch=Math.ceil(total/24); let idx=0;
+  function step(){
+    const end=Math.min(idx+batch,total);
+    for(let i=idx;i<end;i++){ const[c,r]=blocks[i]; ctx.clearRect(c*BS,r*BS,BS,BS); }
+    idx=end;
+    if(idx<total) requestAnimationFrame(step);
+    else { canvas.style.transition='opacity .2s'; canvas.style.opacity='0'; setTimeout(()=>canvas.remove(),220); }
+  }
+  setTimeout(()=>requestAnimationFrame(step),60);
+}
+document.querySelectorAll('img').forEach(img => {
+  if (img.complete) pixelReveal(img);
+  else img.addEventListener('load', () => pixelReveal(img), {once:true});
+});
+
+/* ── Scroll reveal sections ── */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('section, .section, [data-section], h2, h3, .card, .finding, .stat').forEach(el => {
+  el.classList.add('scroll-reveal'); revObs.observe(el);
+});
+
+
+
+/* ── Scroll word highlights ── */
+const hlObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const words = e.target.querySelectorAll('.hl-word');
+    if(e.isIntersecting) words.forEach((w,i) => setTimeout(()=>w.classList.add('lit'), i*100));
+    else words.forEach(w=>w.classList.remove('lit'));
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('p, li, .body-text, .stack-body').forEach(el => { if(el.querySelectorAll('.hl-word').length) hlObs.observe(el); });
+</script>
+
+<script>
+/* ── DS Cursor ── */
+(function() {
+  const ring = document.createElement('div'); ring.id = 'ds-cursor-ring'; document.body.appendChild(ring);
+  const dot  = document.createElement('div'); dot.id  = 'ds-cursor-dot';  document.body.appendChild(dot);
+  let mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function loop(){ cx+=(mx-cx)*.14; cy+=(my-cy)*.14; ring.style.left=mx+'px'; ring.style.top=my+'px'; dot.style.left=cx+'px'; dot.style.top=cy+'px'; requestAnimationFrame(loop); })();
+})();
 </script>
 </body>
 </html>
