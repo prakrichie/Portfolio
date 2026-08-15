@@ -29,10 +29,10 @@
     --red:      #E55555;
 
     /* Sharesies brand palette (from old case study) */
-    --brand-pink:  #D83F6E;   /* large type & accents — AAA ≥18px/14px bold */
+    --brand-pink:  #D83F6E;   /* large type & accents, AAA ≥18px/14px bold */
     --pink-deep:   #9E1A4A;   /* small text AAA on white/pink-bg (7.76:1) */
     --pink-tint:   #FCEEF2;   /* soft pink wash for quote/callout bodies */
-    --purple:      #47446D;   /* H2/H3 heading colour — AAA on white */
+    --purple:      #47446D;   /* H2/H3 heading colour, AAA on white */
     --cream:       #F4F2EC;   /* warm alt page background */
 
     --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -678,7 +678,7 @@
   .participant-card .d { font-size: 13px; color: var(--ink-mid); }
   .participant-card .r { font-size: 13px; color: var(--ink-light); }
 
-  /* Participant groups — tinted cards */
+  /* Participant groups, tinted cards */
   .pgroups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px; }
   .pgroup { border: 1px solid; border-radius: 12px; padding: 22px 26px; }
   .pgroup.is-pink { background: #FCE9EC; border-color: #F4C8D1; }
@@ -969,7 +969,7 @@
   }
 
   /* ───────────────────────────────────────
-     AAA — GLOBAL
+     AAA, GLOBAL
      Body copy unified to #1D1D1D (≥15:1 on white / bg-2).
      Pink accents darkened to #9E1A4A (7.76:1 on white).
   ─────────────────────────────────────── */
@@ -999,7 +999,7 @@
   .shmuxd-stamp .big { color: #d83f6e; }
 
   /* ───────────────────────────────────────
-     INTRO — BY THE NUMBERS
+     INTRO, BY THE NUMBERS
   ─────────────────────────────────────── */
   .by-numbers {
     display: grid;
@@ -1030,7 +1030,7 @@
   }
 
   /* ───────────────────────────────────────
-     INTRO — CARD LABEL CONTAINERS
+     INTRO, CARD LABEL CONTAINERS
   ─────────────────────────────────────── */
   .section#section-intro .grid-2 .card-label {
     display: inline-block;
@@ -1042,7 +1042,7 @@
   }
 
   /* ───────────────────────────────────────
-     BRIEF — DESIGN SYSTEM
+     BRIEF, DESIGN SYSTEM
      Typographic product layout + Treatment 1 attention blocks.
   ─────────────────────────────────────── */
   .brief-products {
@@ -1155,7 +1155,7 @@
   img:not(.reveal):not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
   img:not(.reveal):not(.avatar-circle).is-loaded { opacity: 1; }
 
-  /* ── Custom cursor — desktop / fine-pointer only ── */
+  /* ── Custom cursor, desktop / fine-pointer only ── */
   @media (hover: hover) and (pointer: fine) {
     body { cursor: none !important; }
     #cur-ring {
@@ -1179,7 +1179,7 @@
     body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #E8366A; }
   }
 
-  /* ── Touch reset — neutralise hover-driven transforms on touch ── */
+  /* ── Touch reset, neutralise hover-driven transforms on touch ── */
   @media (hover: none) {
     .hifi-nav:hover { transform: translateY(-50%); background: transparent; color: inherit; }
     .navstrip .next:hover { transform: none; }
@@ -1217,7 +1217,7 @@
 <link rel="stylesheet" href="design-system.css">
 <style>
   /* design-system.css is linked AFTER this page own <style>, so its :root
-     wins the cascade — the token has to be re-asserted here or the page
+     wins the cascade, the token has to be re-asserted here or the page
      silently falls back to JetBrains Mono. Scoped to this page: index.html
      keeps the old face until it is migrated too.
      The name stays --font-mono because design-system.css references it by
@@ -1236,8 +1236,8 @@
   ─────────────────────────────────────── */
   .glance {
     --gl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    --gl-accent:     var(--brand-pink);   /* graphic accent — large elements */
-    --gl-accent-txt: var(--pink-deep);    /* small text accent — AAA on white */
+    --gl-accent:     var(--brand-pink);   /* graphic accent, large elements */
+    --gl-accent-txt: var(--pink-deep);    /* small text accent, AAA on white */
     --gl-rail:       var(--border-strong);
 
     container: glance / inline-size;
@@ -1293,7 +1293,7 @@
     color: var(--ink-light);
   }
 
-  /* ── STAR — clickable rows that drive the process panel ── */
+  /* ── STAR, clickable rows that drive the process panel ── */
   .glance-star { display: grid; gap: 2px; }
   .star-row {
     position: relative;
@@ -1649,7 +1649,7 @@ function rule() { return `<hr class="rule" />`; }
 function ruleAccent() { return `<hr class="rule-accent" />`; }
 
 function sLabel(text, sub) {
-  const s = sub ? ` <span class="sublabel">— ${esc(sub)}</span>` : '';
+  const s = sub ? ` <span class="sublabel">${esc(sub)}</span>` : '';
   return `<div class="section-label">${esc(text)}${s}</div>`;
 }
 
@@ -1657,7 +1657,7 @@ function img(label, h = 140) {
   return `<div class="img-ph" style="height:${h}px; margin-bottom: 16px;">${esc(label)}</div>`;
 }
 
-/* At-a-glance icons — inline so they inherit currentColor and tint with the
+/* At-a-glance icons, inline so they inherit currentColor and tint with the
    accent when a band is active. Existing SVGs in /Icon_assets have baked-in
    fills and would not theme across the light and dark case study pages. */
 const GL_ICON = {
@@ -1906,7 +1906,7 @@ onboarding: () => `
     {title:'Diverse Methods', body:"Not every user needs the same level of hand-holding. Personalised journeys let everyone move at their own pace."},
   ])}
   <div class="attention-block">
-    <div class="attention-block-title">Source: Better Onboarding — Krystal Higgins</div>
+    <div class="attention-block-title">Source: Better Onboarding, Krystal Higgins</div>
     <div class="attention-block-body">This book completely reframed how I thought about first-time user experiences. Designing interactions over instructions, and thinking about what actually encourages someone to come back.</div>
   </div>
 `,
@@ -2052,7 +2052,7 @@ discoveries: () => `
   <p class="prose-p">My onboarding research started with a book that completely reframed how I thought about first-time user experiences. From there, I followed the thread into articles and videos that expanded on its ideas, opening my eyes to just how many layers onboarding actually has. I also looked at other investment apps to see how they handled it: what felt smooth and confident, and what left you feeling a bit lost.</p>
 
   <div class="attention-block" style="margin-bottom:40px;">
-    <div class="attention-block-title">Source: Better Onboarding — Krystal Higgins</div>
+    <div class="attention-block-title">Source: Better Onboarding, Krystal Higgins</div>
     <div class="attention-block-body">Higgins' book was the spark. It made me realise the significance of keeping users not just informed, but genuinely interested and guided. Ideas like designing interactions over instructions, and thinking about what actually encourages someone to come back after their first experience. That stuck with me and carried into how I approach this and future projects.</div>
   </div>
 
@@ -2114,7 +2114,7 @@ insights: () => {
           ${ins.quote ? `
             <blockquote class="ins-quote">
               <p>&ldquo;${esc(ins.quote)}&rdquo;</p>
-              ${ins.quoteAttr ? `<cite>&mdash; ${esc(ins.quoteAttr)}</cite>` : ''}
+              ${ins.quoteAttr ? `<cite>${esc(ins.quoteAttr)}</cite>` : ''}
             </blockquote>` : ''}
           <div class="ins-tags">
             ${ins.tags.map(t => `<span>${esc(t)}</span>`).join('')}
@@ -2237,7 +2237,7 @@ modules: () => `
 
   ${sLabel('Collaboration')}
   <h2 class="sub-head">Content-sharing with the Sharesies team</h2>
-  ${callout('', '&ldquo;This was a great moment when the Sharesies content team unloaded their experiences and gave us insights to write content for the prototype.&rdquo; — Sharesies content team interview')}
+  ${callout('', '&ldquo;This was a great moment when the Sharesies content team unloaded their experiences and gave us insights to write content for the prototype.&rdquo;, Sharesies content team interview')}
 
   ${rule()}
 
@@ -2267,7 +2267,7 @@ lofi: () => `
   ${rule()}
 
   ${sLabel('Testing')}
-  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:16.5px; letter-spacing:0;">— 4 people, new to wealth development</span></h2>
+  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:16.5px; letter-spacing:0;">4 people, new to wealth development</span></h2>
   <div style="display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;">
     ${[['P1','F, 20s','Risk Low'],['P2','M, 30s','Risk Low'],['P3','M, 30s','Risk Med'],['P4','F, 20s','Risk Med']]
       .map(([p,d,r]) => `<div class="participant-card"><div class="p">${p}</div><div class="d">${esc(d)}</div><div class="r">${esc(r)}</div></div>`).join('')}
@@ -2481,7 +2481,7 @@ midfitest: () => `
   ${rule()}
 
   ${sLabel('Testing')}
-  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:16.5px; letter-spacing:0;">— Six people, all new to wealth development</span></h2>
+  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:16.5px; letter-spacing:0;">Six people, all new to wealth development</span></h2>
   <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;">
     ${[['P1','F, 20s'],['P2','M, 20s'],['P3','F, 30s'],['P4','M, 30s'],['P5','F, 20s'],['P6','M, 20s']]
       .map(([p,d]) => `<div class="participant-card" style="min-width:90px;"><div class="p">${p}</div><div class="d">${esc(d)}</div></div>`).join('')}
@@ -2658,7 +2658,7 @@ const menuBtn      = document.getElementById('menu-btn');
 let active = 'intro';
 let revealObserver = null;
 
-/* At-a-glance — STAR rows act as tabs over the process panel. */
+/* At-a-glance, STAR rows act as tabs over the process panel. */
 function setupGlance() {
   const gl = contentInner.querySelector('.glance');
   if (!gl) return;
@@ -2780,7 +2780,7 @@ function setupReveals() {
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 
-  // delegated — works even after section re-render
+  // delegated, works even after section re-render
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('#poster-btn');
     if (!btn) return;
@@ -2899,7 +2899,7 @@ function render(id) {
   updateNavStates();
   updateProgress();
 
-  // keep URL clean — no hash
+  // keep URL clean, no hash
   if (history.replaceState) {
     history.replaceState(null, '', window.location.pathname);
   }
@@ -2960,7 +2960,7 @@ render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
 </script>
 
 <script>
-/* ── Custom cursor — skip on touch devices ── */
+/* ── Custom cursor, skip on touch devices ── */
 (function() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
@@ -3034,7 +3034,7 @@ document.querySelectorAll('p, li, .body-text, .stack-body').forEach(el => { if(e
 </script>
 
 <script>
-/* ── DS Cursor — skip on touch devices ── */
+/* ── DS Cursor, skip on touch devices ── */
 (function() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'ds-cursor-ring'; document.body.appendChild(ring);

@@ -10,16 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ───────────────────────────────────────
-     TOKENS — Tribes dark mode, AAA contrast
+     TOKENS, Tribes dark mode, AAA contrast
      Brand: purple #b44fe0, cyan #5ac4d4
   ─────────────────────────────────────── */
   :root {
     --bg:       #1b1a17;
     --bg-2:     #252420;
     --bg-page:  #141311;
-    --ink:      #f4f2ec;   /* 14.3:1 on --bg — AAA */
-    --ink-mid:  #d8d3c8;   /* 10.4:1 on --bg — AAA */
-    --ink-light:#b8b3a8;   /* 7.4:1 on --bg — AAA normal text */
+    --ink:      #f4f2ec;   /* 14.3:1 on --bg, AAA */
+    --ink-mid:  #d8d3c8;   /* 10.4:1 on --bg, AAA */
+    --ink-light:#b8b3a8;   /* 7.4:1 on --bg, AAA normal text */
     --border:   rgba(244,242,236,0.12);
     --border-strong: rgba(244,242,236,0.26);
     --mute:     rgba(244,242,236,0.36);
@@ -27,8 +27,8 @@
     --red:      #ff8a8a;
 
     /* Tribes brand palette */
-    --accent:       #b44fe0;   /* purple — headings, active states (large-text AAA) */
-    --accent-deep:  #5ac4d4;   /* cyan — pills, small accents (AAA w/ --bg text) */
+    --accent:       #b44fe0;   /* purple, headings, active states (large-text AAA) */
+    --accent-deep:  #5ac4d4;   /* cyan, pills, small accents (AAA w/ --bg text) */
     --accent-tint:  rgba(180,79,224,0.14);
 
     --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -415,7 +415,7 @@
   }
 
   /* ───────────────────────────────────────
-     BRIEF — typographic product layout
+     BRIEF, typographic product layout
   ─────────────────────────────────────── */
   .brief-products {
     display: grid;
@@ -689,7 +689,7 @@
   img:not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
   img:not(.avatar-circle).is-loaded { opacity: 1; }
 
-  /* ── Custom cursor — desktop / fine-pointer only ── */
+  /* ── Custom cursor, desktop / fine-pointer only ── */
   @media (hover: hover) and (pointer: fine) {
     body { cursor: none !important; }
     #cur-ring {
@@ -713,7 +713,7 @@
     body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #b44fe0; }
   }
 
-  /* ── Touch reset — neutralise hover-driven effects on touch ── */
+  /* ── Touch reset, neutralise hover-driven effects on touch ── */
   @media (hover: none) {
     .nav-item:hover { background: transparent; }
     .nav-item:hover .nav-label { color: var(--ink-mid); }
@@ -752,7 +752,7 @@
 <link rel="stylesheet" href="design-system.css">
 <style>
   /* design-system.css is linked AFTER this page own <style>, so its :root
-     wins the cascade — the token has to be re-asserted here or the page
+     wins the cascade, the token has to be re-asserted here or the page
      silently falls back to JetBrains Mono. Scoped to this page: index.html
      keeps the old face until it is migrated too.
      The name stays --font-mono because design-system.css references it by
@@ -771,8 +771,8 @@
   ─────────────────────────────────────── */
   .glance {
     --gl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    --gl-accent:     var(--accent);       /* purple — graphic accent */
-    --gl-accent-txt: var(--accent-deep);  /* cyan — AAA small text on --bg */
+    --gl-accent:     var(--accent);       /* purple, graphic accent */
+    --gl-accent-txt: var(--accent-deep);  /* cyan, AAA small text on --bg */
     --gl-rail:       var(--border-strong);
 
     container: glance / inline-size;
@@ -828,7 +828,7 @@
     color: var(--ink-light);
   }
 
-  /* ── STAR — clickable rows that drive the process panel ── */
+  /* ── STAR, clickable rows that drive the process panel ── */
   .glance-star { display: grid; gap: 2px; }
   .star-row {
     position: relative;
@@ -1169,7 +1169,7 @@ function quote(q, speaker) {
   return `
     <div class="quote-card" style="margin-bottom:28px;">
       <p class="q">&ldquo;${esc(q)}&rdquo;</p>
-      ${speaker ? `<cite>&mdash; ${esc(speaker)}</cite>` : ''}
+      ${speaker ? `<cite>${esc(speaker)}</cite>` : ''}
     </div>`;
 }
 
@@ -1177,7 +1177,7 @@ function rule() { return `<hr class="rule" />`; }
 function ruleAccent() { return `<hr class="rule-accent" />`; }
 
 function sLabel(text, sub) {
-  const s = sub ? ` <span class="sublabel">— ${esc(sub)}</span>` : '';
+  const s = sub ? ` <span class="sublabel">${esc(sub)}</span>` : '';
   return `<div class="section-label">${esc(text)}${s}</div>`;
 }
 
@@ -1185,7 +1185,7 @@ function img(label, h = 140) {
   return `<div class="img-ph" style="height:${h}px; margin-bottom: 16px;">${esc(label)}</div>`;
 }
 
-/* At-a-glance icons — inline so they inherit currentColor and tint with the
+/* At-a-glance icons, inline so they inherit currentColor and tint with the
    accent when a band is active. Existing SVGs in /Icon_assets have baked-in
    fills and would not theme across the light and dark case study pages. */
 const GL_ICON = {
@@ -1460,7 +1460,7 @@ principles: () => `
 ideation: () => `
   ${header('Design · Ideation', 'From principles to sketches', 'With direction and clarity from Victor, ideation focused on structure, navigation, and interaction patterns before anything visual.')}
 
-  ${quote("Please add these as screens: a homepage, group page, content exploration, and adding users.", 'Victor — Co-founder')}
+  ${quote("Please add these as screens: a homepage, group page, content exploration, and adding users.", 'Victor, Co-founder')}
 
   ${sLabel('What the sketches covered')}
   <div class="grid-2" style="margin-bottom: 28px;">
@@ -1482,7 +1482,7 @@ ideation: () => `
     </div>
   </div>
 
-  ${quote("Are we able to make the home screen different from traditional pages? Something like a quadrant view?", 'Victor — Co-founder')}
+  ${quote("Are we able to make the home screen different from traditional pages? Something like a quadrant view?", 'Victor, Co-founder')}
 
   <div class="attention-block">
     <div class="attention-block-title">Reframing the homepage</div>
@@ -1571,7 +1571,7 @@ hifi: () => `
   ${sLabel('Style guide')}
   ${img('Tribes style guide: type, colour, components', 220)}
 
-  ${quote("Are we able to add a quora push animation? The user's friends receive a notification asking for dining suggestions.", 'Victor — Co-founder')}
+  ${quote("Are we able to add a quora push animation? The user's friends receive a notification asking for dining suggestions.", 'Victor, Co-founder')}
 
   ${sLabel('Screens in scope')}
   <div class="grid-4" style="margin-bottom:28px;">
@@ -1732,7 +1732,7 @@ function updateProgress() {
   progressPct.textContent = pct + '%';
 }
 
-/* At-a-glance — STAR rows act as tabs over the process panel. */
+/* At-a-glance, STAR rows act as tabs over the process panel. */
 function setupGlance() {
   const gl = contentInner.querySelector('.glance');
   if (!gl) return;
@@ -1854,7 +1854,7 @@ render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
 </script>
 
 <script>
-/* ── Custom cursor — skip on touch devices ── */
+/* ── Custom cursor, skip on touch devices ── */
 (function() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
@@ -1928,7 +1928,7 @@ document.querySelectorAll('p, li, .body-text, .stack-body').forEach(el => { if(e
 </script>
 
 <script>
-/* ── DS Cursor — skip on touch devices ── */
+/* ── DS Cursor, skip on touch devices ── */
 (function() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'ds-cursor-ring'; document.body.appendChild(ring);
