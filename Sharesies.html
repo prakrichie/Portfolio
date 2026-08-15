@@ -1692,7 +1692,7 @@ function glanceHTML(cfg) {
 
   const tabs = cfg.star.map((s, i) => `
         <button type="button" class="star-row" role="tab" id="gl-tab-${s.id}"
-                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.label)}"
+                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.name || s.label)}"
                 aria-controls="gl-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
                 tabindex="${i === 0 ? '0' : '-1'}">
           <span class="star-label">${esc(s.label)}</span>
@@ -1754,13 +1754,13 @@ intro: () => `
   ${glanceHTML({
     meta: '4 months · team of 4',
     star: [
-      { id:'situation', label:'Situation', phase:'6 phases',
+      { id:'situation', label:'1', name:'Situation', phase:'6 phases',
         body:"A four-month capstone embedded with Sharesies' in-house design team. New investors sign up but often never make their first investment. The first week is where confidence is won or lost." },
-      { id:'task', label:'Task', phase:'2 of 6 phases',
+      { id:'task', label:'2', name:'Task', phase:'2 of 6 phases',
         body:'Explored at how other investing platforms onboard new users, then ran interviews with 9 participants across different ages and professions, all new to investing. I used affinity mapping to turn what I heard into meaningful insights, which grounded the design decisions in helping users feel confident.' },
-      { id:'action', label:'Action', phase:'3 of 6 phases',
+      { id:'action', label:'3', name:'Action', phase:'3 of 6 phases',
         body:'Explored the user problem and reframed the brief after discovering an existing onboarding flow. Four design principles, with accessibility and guidance at the forefront, shaped the initial lo-fi concepts. Usability testing with new and experienced investors revealed that users felt more engaged when guided throughout their journey, leading to gamification to provide progress and encouragement. The final delivery of the prototype was grounded in research, stakeholder engagement, and my own design principles and values.' },
-      { id:'result', label:'Result', phase:'1 of 6 phases',
+      { id:'result', label:'4', name:'Result', phase:'1 of 6 phases',
         body:'Presented final designs and research to the Sharesies team, who responded positively to the direction. Learned to turn a mid-project pivot into a research-led decision rather than a setback.' },
     ],
     tags: ['user research', 'usability testing', 'affinity mapping', 'personas & journeys', 'Figma prototyping', 'workshop facilitation'],

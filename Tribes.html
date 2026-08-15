@@ -1220,7 +1220,7 @@ function glanceHTML(cfg) {
 
   const tabs = cfg.star.map((s, i) => `
         <button type="button" class="star-row" role="tab" id="gl-tab-${s.id}"
-                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.label)}"
+                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.name || s.label)}"
                 aria-controls="gl-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
                 tabindex="${i === 0 ? '0' : '-1'}">
           <span class="star-label">${esc(s.label)}</span>
@@ -1293,13 +1293,13 @@ intro: () => `
   ${glanceHTML({
     meta: '4 months · sole designer',
     star: [
-      { id:'situation', label:'Situation', phase:'6 phases',
+      { id:'situation', label:'1', name:'Situation', phase:'6 phases',
         body:'An early-stage social discovery app with a founder and lead engineer, but no designer.' },
-      { id:'task', label:'Task', phase:'2 of 6 phases',
+      { id:'task', label:'2', name:'Task', phase:'2 of 6 phases',
         body:'Sole designer taking the product from early concept to an investor-ready MVP, working independently and owning every design decision.' },
-      { id:'action', label:'Action', phase:'3 of 6 phases',
+      { id:'action', label:'3', name:'Action', phase:'3 of 6 phases',
         body:'Built the UX foundations from scratch, covering design principles, information architecture, personas and user flows. Designed gesture-based navigation for a mobile-first product with a planned VR future. Created and evolved a working style guide and component library, prepared handover files, worked with the engineer daily and reviewed implemented designs to improve the final experience.' },
-      { id:'result', label:'Result', phase:'1 of 6 phases',
+      { id:'result', label:'4', name:'Result', phase:'1 of 6 phases',
         body:'Delivered a high-fidelity Figma prototype the founder used to pitch investors. Grew confident managing my own time and working independently on defined design work.' },
     ],
     tags: ['design system', 'component library', 'interaction design', 'developer handover', 'mobile + web', 'responsive design'],
