@@ -1167,6 +1167,36 @@
         .creative-heading { font-family: 'JetBrains Mono', monospace; font-size: clamp(22px, 2.4vw, 32px); font-weight: 400; line-height: 1.2; letter-spacing: -.02em; color: var(--pampas); }
         .creative-body { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 300; line-height: 1.7; color: rgba(244,242,236,.65); max-width: 380px; }
         .creative-body strong { color: var(--pampas); font-weight: 500; }
+
+        /* Quiet way through to the work-in-progress landing. Sits under the
+           Instagram CTA on the dark panel, so it borrows --pampas and stays
+           at a whisper until hovered — a footnote, not a second CTA. */
+        .creative-wip {
+            margin-top: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: rgba(244,242,236,.5);
+        }
+        .creative-wip a {
+            color: rgba(244,242,236,.78);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: rgba(244,242,236,.35);
+            transition: color .22s, text-decoration-color .22s;
+        }
+        .creative-wip a:hover { color: var(--roughy); text-decoration-color: var(--roughy); }
+        .creative-wip a:focus-visible { outline: 2px solid var(--roughy); outline-offset: 3px; border-radius: 2px; }
+        .creative-wip .wip-led {
+            display: inline-block;
+            width: 6px; height: 6px;
+            margin-right: 7px;
+            border-radius: 50%;
+            background: var(--roughy);
+            animation: wip-pulse 2.4s ease-in-out infinite;
+        }
+        @keyframes wip-pulse { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
+        @media (prefers-reduced-motion: reduce) { .creative-wip .wip-led { animation: none } }
         .creative-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .creative-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 400; color: rgba(244,242,236,.5); border: 1px solid rgba(244,242,236,.18); border-radius: 100px; padding: 4px 12px; }
         .creative-cta { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--pampas); text-decoration: none; border-bottom: 1px solid rgba(244,242,236,.25); padding-bottom: 2px; width: fit-content; transition: border-color .2s, color .2s; margin-top: 4px; }
@@ -1779,6 +1809,9 @@
                                 View on Instagram
                                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 11.5L11.5 1.5M11.5 1.5H5M11.5 1.5V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </a>
+                            <p class="creative-wip">
+                                <span class="wip-led" aria-hidden="true"></span>building and crafting a new page — take a look <a href="/landing_new/orbit">here</a>.
+                            </p>
                         </div>
                         <div class="creative-video-wrap">
                             <video class="cvp-video" src="smalledit_final.mp4" muted playsinline loop autoplay preload="metadata"></video>
