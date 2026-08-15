@@ -195,6 +195,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   padding:6px 40px;
 }
 
+/* The hero reel keeps its control: it runs 48s and is the page's main
+   event. The inline clips are short silent loops and have none. */
 .shot-toggle{
   display:none;
   position:absolute;right:14px;bottom:14px;
@@ -571,13 +573,25 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   border:1.5px dashed var(--line-2);
   display:grid;place-items:center;
 }
-.vid--sm{aspect-ratio:2 / 1}
+/* Matches gun_model_ani.mp4's own 1462×908 so the model is never cropped. */
+.vid--sm{aspect-ratio:1462 / 908}
 .vid--lg{aspect-ratio:16 / 9;margin-top:clamp(24px,3.6vw,36px)}
 .vid-label{
   font-family:var(--gl-mono,ui-monospace,monospace);
   font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-mid);
 }
+
+/* Once a real clip loads the frame drops the unfinished language, exactly
+   as the hero does: solid border, no hatch, label gone. */
+.vid-media{display:none;width:100%;height:100%;object-fit:cover}
+.vid.has-media{
+  border-style:solid;border-color:var(--line);
+  background-image:none;
+  overflow:hidden;
+}
+.vid.has-media .vid-media{display:block}
+.vid.has-media .vid-label{display:none}
 
 .weapon{
   display:grid;
@@ -596,6 +610,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   font-size:14.5px;line-height:1.6;
   color:var(--ink-mid);
   max-width:52ch;
+}
+
+/* The line that turned the project. Italic and weighted, in the deep
+   lotus — 8.39:1, so it clears AAA at this size. <em> because this is
+   genuine emphasis rather than decoration, and should be announced as
+   such instead of styled silently. */
+.mark{
+  font-style:italic;
+  font-weight:700;
+  color:var(--lotus-deep);
 }
 
 .pivot-cap{
@@ -731,7 +755,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <section class="pivot rise" aria-labelledby="pivotTitle">
     <h2 class="pivot-h" id="pivotTitle">The pivot</h2>
 
-    <p class="pivot-p">After showing the product and receiving feedback, a quote that encouraged me to change my design decision was &ldquo;don&rsquo;t be safe and take a risk&rdquo;. I took this onboard and decided to change and update my previous principles from a elegant, clean, and appearance.</p>
+    <p class="pivot-p">After showing the product and receiving feedback, a quote that encouraged me to change my design decision was <em class="mark">&ldquo;don&rsquo;t be safe and take a risk&rdquo;</em>. I took this onboard and decided to change and update my previous principles from a elegant, clean, and appearance.</p>
 
     <p class="pivot-lead">The key takeaways were, make the user go</p>
     <ul class="takeaways">
@@ -747,6 +771,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
     <div class="weapon">
       <figure class="vid vid--sm">
+        <!-- Muted so autoplay is permitted and the page stays silent; the
+             clip carries an audio track that adds nothing here. -->
+        <video class="vid-media" muted loop playsinline preload="metadata"
+               aria-label="The weapon model turning: a 2D pixel-art gun rebuilt as a 3D .obj">
+          <source src="Motion/gun_model_ani.mp4" type="video/mp4">
+        </video>
         <figcaption class="vid-label">video placeholder</figcaption>
       </figure>
       <div class="weapon-copy">
@@ -954,6 +984,34 @@ document.getElementById('glanceMount').innerHTML = glanceHTML({
   toggle.addEventListener('click', function () {
     send(paused ? 'budding:play' : 'budding:pause');
     setPressed(!paused);
+  });
+})();
+
+/* ── inline clips ─────────────────────────────────────────────
+   Generic over every .vid that actually holds a <video>, so the remaining
+   placeholders keep their dashed frame until a file is dropped in.
+   No control: it simply loops. Still only plays while on screen, since an
+   18s loop decoding behind the rest of the page is wasted work, and
+   reduced-motion holds it on the first frame. */
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.vid').forEach(function (fig) {
+    var vid = fig.querySelector('.vid-media');
+    if (!vid) return;
+
+    vid.addEventListener('loadeddata', function () { fig.classList.add('has-media'); });
+    if (reduce) return;
+
+    var play = function () { var p = vid.play(); if (p && p.catch) p.catch(function () {}); };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { e.isIntersecting ? play() : vid.pause(); });
+      }, { threshold: 0.25 }).observe(fig);
+    } else {
+      play();
+    }
   });
 })();
 
