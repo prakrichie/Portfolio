@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Richie Prak — selected work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- ital axis included: the rail's mission line is set in the true italic
+     cut, not a browser-slanted roman. Both are variable, 400–700. -->
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   ORBIT — an orrery on a gallery wall.
+
+   Four works held in suspension on a tilted plane, then set
+   down flat. The page's one idea is the mechanic; the visual
+   layer stays out of its way. On white, the shadows do the
+   levitating — they are load-bearing, not decoration.
+
+   All motion derives from ONE value: `raw` (0 = orbit, 1 = grid),
+   integrated in a single rAF loop. Interruptible and reversible
+   at any point, in either direction.
+   ══════════════════════════════════════════════════════════ */
+
+:root{
+  /* A true neutral off-white — chroma 0 all the way down. Deliberately
+     NOT the cream / sand / paper tint that near-white defaults to; that
+     warm band is the saturated look, and it would also fight the colour
+     in the work. The work supplies every colour on this page.
+     Measured against --bg: ink 17.69:1 · muted 7.13:1 · faint 4.75:1 · accent 5.2:1
+
+     WCAG AAA (7:1 for normal text) is the bar here, and it is a hard
+     constraint on this near-white ground: the lightest grey that still
+     clears 7:1 is L=0.454, which --muted already is. There is therefore
+     no room for a third, lighter text grey.
+     So --faint is NOT a text colour. It is for non-text only — hairlines,
+     the status dot's ring, borders — where the 3:1 UI threshold applies
+     and 4.75:1 passes comfortably. Text hierarchy below --ink is carried
+     by size and weight, not by a third tone. */
+  --bg:      oklch(0.985 0 0);
+  --surface: oklch(0.935 0 0);
+  --ink:     oklch(0.190 0 0);
+  --muted:   oklch(0.450 0 0);
+  --faint:   oklch(0.545 0 0);
+  --accent:  oklch(0.540 0.165 42);   /* the brand ember, held down to clear 4.5:1 on white */
+  --live:    oklch(0.550 0.150 150);  /* 4.34:1 — the shipped pulse, non-text */
+  --hair:    oklch(0.885 0 0);
+
+  --sans: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Semantic depth. Never arbitrary values. */
+  --z-scene: 1;
+  --z-hud:   40;
+  --z-dock:  80;   /* above the scrim: the dock stays live while About is open */
+  --z-scrim: 60;
+  --z-panel: 70;
+
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* On white the depth comes from the shadows the tiles cast, not from a
+   glow behind them. All this does is let the far edges fall off a touch
+   so the wall doesn't read as a flat sheet. */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;
+  background:radial-gradient(72% 62% at 50% 42%,
+    oklch(1 0 0) 0%, oklch(0.952 0 0) 100%);
+}
+
+/* ── hud ──────────────────────────────────────────────── */
+.hud{position:fixed;z-index:var(--z-hud)}
+
+.hud-name{
+  top:34px;left:38px;
+  font-size:15px;font-weight:500;letter-spacing:-0.01em;
+  color:var(--ink);
+}
+.hud-name span{color:var(--muted);font-weight:400}
+
+.hud-contact{
+  top:34px;right:38px;
+  font-size:14px;font-weight:400;
+  color:var(--muted);text-decoration:none;
+  transition:color .25s cubic-bezier(.16,1,.3,1);
+}
+.hud-contact:hover{color:var(--ink)}
+
+/* ── dock ─────────────────────────────────────────────────────
+   Frosted glass, in the Liquid Glass idiom: a heavy backdrop blur with
+   a saturation lift, a bright specular top edge, and a soft contact
+   shadow. On a white page blur alone is nearly invisible, so the pill
+   is legible through its edges — the inset highlight along the top and
+   the hairline underneath do most of the work. */
+.dock{
+  --sx:50%; --sy:0%;                          /* cursor, for the specular */
+  position:fixed;z-index:var(--z-dock);
+  bottom:34px;left:50%;
+  transform:translateX(-50%);
+  display:flex;align-items:flex-end;gap:6px;
+  padding:12px 12px 10px;
+  border-radius:28px;
+  isolation:isolate;
+
+  /* Thin base tint — the glass is mostly clear; brightness+saturation
+     through the backdrop is what gives it body, not opaque white. */
+  background:linear-gradient(176deg,
+    oklch(1 0 0 / .50) 0%, oklch(1 0 0 / .30) 52%, oklch(1 0 0 / .42) 100%);
+  backdrop-filter:blur(26px) saturate(210%) brightness(1.07);
+  -webkit-backdrop-filter:blur(26px) saturate(210%) brightness(1.07);
+
+  box-shadow:
+    /* thickness: light gathering just inside the rim */
+    inset 0 0 22px -8px oklch(1 0 0),
+    inset 0 -10px 18px -14px oklch(0.20 0 0 / .30),
+    /* the object's own edge, then two shadows: a tight contact shadow
+       and a wide soft one. On a white page this is what actually reads. */
+    0 0 0 .5px oklch(0.20 0 0 / .09),
+    0 2px 6px -2px oklch(0.20 0 0 / .13),
+    0 16px 38px -12px oklch(0.20 0 0 / .26);
+}
+
+/* Refracting rim. A gradient ring masked to a 1.4px band: bright where
+   light enters top-left and exits bottom-right, near-invisible along the
+   sides — that asymmetry is what stops it looking like a plain border. */
+.dock::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  border-radius:inherit;padding:1.4px;
+  background:linear-gradient(145deg,
+    oklch(1 0 0 / 1) 0%,
+    oklch(1 0 0 / .30) 24%,
+    oklch(1 0 0 / .06) 46%,
+    oklch(1 0 0 / .45) 72%,
+    oklch(1 0 0 / .98) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite:exclude;
+  pointer-events:none;
+}
+
+/* Specular: a broad sheen across the top plus a soft hotspot that follows
+   the cursor, so the surface reacts to being touched rather than sitting
+   inert. Sits under the icons — it's the glass, not a wash over content. */
+.dock::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  border-radius:inherit;pointer-events:none;
+  background:
+    radial-gradient(150px 110px at var(--sx) var(--sy),
+      oklch(1 0 0 / .85) 0%, oklch(1 0 0 / .18) 45%, oklch(1 0 0 / 0) 72%),
+    linear-gradient(180deg, oklch(1 0 0 / .55) 0%, oklch(1 0 0 / 0) 58%);
+  transition:opacity .4s var(--ease);
+}
+
+.dock-item{
+  position:relative;z-index:2;              /* content rides on top of the glass */
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  width:74px;padding:6px 4px 0;
+  border:0;background:none;cursor:pointer;
+  font-family:var(--sans);
+  border-radius:18px;
+  transition:transform .4s var(--ease);
+}
+.dock-item:hover{transform:translateY(-3px)}
+.dock-item:active{transform:translateY(-1px) scale(.97)}
+.dock-item:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Placeholder item: still in the dock, but not yet an action. Every
+   affordance that invites a click is withdrawn — no lift, no press, no
+   pointer, and the icon stops reacting — so it reads as present-but-
+   pending rather than as a button that silently does nothing. It stays
+   focusable, with aria-disabled, so it is still discoverable by keyboard
+   and announced as unavailable. */
+.dock-item[data-wip]{cursor:default}
+.dock-item[data-wip]:hover,
+.dock-item[data-wip]:active{transform:none}
+.dock-item[data-wip]:hover .ico{transform:none}
+.dock-item[data-wip]:hover .id-figure{transform:none}
+
+.ico{
+  width:46px;height:46px;
+  display:grid;place-items:center;
+  transition:transform .45s var(--ease);
+}
+.dock-item:hover .ico{transform:scale(1.06)}
+
+.lbl{
+  font-size:12.5px;font-weight:500;letter-spacing:-0.005em;
+  line-height:1;color:var(--muted);
+  padding:4px 9px;border-radius:999px;
+  background:transparent;
+  transition:background .35s var(--ease), color .35s var(--ease);
+}
+/* Only the active item wears the filled pill. */
+.dock-item.is-active .lbl{background:var(--accent);color:oklch(1 0 0)}
+
+/* ── folder ───────────────────────────────────────────────────
+   Opens when pointed at, and stays open while its section is the one
+   you're in — so the icon always reports the current state rather than
+   only reacting to the cursor. */
+/* Two tones of the brand ember rather than a stock blue — the folder is
+   the one place colour lands, which is what an accent is for.
+   Front 3.1:1 and back 5.4:1 against the page, so the icon stays
+   identifiable (WCAG 1.4.11); the back is darker so the fold still reads
+   once the front tips forward. */
+.folder{width:44px;height:36px;overflow:visible}
+.fd-back {fill:oklch(0.530 0.155 38)}
+.fd-front{fill:oklch(0.665 0.145 48)}
+.fd-paper{fill:oklch(0.985 0 0)}
+
+.fd-paper,.fd-front{
+  transform-box:fill-box;
+  transition:transform .5s var(--ease), opacity .4s var(--ease);
+}
+.fd-paper{transform-origin:50% 100%;opacity:0;transform:translateY(3px) scaleY(.86)}
+/* perspective() inside the transform, so no parent perspective is needed
+   for a 3D rotation on an SVG child. */
+.fd-front{transform-origin:50% 100%}
+
+.dock-item:hover .fd-front,
+.dock-item.is-open .fd-front{transform:perspective(120px) rotateX(-38deg)}
+.dock-item:hover .fd-paper,
+.dock-item.is-open .fd-paper{opacity:1;transform:translateY(-2.5px) scaleY(1)}
+
+/* ── idle nudge ───────────────────────────────────────────────
+   Nothing on this page says the orrery opens. If you sit in orbit and
+   don't touch anything, the folder hops — the smallest thing that reads
+   as "this is the way in" without a tooltip or a call to action.
+   Two hops and a pause, not a loop: a hint that keeps repeating stops
+   being a hint and starts being a distraction. It is applied only in
+   orbit and only while idle, and any input cancels it (see the JS). */
+@keyframes dock-nudge{
+  0%, 62%, 100%     {transform:translateY(0)}
+  11%               {transform:translateY(-7px)}
+  22%               {transform:translateY(0)}
+  33%               {transform:translateY(-4px)}
+  44%               {transform:translateY(0)}
+}
+.dock-item.is-nudging{animation:dock-nudge 2.1s var(--ease) infinite}
+/* Hover and the open state both outrank it — once you've found the thing,
+   the hint has done its job. */
+.dock-item.is-nudging:hover,
+.dock-item.is-nudging.is-open{animation:none}
+
+@media (prefers-reduced-motion:reduce){
+  .dock-item.is-nudging{animation:none}
+}
+
+/* ── about ────────────────────────────────────────────────────
+   An id-card tile, built to sit beside the folder as a peer: same
+   rounded-square app-icon idiom, but graphite rather than ember so the
+   two read as different things and the accent stays scarce.
+   The figure lifts on hover the way the folder opens — both icons
+   report state rather than just decorating. */
+.ico--me{position:relative;border-radius:13px;overflow:hidden}
+.idcard{width:44px;height:44px;display:block}
+.id-tile{fill:oklch(0.305 0.010 45)}
+.id-mark{fill:oklch(0.985 0 0)}
+.id-figure{
+  transform-box:fill-box;transform-origin:50% 100%;
+  transition:transform .5s var(--ease);
+}
+.dock-item:hover .id-figure,
+.dock-item.is-active .id-figure{transform:translateY(-1.6px) scale(1.07)}
+
+/* A photo, if one exists, simply takes the tile's place. The graphite
+   tile and figure stay underneath as the fallback if it fails to load.
+   Same crop as the rail avatar so the two read as one person. */
+.ico--me img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:50% 65%;
+  display:none;
+}
+.ico--me.ok img{display:block}
+
+/* ── about ────────────────────────────────────────────────── */
+.scrim{
+  position:fixed;inset:0;z-index:var(--z-scrim);
+  background:oklch(0.985 0 0 / .55);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;
+  transition:opacity .45s var(--ease);
+}
+body.about-open .scrim{opacity:1;pointer-events:auto}
+
+.about{
+  position:fixed;z-index:var(--z-panel);
+  left:50%;bottom:142px;
+  width:min(560px, calc(100vw - 48px));
+  transform:translateX(-50%) translateY(14px) scale(.97);
+  transform-origin:50% 100%;
+  opacity:0;pointer-events:none;visibility:hidden;
+  padding:34px 36px 30px;
+  border-radius:30px;
+  isolation:isolate;
+  /* Denser than the dock — this one has to stay readable, so the tint
+     carries more weight and the blur goes further. */
+  background:linear-gradient(176deg,
+    oklch(1 0 0 / .78) 0%, oklch(1 0 0 / .64) 55%, oklch(1 0 0 / .72) 100%);
+  backdrop-filter:blur(36px) saturate(200%) brightness(1.05);
+  -webkit-backdrop-filter:blur(36px) saturate(200%) brightness(1.05);
+  box-shadow:
+    inset 0 0 34px -12px oklch(1 0 0),
+    inset 0 -14px 24px -20px oklch(0.20 0 0 / .28),
+    0 0 0 .5px oklch(0.20 0 0 / .09),
+    0 3px 10px -3px oklch(0.20 0 0 / .12),
+    0 30px 70px -20px oklch(0.20 0 0 / .30);
+  transition:opacity .5s var(--ease), transform .5s var(--ease), visibility 0s .5s;
+}
+.about::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  border-radius:inherit;padding:1.4px;
+  background:linear-gradient(145deg,
+    oklch(1 0 0 / 1) 0%,
+    oklch(1 0 0 / .32) 26%,
+    oklch(1 0 0 / .06) 48%,
+    oklch(1 0 0 / .48) 74%,
+    oklch(1 0 0 / .98) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite:exclude;
+  pointer-events:none;
+}
+.about::after{
+  content:'';position:absolute;inset:0;z-index:0;
+  border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg, oklch(1 0 0 / .5) 0%, oklch(1 0 0 / 0) 34%);
+}
+/* Copy rides above the glass layers. */
+.about h2,.about p,.about-meta,.about-close{position:relative;z-index:1}
+body.about-open .about{
+  opacity:1;transform:translateX(-50%) translateY(0) scale(1);
+  pointer-events:auto;visibility:visible;
+  transition:opacity .5s var(--ease), transform .5s var(--ease), visibility 0s 0s;
+}
+
+.about h2{
+  font-size:26px;font-weight:600;letter-spacing:-0.025em;
+  line-height:1.15;color:var(--ink);
+  text-wrap:balance;
+}
+.about p{
+  margin-top:14px;
+  font-size:15px;font-weight:400;line-height:1.62;
+  color:var(--muted);max-width:62ch;
+  text-wrap:pretty;
+}
+.about-meta{
+  margin-top:26px;padding-top:20px;
+  border-top:1px solid var(--hair);
+  display:flex;flex-wrap:wrap;gap:10px 28px;
+  font-size:13.5px;line-height:1.4;
+}
+.about-meta div{display:flex;flex-direction:column;gap:3px}
+.about-meta dt{color:var(--muted)}
+.about-meta dd{color:var(--ink);font-weight:500}
+.about-meta a{color:var(--accent);text-decoration:none;font-weight:500}
+.about-meta a:hover{text-decoration:underline}
+
+.about-close{
+  position:absolute;top:20px;right:20px;
+  width:32px;height:32px;border-radius:50%;
+  border:0;cursor:pointer;
+  background:oklch(0.20 0 0 / .06);
+  color:var(--muted);
+  display:grid;place-items:center;
+  font-size:15px;line-height:1;
+  transition:background .3s var(--ease), color .3s var(--ease);
+}
+.about-close:hover{background:oklch(0.20 0 0 / .12);color:var(--ink)}
+.about-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ── rail ─────────────────────────────────────────────────────
+   The standing introduction. Persistent rather than dock-triggered —
+   it is the one thing on the page that should never need a click.
+   About still carries the longer story; this is just the handshake.
+
+   The name is already in the top corner, so the greeting is deliberately
+   the quietest line here — it sets a voice, it doesn't announce anything.
+   The weight goes to the two lines that actually say something: what I do,
+   and what I design for. */
+.rail{
+  position:fixed;z-index:var(--z-hud);
+  top:50%;right:113px;
+  width:300px;
+  transform:translateY(-50%);
+  display:none;
+  transition:opacity .45s var(--ease), visibility 0s 0s;
+}
+/* The entrance lives on the inner block so the state fade below can own
+   opacity outright — an animation with `both` holds its end frame and
+   would otherwise beat the transition. */
+.rail-in{
+  animation:fade-up .8s cubic-bezier(.16,1,.3,1) both;
+  animation-delay:.46s;
+}
+
+/* Once the grid is open the introduction has done its job, and the tiles
+   want the width back. */
+body[data-state="grid"] .rail{
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .35s var(--ease), visibility 0s .35s;
+}
+
+/* The source is a 3:4 portrait, so a square crop is full-width and only
+   the vertical band is a choice — 65% lands the face just above centre. */
+.rail-face{
+  display:block;
+  width:96px;height:96px;
+  border-radius:50%;
+  object-fit:cover;object-position:50% 65%;
+  background:var(--surface);
+  box-shadow:0 0 0 .5px oklch(0.20 0 0 / .10),
+             0 8px 22px -10px oklch(0.20 0 0 / .35);
+}
+/* Lowercase and faint: a spoken aside, not a second nameplate. */
+.rail-hello{
+  margin-top:24px;
+  font-size:14.5px;font-weight:400;letter-spacing:0;line-height:1.4;
+  color:var(--muted);
+  text-transform:lowercase;
+}
+.rail-role{
+  margin-top:11px;
+  font-size:26px;font-weight:500;letter-spacing:-0.025em;line-height:1.16;
+  color:var(--ink);
+  text-wrap:balance;
+}
+.rail-mission{
+  margin-top:16px;
+  font-size:17.5px;font-weight:500;font-style:italic;
+  letter-spacing:-0.012em;line-height:1.42;
+  color:var(--ink);
+  text-wrap:pretty;
+}
+
+/* Orbit is the only state the rail has to share the width with — the
+   five-point ring reaches ~219px either side of centre, so the rail
+   clears it from about 1264. Grid is far wider, but by then the rail has
+   faded out, so it never has to be sized around. */
+@media (min-width:1280px){
+  .rail{display:block}
+}
+
+/* ── scene ────────────────────────────────────────────── */
+.viewport{
+  position:fixed;inset:0;z-index:var(--z-scene);
+  display:grid;place-items:center;
+  transform:scale(var(--fit,1));
+  transform-origin:50% 50%;
+}
+.scene{
+  perspective:1500px;
+  perspective-origin:50% 46%;
+  width:860px;height:640px;
+}
+.rig{                       /* parallax + first-load settle */
+  width:100%;height:100%;
+  transform-style:preserve-3d;
+}
+.plane{                     /* tilt + orbit spin */
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+}
+
+/* ── tiles ────────────────────────────────────────────── */
+/* Two sizes. The shipped case studies get the large card and the top row;
+   the three that aren't readable yet get the small card below. Size is
+   the ranking — no extra colour or ornament needed to say which matters.
+
+   Small 360×273 = a 360×203 image + a 70px caption strip.
+   Large 572×437 = a 572×322 image + a 115px strip, which is what carries
+   the skill pills.
+
+   In orbit BOTH crop to the same centred 203 square, so the ring stays
+   even and the size difference only exists once the grid opens. */
+.tile{
+  position:absolute;left:50%;top:50%;
+  width:360px;height:273px;
+  margin:-136.5px 0 0 -180px;
+  text-decoration:none;color:inherit;
+  transform-origin:50% 50%;
+  will-change:transform,clip-path;
+  outline:none;
+}
+.tile--lg{
+  width:572px;height:437px;
+  margin:-218.5px 0 0 -286px;
+}
+.tile--lg .merge{width:572px;height:322px}
+.tile--lg .caption{top:338px}
+
+/* Ground shadow — its own node so the tile's clip-path never crops it,
+   and sized by scale rather than clipped, since clip-path applies after
+   filter() and would slice the blur off at a hard edge. */
+.shadow{
+  position:absolute;left:50%;top:50%;
+  width:360px;height:273px;
+  margin:-136.5px 0 0 -180px;
+  background:oklch(0.15 0 0 / .50);
+  filter:blur(30px);
+  will-change:transform,opacity;
+  pointer-events:none;
+}
+.shadow--lg{width:572px;height:437px;margin:-218.5px 0 0 -286px}
+
+/* ── the shared image ─────────────────────────────────────────
+   ONE <img> per tile, carried from the orbit face into the grid —
+   never two copies cross-dissolving.
+
+   The wrapper is a fixed 360×203 box scaled onto whatever rect the
+   image should occupy; the <img> is counter-scaled by the same factor,
+   so its net scale stays exactly 1 and only the crop window widens.
+   Pure transform: the loop never dirties layout.
+
+   Its left edge is the clip inset itself, and its right edge works out
+   to the clip's right edge exactly (see the loop), so the picture fills
+   the tile's full visible width at every instant of the morph. */
+.merge{
+  position:absolute;left:0;top:0;
+  width:360px;height:203px;
+  overflow:hidden;
+  transform-origin:0 0;
+  will-change:transform;
+  background:var(--surface);
+}
+.merge img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  transform-origin:50% 50%;
+  will-change:transform;
+}
+
+/* Hairline around the image. Invisible over dark artwork; it's what
+   stops a light-edged still from dissolving into the white page. Its own
+   node rather than a border on .merge, because .merge is squashed
+   horizontally — a border there would render thinner on the sides than
+   on the top. This one isn't scaled, so it stays even all the way round. */
+/* Driven from the loop rather than fixed, because the tall tile crops to
+   the same square as the others and so needs a top inset the short ones
+   never do. */
+.ring{
+  position:absolute;
+  top:var(--inst,0px);height:var(--ivh,203px);
+  left:var(--ins,0px);right:var(--ins,0px);
+  border:1px solid oklch(0.20 0 0 / .13);
+  border-radius:var(--r,12px);
+  pointer-events:none;
+}
+
+/* Caption sits on the page, not in a frame. No border, no box.
+   The box is pushed 3px wider than the text on each side so glyph
+   antialiasing never sits exactly on the layer edge — that was what
+   shaved the left side off the first letter. Text position is unchanged. */
+.caption{
+  position:absolute;left:-3px;right:-3px;top:219px;
+  padding:0 3px;
+  will-change:transform,opacity;
+}
+.cap-row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+}
+.status{
+  flex:0 0 auto;
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12.5px;font-weight:400;line-height:1;
+  color:var(--muted);white-space:nowrap;
+}
+.status::before{
+  content:'';width:6px;height:6px;border-radius:50%;flex:0 0 6px;
+}
+/* Shipped gets a live green pulse; still-moving work keeps the hollow
+   ring. Green measures 4.34:1 on --bg — past the 3:1 that non-text UI
+   needs, with margin. The dot is never the only signal: the word next to
+   it says the same thing, so colour-blind readers lose nothing. */
+.status--done::before{
+  background:var(--live);
+  animation:status-pulse 2s ease-in-out infinite;
+}
+.status--wip::before {box-shadow:inset 0 0 0 1.5px var(--faint)}
+@keyframes status-pulse{
+  0%,100%{opacity:1;box-shadow:0 0 0 0 oklch(0.55 0.15 150 / .45)}
+  50%    {opacity:.55;box-shadow:0 0 0 3px oklch(0.55 0.15 150 / 0)}
+}
+@media (prefers-reduced-motion:reduce){
+  .status--done::before{animation:none}
+}
+
+/* The pills and the status share one row directly under the image — the
+   two things you scan for first, on the same line. */
+.cap-top{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:9px;
+}
+.cap-top .tags{margin-bottom:0;flex:1 1 auto}
+.cap-top .status{flex:0 0 auto}
+
+/* ── locked ───────────────────────────────────────────────────
+   Same treatment as the case-study cards on the homepage: the artwork
+   goes soft behind a pale wash, a filled lock sits on top, and the label
+   says so outright. */
+/* Two separate ideas, deliberately on two separate attributes:
+     [data-locked] — does not navigate. Behaviour only.
+     [data-veiled] — the artwork is not ready to be seen. Look only.
+   Munchies and Motion are both. Sharesies and Tribes are locked while
+   this landing is still in progress, but their work is shipped and their
+   stills are the reason those cards are the large ones — veiling them
+   would throw away exactly what they're there to show. */
+.tile[data-locked]{cursor:default}
+.tile[data-veiled] .merge img{
+  filter:blur(6px) saturate(.6);
+  transition:filter .5s ease;
+}
+.tile[data-veiled]:hover .merge img{filter:blur(4px) saturate(.8)}
+.tile[data-veiled] .caption h2{color:var(--muted)}
+.tile[data-veiled] .ring{border-color:oklch(0.20 0 0 / .09)}
+.tile[data-veiled] .merge{background:var(--surface)}
+
+/* Tracks the visible image rect exactly as .ring does, so it follows the
+   crop through the morph. No backdrop-filter: the picture underneath is
+   already blurred, and stacking one inside a preserve-3d context is
+   where compositing artefacts come from. */
+.lock{
+  position:absolute;
+  top:var(--inst,0px);height:var(--ivh,203px);
+  left:var(--ins,0px);right:var(--ins,0px);
+  border-radius:var(--r,12px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  /* --lock-a is driven by the loop: fully opaque in orbit, so the artwork
+     is replaced by the lock rather than shown blurred behind it, easing to
+     a 0.75 wash as the grid opens and the picture becomes the point. */
+  background:oklch(0.96 0 0 / var(--lock-a,1));
+  pointer-events:none;
+}
+.tile[data-veiled]:hover .lock{
+  background:oklch(0.96 0 0 / calc(var(--lock-a,1) * .8));
+}
+/* The label would swamp a ~122px orbit crop, so it arrives with the
+   caption. The icon alone carries it up to that point. */
+.lock-txt{opacity:var(--lock-t,0)}
+.lock-ic{
+  width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--ink);color:var(--bg);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.tile[data-veiled]:hover .lock-ic{transform:scale(1.1) rotate(-6deg)}
+.lock-txt{
+  font-size:11px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ── skill pills ──────────────────────────────────────────────
+   Directly under the image, above the title — the first thing read once
+   a card lands. Outline rather than fill: five cards' worth of filled
+   chips would out-shout the work itself. */
+.tags{
+  list-style:none;
+  display:flex;flex-wrap:wrap;gap:5px;
+  margin-bottom:9px;
+}
+/* 13.8px at --muted = 7.13:1, clearing AAA for normal text. Started at
+   10.5px on --faint (4.75:1) — failing on both size and contrast — then
+   12px, now up another 15%. Padding scaled with it so the pill shape
+   holds. */
+.tags li{
+  font-size:13.8px;font-weight:500;line-height:1;
+  letter-spacing:-0.002em;
+  color:var(--muted);
+  border:1px solid var(--hair);
+  border-radius:999px;
+  padding:7px 11.5px;
+  white-space:nowrap;
+}
+.caption h2{
+  font-size:21px;font-weight:500;
+  letter-spacing:-0.018em;line-height:1.2;
+  color:var(--ink);
+  display:flex;align-items:baseline;gap:8px;
+}
+.caption h2 .go{
+  font-size:15px;color:var(--accent);
+  opacity:0;transform:translate(-4px,2px);
+  transition:opacity .34s cubic-bezier(.16,1,.3,1),
+             transform .34s cubic-bezier(.16,1,.3,1);
+}
+.tile.is-hot .caption h2 .go{opacity:1;transform:translate(0,0)}
+.caption p{
+  margin-top:5px;
+  font-size:13.5px;font-weight:400;line-height:1.45;
+  color:var(--muted);
+}
+
+/* Focus ring only — there are no card borders in this design. Tracks
+   the clip so a keyboard ring hugs the visible shape, not the box. */
+.edge{
+  position:absolute;
+  top:var(--inst,0px);bottom:var(--insb,0px);
+  left:var(--ins,0px);right:var(--ins,0px);
+  border:1px solid transparent;
+  border-radius:var(--r,3px);
+  pointer-events:none;
+}
+.tile:focus-visible .edge{border-color:var(--accent)}
+
+/* Specular sheen tracking the cursor — what makes a hovered tile read
+   as a physical object catching light rather than a flat rectangle. */
+.gloss{
+  position:absolute;inset:0;
+  pointer-events:none;opacity:0;
+  mix-blend-mode:soft-light;
+  background:radial-gradient(46% 64% at var(--gx,50%) var(--gy,50%),
+    oklch(1 0 0 / .9) 0%, oklch(1 0 0 / .28) 36%, oklch(1 0 0 / 0) 70%);
+}
+/* Unhovered tiles recede so focus lands on one. */
+.dim{
+  position:absolute;inset:0;
+  pointer-events:none;opacity:0;
+  background:var(--bg);
+}
+
+/* ── entrance ─────────────────────────────────────────── */
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(9px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+.hud-name,.hud-contact,.dock{animation:fade-up .8s cubic-bezier(.16,1,.3,1) both}
+.hud-name   {animation-delay:.30s}
+.hud-contact{animation-delay:.38s}
+.dock        {animation-delay:.62s}
+.dock{animation-name:fade-up-center}
+@keyframes fade-up-center{
+  from{opacity:0;transform:translateX(-50%) translateY(9px)}
+  to  {opacity:1;transform:translateX(-50%) translateY(0)}
+}
+
+@media (max-width:640px){
+  .hud-name{top:22px;left:22px}
+  .hud-contact{top:22px;right:22px}
+  .dock{bottom:22px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hud-name,.hud-contact,.dock,.rail-in{animation-duration:.01ms}
+  .caption h2 .go{transition-duration:.01ms}
+}
+</style>
+</head>
+<body data-state="orbit">
+
+<div class="hud hud-name">Richie Prak <span>UX/UI &amp; Multimedia Designer</span></div>
+<a class="hud hud-contact" href="mailto:papaprak@gmail.com">Get in touch</a>
+
+<aside class="rail" aria-label="Introduction">
+  <div class="rail-in">
+    <img class="rail-face" src="../port_pic.jpg" alt="Richie Prak" width="96" height="96" decoding="async">
+    <p class="rail-hello">Hello, I&rsquo;m Richie!</p>
+    <p class="rail-role">UX/UI &amp; Multimedia Designer</p>
+    <p class="rail-mission">Designing with people at the heart, solving real problems, and building for accessibility</p>
+  </div>
+</aside>
+
+<div class="viewport" id="viewport">
+  <div class="scene">
+    <div class="rig" id="rig">
+      <div class="plane" id="plane">
+
+        <!-- index-matched to the tiles, so the first two are the large ones -->
+        <div class="shadow shadow--lg"></div>
+        <div class="shadow shadow--lg"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+
+        <!-- Sharesies and Tribes are locked on THIS landing only: their
+             case studies are live and linked normally from the homepage,
+             but this page ships with Budding as the one open study.
+             To re-open either: drop data-locked, restore the real href
+             (../Sharesies.html / ../Tribes.html) and put the ↗ back in
+             the heading. Nothing else needs touching. -->
+        <a class="tile tile--lg" data-i="0" data-name="Sharesies" data-locked href="#">
+          <div class="merge"><img src="../sha_hero_intro.jpg" alt="Sharesies investing screens" decoding="async"></div>
+          <div class="ring"></div>
+          <div class="caption">
+            <div class="cap-top">
+              <ul class="tags">
+                <li>User Interviews</li><li>Usability Testing</li><li>Onboarding Research</li>
+              </ul>
+              <span class="status status--done">Shipped</span>
+            </div>
+            <div class="cap-row">
+              <h2>Sharesies</h2>
+            </div>
+            <p>Investing platform</p>
+          </div>
+          <div class="gloss"></div><div class="dim"></div><div class="edge"></div>
+        </a>
+
+        <a class="tile tile--lg" data-i="1" data-name="Tribes" data-locked href="#">
+          <div class="merge"><img src="../Tribe_assets/Tribes.png" alt="Tribes social discovery screens" decoding="async"></div>
+          <div class="ring"></div>
+          <div class="caption">
+            <div class="cap-top">
+              <ul class="tags">
+                <li>Wireframing</li><li>UI Design</li><li>Prototyping</li>
+              </ul>
+              <span class="status status--done">Shipped</span>
+            </div>
+            <div class="cap-row">
+              <h2>Tribes</h2>
+            </div>
+            <p>Social discovery</p>
+          </div>
+          <div class="gloss"></div><div class="dim"></div><div class="edge"></div>
+        </a>
+
+        <!-- Drop a 360×203-ish image at ../Budding.png; until then
+             .merge's surface tone stands in. -->
+        <a class="tile" data-i="2" data-name="Budding" href="../Budding.html">
+          <div class="merge"><img src="../landing_page/budding_hero.png" alt="Budding, an iOS app for job rejections" decoding="async"></div>
+          <div class="ring"></div>
+          <div class="caption">
+            <div class="cap-row">
+              <h2>Budding<span class="go" aria-hidden="true">↗</span></h2>
+              <span class="status status--wip">In progress</span>
+            </div>
+            <p>A digital stressball</p>
+          </div>
+          <div class="gloss"></div><div class="dim"></div><div class="edge"></div>
+        </a>
+
+        <a class="tile" data-i="3" data-name="Munchies" data-locked data-veiled href="#">
+          <div class="merge"><img src="../Munchies.png" alt="Munchies food concept screens" decoding="async"></div>
+          <div class="ring"></div>
+          <div class="lock" aria-hidden="true">
+            <span class="lock-ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+            </span>
+            <span class="lock-txt">coming soon</span>
+          </div>
+          <div class="caption">
+            <div class="cap-row">
+              <h2>Munchies</h2>
+              <span class="status status--wip">In progress</span>
+            </div>
+            <p>Food concept — in progress</p>
+          </div>
+          <div class="gloss"></div><div class="dim"></div><div class="edge"></div>
+        </a>
+
+        <a class="tile" data-i="4" data-name="Motion" data-locked data-veiled href="#">
+          <div class="merge"><img src="../v2.png" alt="Motion and multimedia work" decoding="async"></div>
+          <div class="ring"></div>
+          <div class="lock" aria-hidden="true">
+            <span class="lock-ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+            </span>
+            <span class="lock-txt">coming soon</span>
+          </div>
+          <div class="caption">
+            <div class="cap-row">
+              <h2>Motion</h2>
+              <span class="status status--wip">Ongoing</span>
+            </div>
+            <p>Multimedia — ongoing</p>
+          </div>
+          <div class="gloss"></div><div class="dim"></div><div class="edge"></div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<section class="about" id="about" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+  <button class="about-close" id="aboutClose" type="button" aria-label="Close">✕</button>
+  <h2 id="aboutTitle">Designer, across product and picture.</h2>
+  <p>Most of my time goes into UX and UI — research, flows, prototypes, and the long tail of detail that decides whether something feels considered or merely finished. The rest goes into motion and video, which is where I started, and which still shapes how I think about timing and pacing in an interface.</p>
+  <p>Recently that's meant rethinking the investing experience at Sharesies, and helping shape Tribes from an idea into a working MVP alongside its founders.</p>
+  <dl class="about-meta">
+    <div><dt>Currently</dt><dd>Open to work</dd></div>
+    <div><dt>Focus</dt><dd>Product design, motion</dd></div>
+    <div><dt>Email</dt><dd><a href="mailto:papaprak@gmail.com">papaprak@gmail.com</a></dd></div>
+  </dl>
+</section>
+
+<nav class="dock" aria-label="Sections">
+  <button class="dock-item" id="dockWorks" type="button" aria-pressed="false">
+    <span class="ico">
+      <svg class="folder" viewBox="0 0 44 36" aria-hidden="true">
+        <path class="fd-back" d="M1 6a4 4 0 0 1 4-4h11.4a4 4 0 0 1 3.1 1.5L22 7h17a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V6z"/>
+        <rect class="fd-paper" x="9" y="6" width="26" height="19" rx="2.5"/>
+        <path class="fd-front" d="M5 12h34a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/>
+      </svg>
+    </span>
+    <span class="lbl">works</span>
+  </button>
+
+  <!-- Interaction deliberately withheld until the About content is written.
+       The item keeps its place so the dock's pairing and width don't shift
+       when it comes back. To re-enable: restore aria-expanded/aria-controls,
+       drop data-wip and aria-disabled, and re-add the click listener. -->
+  <button class="dock-item" id="dockAbout" type="button" data-wip aria-disabled="true">
+    <span class="ico ico--me">
+      <svg class="idcard" viewBox="0 0 44 44" aria-hidden="true">
+        <defs>
+          <clipPath id="idClip"><rect x="1" y="1" width="42" height="42" rx="12.5"/></clipPath>
+        </defs>
+        <rect class="id-tile" x="1" y="1" width="42" height="42" rx="12.5"/>
+        <g class="id-figure" clip-path="url(#idClip)">
+          <circle class="id-mark" cx="22" cy="17.6" r="6.5"/>
+          <path class="id-mark" d="M22 25.9c7.3 0 13.2 5.1 13.2 11.4V44H8.8v-6.7C8.8 31 14.7 25.9 22 25.9z"/>
+        </g>
+      </svg>
+      <!-- the photo takes the tile's place once it loads; the rect below is the fallback -->
+      <img id="face" src="../port_pic.jpg" alt="" decoding="async">
+    </span>
+    <span class="lbl">about</span>
+  </button>
+</nav>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ── geometry ──────────────────────────────────────────
+     Tile 360×267 = a 360×203 image with a caption below it. Budding is
+     the same width but two rows tall, so its image box is 522.
+
+     Grid ranks by size. The two readable case studies take the large
+     card and the top row; the three that aren't open yet take the small
+     card below. Both rows measure 1208 wide, so the block stays square-
+     shouldered.
+
+       ┌───────────────┬───────────────┐
+       │   Sharesies   │    Tribes     │   572×437
+       ├──────────┬────┴─────┬─────────┤
+       │ Munchies │  Motion  │ Budding │   360×273
+       └──────────┴──────────┴─────────┘
+
+     Orbit ignores the ranking entirely: every tile crops to the same
+     centred 203 square and rides a five-point ring. */
+  const SM_W = 360, SM_H = 273, SM_IH = 203;     // 203 image + 70 caption
+  const LG_W = 572, LG_H = 437, LG_IH = 322;     // 322 image + 115 caption
+  const GAP_X = 64, GAP_Y = 52;
+  const ORBIT_CROP = 203;                 // the square every tile shows in orbit
+  const COL = SM_W + GAP_X;               // 424 — bottom-row pitch
+  const LGX = (LG_W + GAP_X) / 2;         // 318 — top-row centre offset
+  /* Rows are centred on the whole 762-tall block, not on each other. */
+  const GRID_H = LG_H + GAP_Y + SM_H;     // 762
+  const LG_Y = -GRID_H / 2 + LG_H / 2;    // -162.5
+  const SM_Y =  GRID_H / 2 - SM_H / 2;    //  244.5
+
+  /* w/h/ih per tile; gx/gy are grid centres relative to the scene centre. */
+  const LAYOUT = [
+    { gx:-LGX, gy:LG_Y, w:LG_W, h:LG_H, ih:LG_IH },   // 0 Sharesies
+    { gx: LGX, gy:LG_Y, w:LG_W, h:LG_H, ih:LG_IH },   // 1 Tribes
+    { gx:-COL, gy:SM_Y, w:SM_W, h:SM_H, ih:SM_IH },   // 2 Budding
+    { gx:   0, gy:SM_Y, w:SM_W, h:SM_H, ih:SM_IH },   // 3 Munchies
+    { gx: COL, gy:SM_Y, w:SM_W, h:SM_H, ih:SM_IH },   // 4 Motion
+  ];
+  const N = LAYOUT.length;
+
+  /* Five tiles need more air than four did. Rather than growing the ring
+     — which would push it under the rail — each tile is stepped down a
+     little and the gap between them roughly doubled. Net cluster size is
+     almost unchanged; the space goes between the works instead of into
+     them. */
+  const ORBIT_S  = 0.60;                  // → a ~122px square on screen
+  const ORBIT_SQ = ORBIT_CROP * ORBIT_S;
+  /* 64, not the old 24. Verified rather than guessed: projecting all five
+     quads through the tilt, spin and perspective and running SAT on every
+     pair, across a full revolution × a full bob cycle, this is the point
+     at which the count of intersecting frames reaches zero. At 24 it was
+     17.6% of frames — which is what read as the tiles passing through
+     each other. */
+  const ORBIT_GAP = 64;
+  const ORBIT_R  = (ORBIT_SQ + ORBIT_GAP) / (2 * Math.sin(Math.PI / N));
+  /* The crop square is not centred on the tile — it sits in the image band
+     above the caption — and that offset differs between the two card
+     sizes. A tile's transform positions its CENTRE, so without correcting
+     for it the large cards' squares would ride ~14px higher than the small
+     ones and the ring would visibly list. Place the squares on the ring,
+     not the boxes. */
+  const cropOffset = L => ((L.ih - ORBIT_CROP) / 2) + ORBIT_CROP / 2 - L.h / 2;
+  const ORB = LAYOUT.map((L, i) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / N;
+    return {
+      x: ORBIT_R * Math.cos(a),
+      y: ORBIT_R * Math.sin(a) - cropOffset(L) * ORBIT_S,
+    };
+  });
+
+  /* On-screen corner radius, held constant in both states by dividing
+     out the tile scale. The tile's clip and the image's own radius are
+     both derived from it so their corners coincide exactly — a smaller
+     clip radius would shave the image's corners back off. */
+  const RADIUS   = 12;
+
+  const TILT     = 56;
+  const SPIN_MS  = 26000;
+  /* The bob lifts each tile PERPENDICULAR to the plane, and at a 56° tilt
+     that reads as ~0.83 of its size in screen-Y. Arbitrary heights and
+     scattered phases therefore slide tiles through one another.
+
+     So: one shared resting height, and phases spaced exactly one step
+     apart around the ring. The bob becomes a single wave travelling the
+     orbit rather than five independent floats — neighbours are only ever
+     72° out of phase, which caps their relative rise at 2·A·sin36° ≈ 1.18·A
+     and keeps it well inside the gap. It also just looks deliberate. */
+  const BOB_BASE = [12, 12, 12, 12, 12];
+  const BOB_PHASE= LAYOUT.map((_, i) => i * 2 * Math.PI / N);
+  const BOB_AMP  = 12;
+  const STAG     = 0.06;                  // ×(N−1) stagger; eased down for 5
+
+  const reduced   = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DUR_OPEN  = reduced ? 260 : 1200;
+  const DUR_CLOSE = reduced ? 220 : 900;
+
+  const plane  = document.getElementById('plane');
+  const rig    = document.getElementById('rig');
+  const dWorks = document.getElementById('dockWorks');
+  const dAbout = document.getElementById('dockAbout');
+  const about  = document.getElementById('about');
+  const scrim  = document.getElementById('scrim');
+  const tiles  = [...document.querySelectorAll('.tile')];
+  const shadows= [...document.querySelectorAll('.shadow')];
+
+  const part = tiles.map(t => ({
+    merge: t.querySelector('.merge'),
+    mimg:  t.querySelector('.merge img'),
+    cap:   t.querySelector('.caption'),
+    lock:  t.querySelector('.lock'),      // null on the unlocked tiles
+    gloss: t.querySelector('.gloss'),
+    dim:   t.querySelector('.dim'),
+  }));
+
+  const clamp = (v,a,b) => v < a ? a : v > b ? b : v;
+  const lerp  = (a,b,t) => a + (b - a) * t;
+  const easeInOutCubic = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  const easeOutExpo    = t => t >= 1 ? 1 : 1 - Math.pow(2, -9*t);
+  const easeOutCubic   = t => 1 - Math.pow(1-t,3);
+  const seg = (p,a,b) => clamp((p - a) / (b - a), 0, 1);
+
+  let raw = 0, from = 0, to = 0, animStart = 0, animDur = DUR_OPEN, animating = false;
+  let spinFree = 0, spinTarget = 0;
+  let order = LAYOUT.map((_, i) => i);
+  let parX = 0, parY = 0, parTX = 0, parTY = 0;
+  let hoverIdx = -1;
+  let last = performance.now();
+  const t0 = last;
+
+  /* Hover as a light spring (ζ≈0.69): rises with a touch of overshoot
+     and settles, rather than stepping. */
+  const HOV_K = 150, HOV_D = 17;
+  const HOV_LIFT = reduced ? 0 : 30;
+  const HOV_BANK = reduced ? 0 : 7;
+  const HOV_GROW = reduced ? 0 : 0.03;
+  const hAmt = new Array(N).fill(0), hVel = new Array(N).fill(0);
+  const ptrX = new Array(N).fill(0), ptrY = new Array(N).fill(0);
+  const ptrTX= new Array(N).fill(0), ptrTY= new Array(N).fill(0);
+  const hotFlag = new Array(N).fill(false);
+  const canHover = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const RAD = Math.PI / 180;
+
+  let mx = -1, my = -1, fitScale = 1;
+
+  /* ── state ──────────────────────────────────────────── */
+  function setState(next, fromIdx) {
+    if (next === to) return;
+    if (next === 1) {
+      spinTarget = Math.round(spinFree / 360) * 360;
+      /* The tile you clicked lands first and the rest follow outward.
+         Straight-line distance between grid centres, rather than the old
+         quadrant table — that only described a symmetric 2×2. */
+      const k = fromIdx == null ? 0 : fromIdx;
+      const dist = LAYOUT.map(L => Math.hypot(L.gx - LAYOUT[k].gx, L.gy - LAYOUT[k].gy));
+      const sorted = [...dist.keys()].sort((a,b) => dist[a] - dist[b]);
+      order = [];
+      sorted.forEach((idx, rank) => { order[idx] = rank; });
+    } else {
+      order = order.map(o => (N - 1) - o);
+    }
+    from = raw; to = next;
+    animStart = performance.now();
+    animDur = next === 1 ? DUR_OPEN : DUR_CLOSE;
+    animating = true;
+    document.body.dataset.state = next === 1 ? 'grid' : 'orbit';
+    tiles.forEach(t => t.setAttribute('tabindex', next === 1 ? '0' : '-1'));
+    /* The folder reports the section you're in, not just the cursor:
+       it stays open for as long as the works are laid out. */
+    dWorks.classList.toggle('is-open', next === 1);
+    dWorks.classList.toggle('is-active', next === 1);
+    dWorks.setAttribute('aria-pressed', next === 1 ? 'true' : 'false');
+  }
+
+  /* ── about ──────────────────────────────────────────── */
+  let aboutOpen = false, lastFocus = null;
+  function setAbout(open) {
+    if (open === aboutOpen) return;
+    aboutOpen = open;
+    document.body.classList.toggle('about-open', open);
+    dAbout.classList.toggle('is-active', open);
+    dAbout.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) {
+      lastFocus = document.activeElement;
+      document.getElementById('aboutClose').focus();
+    } else if (lastFocus) {
+      lastFocus.focus(); lastFocus = null;
+    }
+  }
+
+  /* ── hit test ───────────────────────────────────────────
+     Resolved every frame from the last cursor position, not from
+     pointerenter/leave. The tiles orbit and bob continuously, so they
+     slide out from under a stationary cursor — and pointer events only
+     fire when the *pointer* moves, not when the element does.
+     elementFromPoint reuses the browser's own hit testing, so the 3D
+     projection, the clip-path and z-order are all honoured. */
+  function hitTest() {
+    if (!canHover || mx < 0) return -1;
+    const el = document.elementFromPoint(mx, my);
+    if (!el) return -1;
+    const tile = el.closest ? el.closest('.tile') : null;
+    return tile ? tiles.indexOf(tile) : -1;
+  }
+
+  /* Screen-space cursor offset → the tile's own axes, normalised to ±1.
+     Undo the plane's X tilt (vertical foreshortening) then its Z spin;
+     without this the sheen drifts and its strength pulses with the
+     orbit angle, because a rotated quad's bounding box is not its size. */
+  const _off = [0,0];
+  function localOffset(i, tilt, spin, s, insX) {
+    const r  = tiles[i].getBoundingClientRect();
+    const dx = mx - (r.left + r.width  / 2);
+    const dy = my - (r.top  + r.height / 2);
+    const ct = Math.max(Math.cos(tilt * RAD), 0.25);
+    const scr = s * fitScale;
+    const X = dx, Y = dy / ct;
+    const cs = Math.cos(spin * RAD), sn = Math.sin(spin * RAD);
+    const hw = Math.max((LAYOUT[i].w - 2 * insX) / 2 * scr, 1);
+    const hh = Math.max(LAYOUT[i].h / 2 * scr, 1);
+    _off[0] = clamp(( X * cs + Y * sn) / hw, -1, 1);
+    _off[1] = clamp((-X * sn + Y * cs) / hh, -1, 1);
+  }
+
+  /* ── frame ──────────────────────────────────────────── */
+  function frame(now) {
+    const dt = Math.min(now - last, 50); last = now;
+
+    /* ── 1. advance state (pure maths, touches no DOM) ────────────── */
+    if (animating) {
+      const t = clamp((now - animStart) / animDur, 0, 1);
+      raw = lerp(from, to, t);
+      if (t >= 1) animating = false;
+    }
+    if (!reduced) spinFree += (dt / SPIN_MS) * 360 * (1 - raw);
+
+    const camera = easeInOutCubic(raw);
+    const tilt   = TILT * (1 - camera);
+    const spin   = lerp(spinFree, spinTarget, camera);
+    const span   = 1 - STAG * (N - 1);
+
+    /* First-load settle: the cluster arrives once, then never again. */
+    const intro  = reduced ? 1 : easeOutExpo(clamp((now - t0 - 120) / 1100, 0, 1));
+
+    /* ── 2. every DOM read, before any write ──────────────────────── */
+    hoverIdx = animating ? -1 : hitTest();
+    if (hoverIdx >= 0) {
+      const pH = clamp((raw - order[hoverIdx] * STAG) / span, 0, 1);
+      localOffset(hoverIdx, tilt, spin,
+        lerp(ORBIT_S, 1, easeOutExpo(pH)),
+        ((LAYOUT[hoverIdx].w - ORBIT_CROP) / 2) * (1 - easeOutCubic(pH)));
+    }
+
+    /* ── 3. integrate ─────────────────────────────────────────────── */
+    const kPar = 1 - Math.exp(-dt / 260);    // dt-derived, so the feel is
+    const kPtr = 1 - Math.exp(-dt / 110);    // identical at 30/60/120Hz
+    const dtS  = dt / 1000;
+
+    let hoverMax = 0;
+    for (let i = 0; i < N; i++) {
+      const tgt = hoverIdx === i ? 1 : 0;
+      hVel[i] += (-HOV_K * (hAmt[i] - tgt) - HOV_D * hVel[i]) * dtS;
+      hAmt[i] += hVel[i] * dtS;
+      if (tgt === 0 && Math.abs(hAmt[i]) < 0.0015 && Math.abs(hVel[i]) < 0.002) {
+        hAmt[i] = 0; hVel[i] = 0;
+      }
+      ptrTX[i] = tgt ? _off[0] : 0;
+      ptrTY[i] = tgt ? _off[1] : 0;
+      ptrX[i] += (ptrTX[i] - ptrX[i]) * kPtr;
+      ptrY[i] += (ptrTY[i] - ptrY[i]) * kPtr;
+      if (hAmt[i] > hoverMax) hoverMax = hAmt[i];
+      const hot = tgt === 1;
+      if (hot !== hotFlag[i]) { tiles[i].classList.toggle('is-hot', hot); hotFlag[i] = hot; }
+    }
+
+    /* ── 4. writes ────────────────────────────────────────────────── */
+    rig.style.transform =
+      `rotateX(${(parY * 3.5 * (1 - camera * 0.75)).toFixed(3)}deg)` +
+      ` rotateY(${(parX * 6 * (1 - camera * 0.75)).toFixed(3)}deg)` +
+      ` scale(${(0.94 + 0.06 * intro).toFixed(4)})`;
+    rig.style.opacity = intro.toFixed(3);
+
+    plane.style.transform = `rotateX(${tilt}deg) rotateZ(${spin}deg)`;
+
+    parX += (parTX - parX) * kPar;
+    parY += (parTY - parY) * kPar;
+
+    for (let i = 0; i < N; i++) {
+      const p  = clamp((raw - order[i] * STAG) / span, 0, 1);
+      const eP = easeOutExpo(p);        // position + size lead
+      const eC = easeOutCubic(p);       // clip trails very slightly
+
+      const L = LAYOUT[i];
+      const x = lerp(ORB[i].x, L.gx, eP);
+      const y = lerp(ORB[i].y, L.gy, eP);
+
+      const H = hAmt[i];
+      const other = clamp(hoverMax - H, 0, 1);
+
+      const bob = reduced ? 0 : Math.sin(now * 0.0011 + BOB_PHASE[i]) * BOB_AMP;
+      const lift = (BOB_BASE[i] + bob) * (1 - camera)
+                 + H * HOV_LIFT * (1 - camera * 0.45)
+                 - other * 7 * (1 - camera);
+
+      const s    = lerp(ORBIT_S, 1, eP) * (1 + HOV_GROW * H * (1 - camera));
+      /* Orbit crops every tile to the same centred 203 square. For the
+         short cards the image box already IS that square, so the top
+         inset is 0 and the clip only has to hide the caption. The tall
+         one additionally needs a top inset — the single asymmetry in the
+         whole morph, and the reason insT exists at all. */
+      const insX0 = (L.w  - ORBIT_CROP) / 2;   // 78.5 small · 184.5 large
+      const insT0 = (L.ih - ORBIT_CROP) / 2;   //    0 small ·  59.5 large
+      const insB0 = L.h - ORBIT_CROP - insT0;  //   70 small · 174.5 large
+      const insX  = insX0 * (1 - eC);
+      const insT  = insT0 * (1 - eC);
+      const insB  = insB0 * (1 - eC);
+      const r     = RADIUS / s;
+
+      /* The image's own rect, which the ring and the merge both track.
+         Its bottom travels from the bottom of the orbit square to the
+         full image height; its top is the clip's top inset. */
+      const imgBot = lerp(insT0 + ORBIT_CROP, L.ih, eC);
+      const ivh    = imgBot - insT;
+
+      /* ptrX/ptrY already arrive in the tile's own axes. Banking is
+         reserved for the flat grid — in orbit the plane already sits at
+         56° and the rise off it is the signal; a second tilt muddied both. */
+      const bank = HOV_BANK * H * camera;
+
+      const tile = tiles[i];
+      tile.style.transform =
+        `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,${lift.toFixed(2)}px)` +
+        ` rotateY(${(ptrX[i] * bank).toFixed(3)}deg) rotateX(${(-ptrY[i] * bank).toFixed(3)}deg)` +
+        ` scale(${s.toFixed(4)})`;
+      /* Drop the clip entirely once a tile is fully laid out. At rest it
+         has nothing left to hide — the image carries its own rounded
+         corners — and a clip edge sitting exactly on the caption's left
+         margin is what was shaving the first letter. */
+      tile.style.clipPath = eC > 0.9995 ? 'none'
+        : `inset(${insT.toFixed(2)}px ${insX.toFixed(2)}px ${insB.toFixed(2)}px ${insX.toFixed(2)}px round ${r.toFixed(2)}px)`;
+      tile.style.setProperty('--ins',  insX.toFixed(2) + 'px');
+      tile.style.setProperty('--inst', insT.toFixed(2) + 'px');
+      tile.style.setProperty('--insb', insB.toFixed(2) + 'px');
+      tile.style.setProperty('--ivh',  ivh.toFixed(2) + 'px');
+      tile.style.setProperty('--r', r.toFixed(2) + 'px');
+
+      /* Shared image. msx is derived from the clip inset rather than
+         lerped independently, which makes both its edges land exactly on
+         the clip's edges: left = insX, right = insX + 360·msx = 360 − insX.
+         The picture fills the tile's visible width at every instant. */
+      const msx = (L.w - 2 * insX) / L.w;
+      const msy = ivh / L.ih;                  // 1 for the short cards
+      part[i].merge.style.transform =
+        `translate(${insX.toFixed(2)}px,${insT.toFixed(2)}px) scale(${msx.toFixed(5)},${msy.toFixed(5)})`;
+      /* Elliptical radius, pre-compensated for the non-uniform scale:
+         each axis is divided by its own factor, so after the squash both
+         land on the same RADIUS px on screen and the corners stay
+         circular instead of stretching into ovals. */
+      part[i].merge.style.borderRadius =
+        `${(RADIUS / (s * msx)).toFixed(2)}px / ${(RADIUS / (s * msy)).toFixed(2)}px`;
+      /* Counter-scale holds the picture at net 1:1 — only the crop opens
+         out, so it never stretches. Hover push-in rides on top. */
+      const zoom = 1 + 0.045 * H;
+      part[i].mimg.style.transform =
+        `scale(${(zoom / msx).toFixed(5)},${(zoom / msy).toFixed(5)})`;
+
+      /* Caption is uncovered by the clip retracting; the small rise stops
+         it appearing bolted in place. */
+      const capT = seg(p, .30, .92);
+      part[i].cap.style.opacity = capT.toFixed(3);
+      /* Drop the transform entirely once the caption has landed, the same
+         way the clip is dropped above. A caption left holding even
+         translateY(0px) stays on its own composited layer, and text on a
+         composited layer under this scene's perspective is rasterised
+         once and then scaled — which is what makes the pills look soft.
+         With no transform it renders at the real device resolution. */
+      part[i].cap.style.transform = capT > 0.9995
+        ? 'none'
+        : `translateY(${(10 * (1 - capT)).toFixed(2)}px)`;
+      /* In orbit the overlay is opaque, so a locked work reads as a lock —
+         not as a blurred picture. As the grid opens it thins to a wash and
+         the artwork comes through behind it, with the label arriving on
+         the caption's timing. */
+      if (part[i].lock) {
+        part[i].lock.style.setProperty('--lock-a', lerp(1, 0.75, capT).toFixed(3));
+        part[i].lock.style.setProperty('--lock-t', capT.toFixed(3));
+      }
+
+      /* Sheen travel is limited to the visible square in orbit and opens
+         out to the full tile in the grid. */
+      const gf = lerp(insX0 / L.w * 100, 50, eP);
+      part[i].gloss.style.setProperty('--gx', (50 + ptrX[i] * gf).toFixed(2) + '%');
+      part[i].gloss.style.setProperty('--gy', (50 + ptrY[i] * 50).toFixed(2) + '%');
+      /* Softer than it was on dark: on white the lift and its shadow do
+         most of the work, and a strong white sheen would blow out light
+         screenshots rather than light them. */
+      part[i].gloss.style.opacity = (0.55 * H).toFixed(3);
+      part[i].dim.style.opacity   = (0.12 * other).toFixed(3);
+
+      const sh = shadows[i];
+      const g  = 1 + lift * 0.0022;
+      sh.style.transform =
+        `translate3d(${x.toFixed(2)}px,${(y + 10).toFixed(2)}px,-1px)` +
+        ` scale(${((L.w - 2*insX) * s / L.w * g).toFixed(4)},${((L.h - insT - insB) * s / L.h * g).toFixed(4)})`;
+      sh.style.opacity = clamp((0.34 - lift * 0.0032) * (1 - camera * 0.55), 0, 1).toFixed(3);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  /* ── input ──────────────────────────────────────────── */
+  tiles.forEach((tile, i) => {
+    tile.setAttribute('tabindex', '-1');
+    /* No pointerenter/leave — the loop's hit test owns hover entirely. */
+    tile.addEventListener('click', e => {
+      if (raw < 0.92) { e.preventDefault(); setState(1, i); return; }
+      if (tile.hasAttribute('data-locked')) e.preventDefault();
+    });
+  });
+
+  dWorks.addEventListener('click', () => { setAbout(false); setState(to === 1 ? 0 : 1, 0); });
+  /* dAbout's click listener is intentionally absent — the About panel has
+     no content yet. setAbout() and the panel below are left wired up so
+     restoring this one line brings the whole interaction back. */
+  document.getElementById('aboutClose').addEventListener('click', () => setAbout(false));
+  scrim.addEventListener('click', () => setAbout(false));
+
+  /* Swap the placeholder silhouette out only once a real photo loads. */
+  const face = document.getElementById('face');
+  face.addEventListener('load',  () => face.parentElement.classList.add('ok'));
+  face.addEventListener('error', () => { face.style.display = 'none'; });
+
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (aboutOpen) { setAbout(false); return; }
+      if (to === 1) setState(0);
+      return;
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && to === 0 && !aboutOpen &&
+        !e.target.closest('button')) { e.preventDefault(); setState(1, 0); }
+  });
+
+  /* Specular hotspot on the dock. Its rect is cached rather than measured
+     per move — the dock is fixed, so it only changes on resize, and
+     measuring inside pointermove would force a layout on every event. */
+  const dock = document.querySelector('.dock');
+  let dockRect = null;
+  const cacheDock = () => { dockRect = dock.getBoundingClientRect(); };
+  dock.addEventListener('pointerenter', cacheDock);
+
+  addEventListener('pointermove', e => {
+    mx = e.clientX; my = e.clientY;
+    parTX = (e.clientX / innerWidth  - 0.5) * 2;
+    parTY = -(e.clientY / innerHeight - 0.5) * 2;
+
+    if (dockRect) {
+      dock.style.setProperty('--sx',
+        (((e.clientX - dockRect.left) / dockRect.width)  * 100).toFixed(1) + '%');
+      dock.style.setProperty('--sy',
+        (((e.clientY - dockRect.top)  / dockRect.height) * 100).toFixed(1) + '%');
+    }
+  }, { passive: true });
+
+  /* ── idle nudge ───────────────────────────────────────────
+     The folder hints at itself, but only when all three are true: we're in
+     orbit, the grid has never been opened, and the visitor has been still
+     for a while. Any input at all resets the timer, so it can never fire
+     over someone who is already busy. Once they open the works they have
+     found it, and it never returns. */
+  const IDLE_MS = 1800;
+  let idleTimer = null, everOpened = false;
+  function stopNudge() { dWorks.classList.remove('is-nudging'); }
+  function armNudge() {
+    clearTimeout(idleTimer);
+    stopNudge();
+    if (everOpened || to === 1 || reduced) return;
+    idleTimer = setTimeout(() => {
+      if (!everOpened && to === 0) dWorks.classList.add('is-nudging');
+    }, IDLE_MS);
+  }
+  ['pointermove','pointerdown','keydown','wheel','touchstart','focusin']
+    .forEach(ev => addEventListener(ev, armNudge, { passive: true }));
+  dWorks.addEventListener('click', () => { everOpened = true; clearTimeout(idleTimer); stopNudge(); });
+  tiles.forEach(t => t.addEventListener('click', () => { everOpened = true; clearTimeout(idleTimer); stopNudge(); }));
+  armNudge();
+
+  const release = () => { mx = -1; my = -1; parTX = 0; parTY = 0; };
+  document.addEventListener('pointerleave', release);
+  addEventListener('blur', release);
+
+  /* The grid relationship is the whole point, so the scene scales to fit
+     rather than reflowing. Design box follows the block: 1208 wide
+     (3×360 + 2×64, and 2×572 + 64 — the rows match) and 762 tall
+     (437 + 52 + 273), plus the margin the shadows need.
+     A production build should switch to a scrolling single column
+     below ~720px. */
+  const viewport = document.getElementById('viewport');
+  function fit() {
+    fitScale = Math.max(Math.min(innerWidth / 1344, innerHeight / 936, 1), 0.34);
+    viewport.style.setProperty('--fit', fitScale.toFixed(3));
+    dockRect = null;                 // stale after a resize; re-measured on enter
+  }
+  addEventListener('resize', fit);
+  fit();
+
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

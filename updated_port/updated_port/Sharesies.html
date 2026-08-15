@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sharesies: Designing a guided first-week experience for new investors</title>
+<title>Sharesies — Designing a guided first-week experience for new investors</title>
 <meta name="description" content="A case study on designing a guided onboarding experience for new Sharesies investors. UX/UI Designer, Master's capstone 2024.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ───────────────────────────────────────
      TOKENS
@@ -35,7 +35,7 @@
     --purple:      #47446D;   /* H2/H3 heading colour — AAA on white */
     --cream:       #F4F2EC;   /* warm alt page background */
 
-    --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
     --topnav-h: 56px;
     --sidebar-w: 260px;
@@ -92,12 +92,12 @@
     position: relative;
     z-index: 20;
   }
-  .topnav .crumb-work { font-size: 14px; color: var(--ink-light); }
-  .topnav .crumb-sep  { font-size: 14px; color: var(--border-strong); margin: 0 10px; }
-  .topnav .crumb-now  { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .topnav .crumb-work { font-size: 13px; color: var(--ink-light); }
+  .topnav .crumb-sep  { font-size: 13px; color: var(--border-strong); margin: 0 10px; }
+  .topnav .crumb-now  { font-size: 13px; font-weight: 500; color: var(--ink); }
   .topnav .topnav-spacer { flex: 1; }
   .topnav .topnav-links { display: flex; gap: 28px; }
-  .topnav .topnav-links a { font-size: 14px; color: var(--ink-light); transition: color .2s var(--ease); }
+  .topnav .topnav-links a { font-size: 13px; color: var(--ink-light); transition: color .2s var(--ease); }
   .topnav .topnav-links a:hover { color: var(--ink); }
   .topnav .menu-btn {
     display: none;
@@ -133,8 +133,8 @@
     padding: 22px 22px 18px;
     border-bottom: 1px solid var(--border);
   }
-  .sidebar-head .kicker { font-size: 13px; color: #1D1D1D; margin-bottom: 4px; letter-spacing: .01em; }
-  .sidebar-head .title  { font-size: 22px; font-weight: 600; color: #d83f6e; letter-spacing: -.005em; }
+  .sidebar-head .kicker { font-size: 12px; color: #1D1D1D; margin-bottom: 4px; letter-spacing: .01em; }
+  .sidebar-head .title  { font-size: 20px; font-weight: 600; color: #d83f6e; letter-spacing: -.005em; }
 
   .progress {
     padding: 14px 22px 4px;
@@ -143,7 +143,7 @@
     display: flex; justify-content: space-between; align-items: baseline;
     margin-bottom: 6px;
   }
-  .progress-row span { font-size: 12px; color: var(--ink); font-weight: 500; }
+  .progress-row span { font-size: 11px; color: var(--ink); font-weight: 500; }
   .progress-row .pct { font-variant-numeric: tabular-nums; color: #d83f6e; font-weight: 600; }
   .progress-track {
     height: 8px; background: var(--border); border-radius: 99px; overflow: hidden;
@@ -158,7 +158,7 @@
   .nav-groups { padding: 8px 0 24px; }
   .nav-group { margin-top: 14px; }
   .nav-group-label {
-    font-size: 12px; font-weight: 600;
+    font-size: 11px; font-weight: 600;
     color: var(--ink-light);
     padding: 0 22px;
     margin-bottom: 4px;
@@ -188,7 +188,7 @@
     transition: background .2s var(--ease), border-color .2s var(--ease);
   }
   .nav-label {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 400;
     color: var(--ink-mid);
     line-height: 1.35;
@@ -263,7 +263,7 @@
     background: var(--bg);
   }
   .content-inner[data-section="brief"] .brief-products .brief-product-body {
-    font-size: 15.5px;
+    font-size: 14px;
   }
 
   /* Section transitions */
@@ -304,7 +304,7 @@
   .poster-wrap:hover { opacity: .88; }
   .poster-wrap img { width: 100%; display: block; border-radius: 8px; }
   .poster-hint {
-    font-size: 13px; color: var(--ink-mid);
+    font-size: 12px; color: var(--ink-mid);
     display: flex; align-items: center; gap: 5px; margin-bottom: 14px;
   }
 
@@ -332,7 +332,7 @@
     position: absolute; top: 20px; right: 20px;
     width: 40px; height: 40px; border-radius: 50%;
     border: 0; background: rgba(255,255,255,.12);
-    color: #fff; font-size: 22px; line-height: 1;
+    color: #fff; font-size: 20px; line-height: 1;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: background .2s var(--ease);
   }
@@ -356,15 +356,15 @@
   }
   .gi-row .gi-frame img { width: 100%; max-width: 200px; display: block; border-radius: 6px; }
   .gi-row .gi-label {
-    font-size: 12px; font-weight: 700; color: #47446D;
+    font-size: 11px; font-weight: 700; color: #47446D;
     letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px;
   }
   .gi-row .gi-title {
-    font-size: 19.5px; font-weight: 600; color: var(--ink);
+    font-size: 18px; font-weight: 600; color: var(--ink);
     margin-bottom: 12px; line-height: 1.3;
   }
   .gi-row .gi-body {
-    font-size: 15.5px; color: var(--ink-mid);
+    font-size: 14px; color: var(--ink-mid);
     line-height: 1.75; margin: 0 0 12px;
     max-width: 62ch;
   }
@@ -407,7 +407,7 @@
     background: #fff; border: 1px solid var(--border);
     color: var(--ink);
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px; line-height: 1; cursor: pointer;
+    font-size: 22px; line-height: 1; cursor: pointer;
     box-shadow: 0 4px 12px rgba(27,26,23,.08);
     transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
     z-index: 2;
@@ -422,10 +422,10 @@
     gap: 16px; margin-top: 18px;
   }
   .hifi-caption {
-    font-size: 15.5px; color: var(--ink); font-weight: 600;
+    font-size: 14px; color: var(--ink); font-weight: 600;
   }
   .hifi-counter {
-    font-size: 13px; color: var(--ink-mid);
+    font-size: 12px; color: var(--ink-mid);
     font-variant-numeric: tabular-nums; letter-spacing: .04em;
   }
   .hifi-dots { display: flex; gap: 6px; }
@@ -447,12 +447,12 @@
      CONTENT ATOMS
   ─────────────────────────────────────── */
   .eyebrow {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--ink-light);
     margin-bottom: 14px;
   }
   h1.section-title {
-    font-size: 37px;
+    font-size: 34px;
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -.03em;
@@ -463,13 +463,13 @@
   .content-inner[data-section="intro"] h1.section-title { color: #1b1a17; }
   .content-inner[data-section="intro"] h1.section-title .accent-pink { color: #d83f6e; }
   .lede {
-    font-size: 19.5px;
+    font-size: 18px;
     line-height: 1.6;
     color: var(--ink-mid);
     margin-bottom: 32px;
   }
   h2.sub-head {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: -.02em;
@@ -491,7 +491,7 @@
     width: 60px;
   }
   .section-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: .09em;
     text-transform: uppercase;
@@ -500,7 +500,7 @@
   }
   .section-label .sublabel {
     font-weight: 400;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: none;
     letter-spacing: 0;
   }
@@ -513,18 +513,18 @@
   }
   .card.is-muted { background: var(--bg-2); }
   .card-h {
-    font-size: 15.5px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--ink);
     margin-bottom: 6px;
   }
   .card-body {
-    font-size: 15.5px;
+    font-size: 14px;
     color: var(--ink-mid);
     line-height: 1.6;
   }
   .card-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     color: var(--ink-light);
     letter-spacing: .04em;
@@ -550,16 +550,16 @@
   .list-row:last-child { border-bottom: 0; }
   .list-row.is-mine { background: var(--bg-2); grid-template-columns: 40px 1fr auto; }
   .list-row .row-num {
-    font-size: 14px; font-weight: 700;
+    font-size: 13px; font-weight: 700;
     color: var(--ink-mid);
     margin-top: 2px; flex-shrink: 0;
     font-variant-numeric: tabular-nums;
   }
   .list-row.is-mine .row-num { color: #47446D; }
-  .list-row .row-title { font-size: 16.5px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-  .list-row .row-body { font-size: 15.5px; color: var(--ink-mid); line-height: 1.6; }
+  .list-row .row-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .list-row .row-body { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
   .list-row .row-pill {
-    font-size: 11px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
     background: #47446D; color: #fff;
     padding: 3px 9px; border-radius: 20px;
     white-space: nowrap; margin-top: 3px;
@@ -588,11 +588,11 @@
   }
   .stats-grid .stat:last-child { border-right: 0; }
   .stats-grid .stat-num {
-    font-size: 32.5px; font-weight: 600; letter-spacing: -.04em;
+    font-size: 30px; font-weight: 600; letter-spacing: -.04em;
     color: var(--ink); line-height: 1; margin-bottom: 6px;
   }
   .stats-grid .stat-lbl {
-    font-size: 13px; color: var(--ink-light); line-height: 1.35;
+    font-size: 12px; color: var(--ink-light); line-height: 1.35;
   }
 
   .img-ph {
@@ -601,7 +601,7 @@
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     color: var(--ink-light);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: .04em;
     text-transform: uppercase;
   }
@@ -613,46 +613,46 @@
     background: var(--bg-2);
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 600; color: var(--ink-mid);
+    font-size: 13px; font-weight: 600; color: var(--ink-mid);
   }
   .avatar.is-me .avatar-circle { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .avatar-name { font-size: 15.5px; color: var(--ink-mid); }
+  .avatar-name { font-size: 14px; color: var(--ink-mid); }
   .avatar.is-me .avatar-name { color: var(--ink); font-weight: 600; }
 
   .pink-tag {
     display: inline-block;
     background: var(--pink); color: #fff;
-    font-size: 13px; font-weight: 600;
+    font-size: 12px; font-weight: 600;
     padding: 5px 14px; border-radius: 6px;
     margin-bottom: 18px;
     letter-spacing: .01em;
   }
   .prose-p {
-    font-size: 17.5px; color: var(--ink-mid); line-height: 1.75;
+    font-size: 16px; color: var(--ink-mid); line-height: 1.75;
     margin-bottom: 28px;
   }
   .prose-p:last-child { margin-bottom: 0; }
 
   .shmuxd-stamp { text-align: center; margin: 24px 0; }
   .shmuxd-stamp .big {
-    font-size: 28.5px; font-weight: 700; color: var(--pink); letter-spacing: -.01em;
+    font-size: 26px; font-weight: 700; color: var(--pink); letter-spacing: -.01em;
   }
   .shmuxd-stamp .small {
-    font-size: 17.5px; color: var(--ink-mid); margin-left: 6px;
+    font-size: 16px; color: var(--ink-mid); margin-left: 6px;
   }
 
   .pm-check {
     display: flex; gap: 8px; margin-bottom: 8px;
-    font-size: 15.5px; color: var(--ink-mid); line-height: 1.55;
+    font-size: 14px; color: var(--ink-mid); line-height: 1.55;
   }
-  .pm-check .sym { font-size: 15.5px; margin-top: -1px; flex: 0 0 12px; font-weight: 700; }
+  .pm-check .sym { font-size: 14px; margin-top: -1px; flex: 0 0 12px; font-weight: 700; }
   .pm-check.is-plus .sym { color: var(--green); }
   .pm-check.is-minus .sym { color: var(--red); }
   .pm-check.is-plus + .pm-check.is-plus,
   .pm-check.is-minus + .pm-check.is-minus { margin-top: 0; }
 
   .column-heading {
-    font-size: 13px; font-weight: 600; margin-bottom: 12px;
+    font-size: 12px; font-weight: 600; margin-bottom: 12px;
   }
   .column-heading.pos { color: var(--green); }
   .column-heading.neg { color: var(--red); }
@@ -664,7 +664,7 @@
     border-left: 3px solid var(--ink);
     border-radius: 0 8px 8px 0;
   }
-  .quote-card .q { font-size: 16.5px; color: var(--ink); line-height: 1.6; font-weight: 500; }
+  .quote-card .q { font-size: 15px; color: var(--ink); line-height: 1.6; font-weight: 500; }
 
   .participant-card {
     padding: 16px 18px;
@@ -674,9 +674,9 @@
     text-align: center;
     min-width: 100px;
   }
-  .participant-card .p { font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-  .participant-card .d { font-size: 13px; color: var(--ink-mid); }
-  .participant-card .r { font-size: 13px; color: var(--ink-light); }
+  .participant-card .p { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .participant-card .d { font-size: 12px; color: var(--ink-mid); }
+  .participant-card .r { font-size: 12px; color: var(--ink-light); }
 
   /* Participant groups — tinted cards */
   .pgroups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px; }
@@ -690,25 +690,25 @@
   .is-pink .pgroup-dot { background: #C2185B; }
   .is-teal .pgroup-dot { background: #0E7080; }
   .pgroup-label {
-    font-size: 12px; font-weight: 700; letter-spacing: .09em;
+    font-size: 11px; font-weight: 700; letter-spacing: .09em;
     text-transform: uppercase; flex: 1;
   }
   .is-pink .pgroup-label { color: #9E1A4A; }
   .is-teal .pgroup-label { color: #0E7080; }
   .pgroup-count {
-    font-size: 26px; font-weight: 500; line-height: 1;
+    font-size: 24px; font-weight: 500; line-height: 1;
     letter-spacing: -.02em;
   }
   .is-pink .pgroup-count { color: #9E1A4A; }
   .is-teal .pgroup-count { color: #0E7080; }
   .pgroup-desc {
-    font-size: 15.5px; color: #1D1D1D; line-height: 1.6; margin-bottom: 18px;
+    font-size: 14px; color: #1D1D1D; line-height: 1.6; margin-bottom: 18px;
   }
   .pgroup-people {
     display: flex; flex-wrap: wrap; gap: 6px;
   }
   .pgroup-person {
-    font-size: 12px; padding: 4px 9px; border-radius: 3px;
+    font-size: 11px; padding: 4px 9px; border-radius: 3px;
     white-space: nowrap;
   }
   .is-pink .pgroup-person { background: #F6D6DC; color: #9E1A4A; }
@@ -727,7 +727,7 @@
     margin-bottom: 20px;
   }
   .insights-banner-num {
-    font-size: 61px;
+    font-size: 56px;
     font-weight: 600;
     line-height: 1;
     letter-spacing: -0.03em;
@@ -735,7 +735,7 @@
     flex-shrink: 0;
   }
   .insights-banner-text {
-    font-size: 16.5px;
+    font-size: 15px;
     line-height: 1.6;
     color: #E5E5E5;
     margin: 0;
@@ -756,7 +756,7 @@
   }
   .ins-num {
     align-self: flex-start;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: .08em;
     color: #FFFFFF;
@@ -766,7 +766,7 @@
     margin-bottom: 14px;
   }
   .ins-title {
-    font-size: 19.5px;
+    font-size: 18px;
     font-weight: 500;
     line-height: 1.35;
     color: #1D1D1D;
@@ -779,7 +779,7 @@
     margin: 0 0 14px;
   }
   .ins-p {
-    font-size: 15.5px;
+    font-size: 14px;
     line-height: 1.65;
     color: #1D1D1D;
     margin-bottom: 14px;
@@ -793,14 +793,14 @@
     margin: 0 0 16px;
   }
   .ins-quote p {
-    font-size: 14px;
+    font-size: 13px;
     font-style: italic;
     line-height: 1.55;
     color: #1D1D1D;
     margin: 0 0 6px;
   }
   .ins-quote cite {
-    font-size: 12px;
+    font-size: 11px;
     font-style: normal;
     color: #9E1A4A;
     font-weight: 600;
@@ -814,7 +814,7 @@
     padding-top: 4px;
   }
   .ins-tags span {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     color: #4A4A48;
     background: #E8E2D6;
@@ -837,12 +837,12 @@
   }
   .termlist-item:last-child { border-bottom: 1px solid var(--border); }
   .termlist-term {
-    font-size: 15.5px; font-weight: 600;
+    font-size: 14px; font-weight: 600;
     color: #1D1D1D;
     letter-spacing: -.005em;
   }
   .termlist-def {
-    font-size: 17.5px; line-height: 1.75;
+    font-size: 16px; line-height: 1.75;
     color: #1D1D1D;
   }
   @media (max-width: 700px) {
@@ -889,14 +889,14 @@
   }
   .key-element-icon img { width: 48px; height: 48px; display: block; }
   .key-element-title {
-    font-size: 19.5px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--purple);
     letter-spacing: -.01em;
     margin: 0 0 10px;
   }
   .key-element-body {
-    font-size: 16.5px;
+    font-size: 15px;
     line-height: 1.75;
     color: #1D1D1D;
     margin: 0;
@@ -926,9 +926,9 @@
     background: var(--bg-2); border: 1px solid var(--border);
     margin: 0 auto 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 600; color: var(--ink);
+    font-size: 13px; font-weight: 600; color: var(--ink);
   }
-  .flow-step .label { font-size: 15.5px; font-weight: 600; color: var(--ink); }
+  .flow-step .label { font-size: 14px; font-weight: 600; color: var(--ink); }
 
   .dd-card {
     padding: 14px 14px;
@@ -936,10 +936,10 @@
     border-radius: 12px;
     background: var(--bg);
   }
-  .dd-card .n  { font-size: 12px; font-weight: 700; color: var(--ink-light); margin-bottom: 6px; letter-spacing: .02em; }
-  .dd-card .t  { font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
-  .dd-card .s  { font-size: 13px; color: var(--ink-light); margin-bottom: 6px; }
-  .dd-card .d  { font-size: 15.5px; color: var(--ink-mid); line-height: 1.5; }
+  .dd-card .n  { font-size: 11px; font-weight: 700; color: var(--ink-light); margin-bottom: 6px; letter-spacing: .02em; }
+  .dd-card .t  { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .dd-card .s  { font-size: 12px; color: var(--ink-light); margin-bottom: 6px; }
+  .dd-card .d  { font-size: 14px; color: var(--ink-mid); line-height: 1.5; }
 
   .navstrip {
     border-top: 1px solid var(--border);
@@ -951,7 +951,7 @@
     gap: 16px;
   }
   .navstrip .prev {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--ink-light);
     transition: color .15s var(--ease);
   }
@@ -962,10 +962,10 @@
   }
   .navstrip .next:hover { transform: translateX(2px); }
   .navstrip .next .next-label {
-    font-size: 11.5px; color: var(--ink-light); margin-bottom: 3px;
+    font-size: 10.5px; color: var(--ink-light); margin-bottom: 3px;
   }
   .navstrip .next .next-title {
-    font-size: 14px; font-weight: 600; color: var(--ink);
+    font-size: 13px; font-weight: 600; color: var(--ink);
   }
 
   /* ───────────────────────────────────────
@@ -1009,21 +1009,21 @@
   }
   .by-numbers-item { border-top: 2px solid var(--ink); padding-top: 8px; }
   .by-numbers-num {
-    font-size: 65px;
+    font-size: 60px;
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.03em;
     color: var(--brand-pink);
   }
   .by-numbers-lbl {
-    font-size: 15.5px;
+    font-size: 14px;
     color: #1D1D1D;
     line-height: 1.5;
     margin-top: 4px;
   }
   @media (max-width: 900px) {
     .by-numbers { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .by-numbers-num { font-size: 35px; }
+    .by-numbers-num { font-size: 32px; }
   }
   @media (max-width: 480px) {
     .by-numbers { grid-template-columns: 1fr; }
@@ -1053,7 +1053,7 @@
   }
   .brief-product-name {
     display: inline-block;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: .09em;
     text-transform: uppercase;
@@ -1064,7 +1064,7 @@
     margin-bottom: 12px;
   }
   .brief-product-body {
-    font-size: 17.5px;
+    font-size: 16px;
     line-height: 1.75;
   }
   .principle-icon {
@@ -1087,13 +1087,13 @@
     margin-bottom: 28px;
   }
   .attention-block-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--ink);
     margin-bottom: 12px;
   }
   .attention-block-body {
-    font-size: 17.5px;
+    font-size: 16px;
     line-height: 1.7;
   }
   .attention-block-body p { margin-bottom: 24px; }
@@ -1105,8 +1105,8 @@
   ─────────────────────────────────────── */
   @media (max-width: 900px) {
     .content-inner { padding: 36px 32px 80px; }
-    h1.section-title { font-size: 30.5px; }
-    .lede { font-size: 15.5px; }
+    h1.section-title { font-size: 28px; }
+    .lede { font-size: 14px; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .stats-grid .stat:nth-child(2) { border-right: 0; }
     .stats-grid .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
@@ -1144,7 +1144,7 @@
     .scrim.is-open { opacity: 1; pointer-events: auto; }
 
     .content-inner { padding: 28px 22px 72px; }
-    h1.section-title { font-size: 26px; }
+    h1.section-title { font-size: 24px; }
   }
 
   @media (max-width: 480px) {
@@ -1155,36 +1155,27 @@
   img:not(.reveal):not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
   img:not(.reveal):not(.avatar-circle).is-loaded { opacity: 1; }
 
-  /* ── Custom cursor — desktop / fine-pointer only ── */
-  @media (hover: hover) and (pointer: fine) {
-    body { cursor: none !important; }
-    #cur-ring {
-      position: fixed; pointer-events: none; z-index: 9999;
-      width: 14px; height: 14px;
-      border: 1.5px solid #0D0D0D;
-      border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: width .18s, height .18s, border-color .18s, opacity .18s;
-      mix-blend-mode: exclusion;
-    }
-    #cur-dot {
-      position: fixed; pointer-events: none; z-index: 9999;
-      width: 4px; height: 4px;
-      background: #E8366A;
-      border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: transform .08s;
-    }
-    body:has(a:hover) #cur-ring,
-    body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #E8366A; }
+  /* ── Custom cursor ── */
+  body { cursor: none !important; }
+  #cur-ring {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 14px; height: 14px;
+    border: 1.5px solid #0D0D0D;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: width .18s, height .18s, border-color .18s, opacity .18s;
+    mix-blend-mode: exclusion;
   }
-
-  /* ── Touch reset — neutralise hover-driven transforms on touch ── */
-  @media (hover: none) {
-    .hifi-nav:hover { transform: translateY(-50%); background: transparent; color: inherit; }
-    .navstrip .next:hover { transform: none; }
-    .poster-wrap:hover { opacity: 1; }
+  #cur-dot {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 4px; height: 4px;
+    background: #E8366A;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: transform .08s;
   }
+  body:has(a:hover) #cur-ring,
+  body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #E8366A; }
 
   /* ── Pixel canvas overlay ── */
   .px-canvas {
@@ -1215,282 +1206,6 @@
 
   </style>
 <link rel="stylesheet" href="design-system.css">
-<style>
-  /* design-system.css is linked AFTER this page own <style>, so its :root
-     wins the cascade — the token has to be re-asserted here or the page
-     silently falls back to JetBrains Mono. Scoped to this page: index.html
-     keeps the old face until it is migrated too.
-     The name stays --font-mono because design-system.css references it by
-     that name in six places. */
-  :root{ --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; }
-
-  /* ───────────────────────────────────────
-     AT A GLANCE
-     STAR summary + design process flow.
-     Self-contained: page tokens only, no new deps.
-     Container queries drive the two layout switches:
-       .glance     ≥860px → STAR | process side by side
-       .glance-col--flow ≥340px → horizontal node flow
-     Below either threshold it degrades to stacked /
-     vertical timeline, which is also the no-support base.
-  ─────────────────────────────────────── */
-  .glance {
-    --gl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    --gl-accent:     var(--brand-pink);   /* graphic accent — large elements */
-    --gl-accent-txt: var(--pink-deep);    /* small text accent — AAA on white */
-    --gl-rail:       var(--border-strong);
-
-    container: glance / inline-size;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg);
-    overflow: hidden;
-    margin: 0 0 32px;
-  }
-
-  /* ── Terminal chrome bar ── */
-  .glance-chrome {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-2);
-    font-family: var(--gl-mono);
-    font-size: 11.5px;
-    letter-spacing: .02em;
-    color: var(--ink-light);
-  }
-  .glance-led {
-    width: 7px; height: 7px;
-    flex: none;
-    border-radius: 50%;
-    background: var(--gl-accent);
-  }
-  .glance-num  { font-weight: 700; color: var(--ink-mid); }
-  .glance-path { font-weight: 600; color: var(--gl-accent-txt); }
-  .glance-meta { margin-left: auto; }
-
-  /* ── Body ── */
-  .glance-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .glance-col--star { padding: 22px 20px 24px; }
-  .glance-col--flow {
-    container: flow / inline-size;
-    padding: 22px 20px 24px;
-    background: var(--bg-2);
-    border-top: 1px solid var(--border);
-  }
-  .glance-col--flow:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: -2px; }
-  .glance-h {
-    font-family: var(--gl-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-  }
-
-  /* ── STAR — clickable rows that drive the process panel ── */
-  .glance-star { display: grid; gap: 2px; }
-  .star-row {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 3px;
-    width: calc(100% + 22px);
-    margin-inline: -11px;
-    padding: 10px 30px 11px 13px;
-    border: 0;
-    border-radius: 8px;
-    background: none;
-    text-align: left;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    transition: background-color .2s var(--ease);
-  }
-  .star-row::before {              /* selected spine */
-    content: '';
-    position: absolute;
-    left: 2px; top: 10px; bottom: 10px;
-    width: 2px;
-    border-radius: 2px;
-    background: var(--gl-accent);
-    opacity: 0;
-    transition: opacity .2s var(--ease);
-  }
-  .star-row::after {               /* clickable affordance */
-    content: '';
-    position: absolute;
-    right: 13px; top: 16px;
-    width: 5px; height: 5px;
-    border-top: 1.4px solid currentColor;
-    border-right: 1.4px solid currentColor;
-    transform: rotate(45deg);
-    color: var(--ink-light);
-    opacity: .45;
-    transition: opacity .2s var(--ease), color .2s var(--ease);
-  }
-  .star-row:hover { background: var(--bg-2); }
-  .star-row:hover::after { opacity: 1; }
-  .star-row:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: 1px; }
-  .star-row[aria-selected="true"] { background: var(--bg-2); }
-  .star-row[aria-selected="true"]::before { opacity: 1; }
-  .star-row[aria-selected="true"]::after { opacity: 1; color: var(--gl-accent); }
-  .star-row[aria-selected="true"] .star-body { color: var(--ink); }
-
-  .star-label {
-    display: block;
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    color: var(--gl-accent-txt);
-  }
-  .star-body {
-    display: block;
-    font-size: 14.5px;
-    line-height: 1.62;
-    color: var(--ink-mid);
-    max-width: 66ch;
-    transition: color .2s var(--ease);
-  }
-  @container glance (min-width: 560px) {
-    .star-row { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
-    .star-label { padding-top: 3px; }
-  }
-
-  /* ── Skill tags ── */
-  .glance-tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px dashed var(--border-strong);
-  }
-  .glance-tags li {
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    line-height: 1.4;
-    color: var(--ink-light);
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 5px 8px;
-  }
-
-  /* ── Process panel ── */
-  .glance-panel-head {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  .glance-phase {
-    margin-left: auto;
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    letter-spacing: .04em;
-    color: var(--ink-light);
-    white-space: nowrap;
-  }
-
-  .glance-bands { display: grid; gap: 18px; }
-  .glance-band { display: grid; gap: 8px; }
-  .band-label {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-family: var(--gl-mono);
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    transition: color .2s var(--ease);
-  }
-  .band-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-  .band-cards {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-  @container flow (min-width: 300px) { .band-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @container flow (min-width: 430px) { .band-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-  .flow-card {
-    display: grid;
-    gap: 2px;
-    padding: 11px 11px 12px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    background: var(--bg);
-    transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
-  }
-  .flow-icon {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--ink-light);
-    transition: color .22s var(--ease);
-  }
-  .flow-icon svg { width: 18px; height: 18px; }
-  .flow-label {
-    font-size: clamp(11px, 2.9cqi, 12.5px);
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--ink);
-    hyphens: auto;                 /* safety net for long single-word labels */
-    overflow-wrap: break-word;
-  }
-  .flow-note {
-    font-size: clamp(10px, 2.5cqi, 11px);
-    line-height: 1.35;
-    color: var(--ink-light);
-  }
-
-  /* Selected STAR row lights its band */
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .band-label,
-  .glance[data-active="action"] .glance-band[data-band="action"] .band-label,
-  .glance[data-active="result"] .glance-band[data-band="result"] .band-label { color: var(--gl-accent-txt); }
-
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-icon,
-  .glance[data-active="action"] .glance-band[data-band="action"] .flow-icon,
-  .glance[data-active="result"] .glance-band[data-band="result"] .flow-icon { color: var(--gl-accent-txt); }
-
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-card,
-  .glance[data-active="action"] .glance-band[data-band="action"] .flow-card,
-  .glance[data-active="result"] .glance-band[data-band="result"] .flow-card {
-    border-color: var(--gl-accent);
-    box-shadow: inset 0 0 0 1px var(--gl-accent);
-  }
-
-  /* ── Side by side on wide panels ── */
-  @container glance (min-width: 860px) {
-    .glance-body { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-    .glance-col--star { padding: 24px 28px 26px 24px; }
-    .glance-col--flow {
-      padding: 24px 24px 26px;
-      border-top: 0;
-      border-left: 1px solid var(--border);
-    }
-  }
-
-  @media (max-width: 520px) {
-    .glance-meta { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .star-row, .star-row::before, .star-row::after,
-    .star-body, .band-label, .flow-card, .flow-icon { transition: none; }
-  }
-</style>
 </head>
 <body class="portfolio-page">
 
@@ -1657,90 +1372,6 @@ function img(label, h = 140) {
   return `<div class="img-ph" style="height:${h}px; margin-bottom: 16px;">${esc(label)}</div>`;
 }
 
-/* At-a-glance icons — inline so they inherit currentColor and tint with the
-   accent when a band is active. Existing SVGs in /Icon_assets have baked-in
-   fills and would not theme across the light and dark case study pages. */
-const GL_ICON = {
-  search: '<circle cx="7.4" cy="7.4" r="4.6"/><path d="M10.9 10.9L15.2 15.2"/>',
-  target: '<circle cx="9" cy="9" r="6.3"/><circle cx="9" cy="9" r="2.4"/>',
-  bulb:   '<circle cx="9" cy="7.3" r="4.3"/><path d="M6.9 13h4.2M7.5 15.4h3"/>',
-  window: '<rect x="2.6" y="2.6" width="12.8" height="12.8" rx="1.6"/><path d="M2.6 6.4h12.8"/><circle cx="4.9" cy="4.5" r=".7"/>',
-  check:  '<circle cx="9" cy="9" r="6.3"/><path d="M6 9.2l2.2 2.2 3.9-4.6"/>',
-  arrow:  '<path d="M3.4 14.6L14.6 3.4"/><path d="M7.6 3.4h7v7"/>',
-  stack:  '<rect x="5.4" y="2.6" width="7.2" height="3" rx=".8"/><rect x="4.2" y="7.5" width="9.6" height="3" rx=".8"/><rect x="3" y="12.4" width="12" height="3" rx=".8"/>',
-  tree:   '<rect x="6.6" y="2.4" width="4.8" height="3.4" rx=".8"/><rect x="1.8" y="11.8" width="4.4" height="3.4" rx=".8"/><rect x="11.8" y="11.8" width="4.4" height="3.4" rx=".8"/><path d="M9 5.8v2.9M4 11.8V8.7h10v3.1"/>',
-  tap:    '<circle cx="9" cy="9" r="2.2"/><path d="M5.3 5.3a5.2 5.2 0 0 0 0 7.4"/><path d="M12.7 12.7a5.2 5.2 0 0 0 0-7.4"/>',
-  grid:   '<rect x="2.4" y="2.4" width="5.6" height="5.6" rx="1"/><rect x="10" y="2.4" width="5.6" height="5.6" rx="1"/><rect x="2.4" y="10" width="5.6" height="5.6" rx="1"/><rect x="10" y="10" width="5.6" height="5.6" rx="1"/>',
-  code:   '<path d="M6.4 5.4L2.6 9l3.8 3.6"/><path d="M11.6 5.4L15.4 9l-3.8 3.6"/><path d="M10.2 3.6L7.8 14.4"/>',
-};
-
-function glIcon(name) {
-  return `<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"
-    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${GL_ICON[name] || ''}</svg>`;
-}
-
-/* At-a-glance panel. The four STAR rows are tabs; selecting one lights the
-   process phases that belong to it.
-   cfg = {
-     meta,
-     star:  [{ id, label, body, phase }…],
-     tags:  [string…],
-     bands: [{ band, label, steps: [{ n, icon, label, note }…] }…],
-   } */
-function glanceHTML(cfg) {
-  const first = cfg.star[0].id;
-
-  const tabs = cfg.star.map((s, i) => `
-        <button type="button" class="star-row" role="tab" id="gl-tab-${s.id}"
-                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.label)}"
-                aria-controls="gl-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
-                tabindex="${i === 0 ? '0' : '-1'}">
-          <span class="star-label">${esc(s.label)}</span>
-          <span class="star-body">${esc(s.body)}</span>
-        </button>`).join('');
-
-  const tags = cfg.tags.map(t => `<li>${esc(t)}</li>`).join('');
-
-  const bands = cfg.bands.map(b => `
-          <div class="glance-band" data-band="${b.band}">
-            <div class="band-label">${esc(b.label)}</div>
-            <div class="band-cards">
-              ${b.steps.map(s => `
-              <div class="flow-card">
-                <span class="flow-icon">${glIcon(s.icon)}</span>
-                <span class="flow-label">${esc(s.label)}</span>
-                <span class="flow-note">${esc(s.note)}</span>
-              </div>`).join('')}
-            </div>
-          </div>`).join('');
-
-  return `
-  <section class="glance" data-active="${first}" aria-label="At a glance">
-    <div class="glance-chrome">
-      <span class="glance-led" aria-hidden="true"></span>
-      <span class="glance-num">04</span>
-      <span class="glance-path">~/at-a-glance</span>
-      <span class="glance-meta">${esc(cfg.meta)}</span>
-    </div>
-    <div class="glance-body">
-      <div class="glance-col glance-col--star">
-        <div class="glance-star" role="tablist" aria-orientation="vertical" aria-label="Project summary">${tabs}
-        </div>
-        <ul class="glance-tags">${tags}</ul>
-      </div>
-      <div class="glance-col glance-col--flow" id="gl-panel" role="tabpanel"
-           aria-labelledby="gl-tab-${first}" tabindex="0">
-        <div class="glance-panel-head">
-          <span class="glance-h">Design process</span>
-          <span class="glance-phase">${esc(cfg.star[0].phase)}</span>
-        </div>
-        <div class="glance-bands">${bands}
-        </div>
-      </div>
-    </div>
-  </section>`;
-}
-
 /* ───────────────────────────────────────
    CONTENT TEMPLATES
 ─────────────────────────────────────── */
@@ -1750,35 +1381,6 @@ intro: () => `
   ${header('Overview · Intro', 'Designing a guided first-week experience for **new investors.**', 'New Sharesies users sign up, then stall. We were asked to help close the gap between creating an account and making a first investment.')}
 
   <img src="Sharesies_hs1.jpg" alt="Sharesies onboarding hero" style="width:100%; height:440px; object-fit:contain; border-radius:8px; display:block; margin:-8px 0 16px;" />
-
-  ${glanceHTML({
-    meta: '4 months · team of 4',
-    star: [
-      { id:'situation', label:'Situation', phase:'6 phases',
-        body:"A four-month capstone embedded with Sharesies' in-house design team. New investors sign up but often never make their first investment. The first week is where confidence is won or lost." },
-      { id:'task', label:'Task', phase:'2 of 6 phases',
-        body:'Explored at how other investing platforms onboard new users, then ran interviews with 9 participants across different ages and professions, all new to investing. I used affinity mapping to turn what I heard into meaningful insights, which grounded the design decisions in helping users feel confident.' },
-      { id:'action', label:'Action', phase:'3 of 6 phases',
-        body:'Explored the user problem and reframed the brief after discovering an existing onboarding flow. Four design principles, with accessibility and guidance at the forefront, shaped the initial lo-fi concepts. Usability testing with new and experienced investors revealed that users felt more engaged when guided throughout their journey, leading to gamification to provide progress and encouragement. The final delivery of the prototype was grounded in research, stakeholder engagement, and my own design principles and values.' },
-      { id:'result', label:'Result', phase:'1 of 6 phases',
-        body:'Presented final designs and research to the Sharesies team, who responded positively to the direction. Learned to turn a mid-project pivot into a research-led decision rather than a setback.' },
-    ],
-    tags: ['user research', 'usability testing', 'affinity mapping', 'personas & journeys', 'Figma prototyping', 'workshop facilitation'],
-    bands: [
-      { band:'task', label:'Task', steps:[
-        { icon:'search', label:'Discover',  note:'9 user interviews, competitor analysis' },
-        { icon:'target', label:'Define',    note:'Affinity mapping' },
-      ]},
-      { band:'action', label:'Action', steps:[
-        { icon:'bulb',   label:'Ideate',    note:'Concepting, wireframing, gamification' },
-        { icon:'window', label:'Prototype', note:'Lo-fidelity, design system, hi-fidelity' },
-        { icon:'check',  label:'Test',      note:'Usability testing' },
-      ]},
-      { band:'result', label:'Result', steps:[
-        { icon:'arrow',  label:'Deliver',   note:'Team presentation' },
-      ]},
-    ],
-  })}
 
   ${sLabel('By the numbers')}
   <div class="by-numbers" role="list">
@@ -1869,7 +1471,7 @@ brief: () => `
 `,
 
 process: () => `
-  ${header('Overview · Design Process', 'Design Process', 'We followed the Double Diamond to give structure and direction, looping back between stages as new findings reshaped our understanding.')}
+  ${header('Overview · Design Process', 'Design Process', 'We followed the Double Diamond to give structure and direction — looping back between stages as new findings reshaped our understanding.')}
 
   <div class="dd-diagram">
     <img src="SHA_Screenshot/SHA_DD.svg" alt="Double Diamond diagram" />
@@ -1900,25 +1502,25 @@ process: () => `
 onboarding: () => `
   ${header('Research · Secondary Research', 'Onboarding Principles', 'With all that context in my back pocket, I started looking into the principles that actually make onboarding work.')}
   ${termlistHTML([
-    {title:'Guided Interactions', body:"Helpful info is woven into the experience at just the right moment, not a popup interrupting the user's flow."},
+    {title:'Guided Interactions', body:"Helpful info is woven into the experience at just the right moment — not a popup interrupting the user's flow."},
     {title:'Reactive Guidance', body:"Help only shows up when someone makes a mistake or gets stuck, meeting them exactly where they need it."},
     {title:'On-Demand Support', body:"Users who want extra help can find it, while confident users aren't slowed down."},
-    {title:'Diverse Methods', body:"Not every user needs the same level of hand-holding. Personalised journeys let everyone move at their own pace."},
+    {title:'Diverse Methods', body:"Not every user needs the same level of hand-holding — personalised journeys let everyone move at their own pace."},
   ])}
   <div class="attention-block">
     <div class="attention-block-title">Source: Better Onboarding — Krystal Higgins</div>
-    <div class="attention-block-body">This book completely reframed how I thought about first-time user experiences. Designing interactions over instructions, and thinking about what actually encourages someone to come back.</div>
+    <div class="attention-block-body">This book completely reframed how I thought about first-time user experiences. Designing interactions over instructions — and thinking about what actually encourages someone to come back.</div>
   </div>
 `,
 
 gamedesign: () => `
-  ${header('Research · Secondary Research', 'Game Design Principles', "Games have been solving this exact problem for years, getting players up to speed without them even noticing. Here's what we borrowed.")}
+  ${header('Research · Secondary Research', 'Game Design Principles', "Games have been solving this exact problem for years — getting players up to speed without them even noticing. Here's what we borrowed.")}
   <div class="termlist">
     ${[
-      ['Copywriting',       "Duolingo uses cheerful, encouraging language to nudge users forward, like a friend cheering you on, not a textbook."],
-      ['Celebration',       "Confetti, level-up sounds, cheerful messages: small wins keep users motivated and coming back."],
-      ['Immersion',         "Plants vs. Zombies 2 disguises its entire tutorial as a playable level, so players pick up mechanics without realising they're being taught."],
-      ['Progress tracking', "Duolingo's lesson maps show exactly how far you've come and what's ahead, a friendly nudge to keep going."],
+      ['Copywriting',       "Duolingo uses cheerful, encouraging language to nudge users forward — like a friend cheering you on, not a textbook."],
+      ['Celebration',       "Confetti, level-up sounds, cheerful messages — small wins keep users motivated and coming back."],
+      ['Immersion',         "Plants vs. Zombies 2 disguises its entire tutorial as a playable level — players pick up mechanics without realising they're being taught."],
+      ['Progress tracking', "Duolingo's lesson maps show exactly how far you've come and what's ahead — a friendly nudge to keep going."],
     ].map(([t,d]) => `
       <div class="termlist-item">
         <div class="termlist-term">${esc(t)}</div>
@@ -1928,7 +1530,7 @@ gamedesign: () => `
 `,
 
 desk: () => `
-  ${header('Research · Desk Research', 'Desk Research', 'With secondary research in hand, we did guerrilla testing, signing up for Sharesies ourselves and going through the current onboarding flow as brand new users.')}
+  ${header('Research · Desk Research', 'Desk Research', 'With secondary research in hand, we did guerrilla testing — signing up for Sharesies ourselves and going through the current onboarding flow as brand new users.')}
 
   ${sLabel('Method: Guerrilla Testing')}
   <div class="grid-2" style="margin-bottom: 28px;">
@@ -1945,7 +1547,7 @@ desk: () => `
   </div>
   <div class="attention-block">
     <div class="attention-block-title">Pivot point</div>
-    <div class="attention-block-body">After meeting with Sharesies, we learned a new onboarding flow was already in development. At Sharesies&#8217; direction, Staff Shares and KiwiSaver were removed from scope. Staff Shares served a specific employer-employee use case, and KiwiSaver targeted users who already had a clearer sense of their long-term goals. The reframed problem centred on users who are just getting started, those who have signed up but haven&#8217;t yet taken the first step toward investing.</div>
+    <div class="attention-block-body">After meeting with Sharesies, we learned a new onboarding flow was already in development. At Sharesies&#8217; direction, Staff Shares and KiwiSaver were removed from scope. Staff Shares served a specific employer-employee use case, and KiwiSaver targeted users who already had a clearer sense of their long-term goals. The reframed problem centred on users who are just getting started — those who have signed up but haven&#8217;t yet taken the first step toward investing.</div>
   </div>
 `,
 
@@ -1981,7 +1583,7 @@ objectives: () => `
   ${header('Research · Research Objectives', 'Research Objectives', 'With our re-framed problem in place, we needed to figure out what we actually needed to learn.')}
   <div class="attention-block" style="margin-bottom:28px;">
     <div class="attention-block-title">Why do research objectives matter?</div>
-    <div class="attention-block-body">Research objectives are the specific questions a team sets out to answer before jumping into user interviews. They keep research focused and purposeful, a compass that doesn&#8217;t tell you the answer but makes sure you&#8217;re looking in the right direction.</div>
+    <div class="attention-block-body">Research objectives are the specific questions a team sets out to answer before jumping into user interviews. They keep research focused and purposeful — a compass that doesn&#8217;t tell you the answer but makes sure you&#8217;re looking in the right direction.</div>
   </div>
   <div class="brief-products" style="grid-template-columns:repeat(2,1fr); margin-bottom:28px;">
     ${[
@@ -1995,7 +1597,7 @@ objectives: () => `
   </div>
   <div class="attention-block">
     <div class="attention-block-title">What do we mean by wealth development?</div>
-    <div class="attention-block-body">Wealth development is about more than keeping finances steady; it&#8217;s actively growing toward financial empowerment. For Sharesies users, this means feeling confident enough to take that next step.</div>
+    <div class="attention-block-body">Wealth development is about more than keeping finances steady — it&#8217;s actively growing toward financial empowerment. For Sharesies users, this means feeling confident enough to take that next step.</div>
   </div>
 `,
 
@@ -2031,7 +1633,7 @@ qualitative: () => `
   ${header('Research · Qualitative Research', 'Qualitative Research Process', 'Now that we knew who we wanted to talk to and what we needed to learn, it was time to have those conversations.')}
   <div class="brief-products" style="grid-template-columns:repeat(2,1fr); margin-bottom:28px;">
     ${[
-      ['Semi-structured interviews',"We conducted semi-structured interviews with nine participants, deliberately interviewing each other's participants rather than our own, to create a more natural dynamic."],
+      ['Semi-structured interviews',"We conducted semi-structured interviews with nine participants — deliberately interviewing each other's participants rather than our own, to create a more natural dynamic."],
       ['Affinity mapping',"We used affinity mapping to organise and cluster interview notes, identifying key findings and insights within participants' experiences."],
     ].map(([n,d]) => `
       <div class="brief-product">
@@ -2046,10 +1648,10 @@ qualitative: () => `
 `,
 
 discoveries: () => `
-  ${header('Research · Discoveries', 'Discovery', 'What I found when I started pulling on the thread, across onboarding research, books, and game design.')}
+  ${header('Research · Discoveries', 'Discovery', 'What I found when I started pulling on the thread — across onboarding research, books, and game design.')}
 
   ${sLabel('Onboarding')}
-  <p class="prose-p">My onboarding research started with a book that completely reframed how I thought about first-time user experiences. From there, I followed the thread into articles and videos that expanded on its ideas, opening my eyes to just how many layers onboarding actually has. I also looked at other investment apps to see how they handled it: what felt smooth and confident, and what left you feeling a bit lost.</p>
+  <p class="prose-p">My onboarding research started with a book that completely reframed how I thought about first-time user experiences. From there, I followed the thread into articles and videos that expanded on its ideas, opening my eyes to just how many layers onboarding actually has. I also looked at other investment apps to see how they handled it — what felt smooth and confident, and what left you feeling a bit lost.</p>
 
   <div class="attention-block" style="margin-bottom:40px;">
     <div class="attention-block-title">Source: Better Onboarding — Krystal Higgins</div>
@@ -2057,7 +1659,7 @@ discoveries: () => `
   </div>
 
   ${sLabel('Gamification')}
-  <p class="prose-p">I looked into how games teach players without them even realising they're being taught. Duolingo's streak system and cheerful nudges keep you coming back, while Plants vs. Zombies disguises its entire tutorial as a playable level, so you're learning mechanics just by playing. That kind of invisible guidance was exactly what we wanted to bring into the onboarding experience.</p>
+  <p class="prose-p">I looked into how games teach players without them even realising they're being taught. Duolingo's streak system and cheerful nudges keep you coming back, while Plants vs. Zombies disguises its entire tutorial as a playable level — you're learning mechanics just by playing. That kind of invisible guidance was exactly what we wanted to bring into the onboarding experience.</p>
 `,
 
 insights: () => {
@@ -2126,13 +1728,13 @@ insights: () => {
 },
 
 principles: () => `
-  ${header('Research · Design Principles', 'Design Principles', "Analysis of our qualitative research gave us 4 design principles: the rules we'd use to guide every design decision from here on out.")}
+  ${header('Research · Design Principles', 'Design Principles', "Analysis of our qualitative research gave us 4 design principles — the rules we'd use to guide every design decision from here on out.")}
   <div class="key-elements-grid">
     ${[
-      {icon:'target.svg',     title:'User Centered', body:"The design should centre and adapt around the user's wealth development goals, needs, and preferences, with diverse user journeys and personalised pathways."},
+      {icon:'target.svg',     title:'User Centered', body:"The design should centre and adapt around the user's wealth development goals, needs, and preferences — with diverse user journeys and personalised pathways."},
       {icon:'open.svg',       title:'Simplicity',    body:'Clear, approachable, and jargon-free. UI should prioritise a "feeling first" approach using feelings, aspirations, and ease.'},
-      {icon:'compass.svg',    title:'Guidance',      body:'Bridge the gap between existing resources and user needs, guiding users to relevant resources and clear information architecture.'},
-      {icon:'heart_hand.svg', title:'Connection',    body:'Foster a community of empowered people practising wealth development: personalised, relatable, and human-feeling experiences.'},
+      {icon:'compass.svg',    title:'Guidance',      body:'Bridge the gap between existing resources and user needs — guiding users to relevant resources and clear information architecture.'},
+      {icon:'heart_hand.svg', title:'Connection',    body:'Foster a community of empowered people practising wealth development — personalised, relatable, and human-feeling experiences.'},
     ].map(it => `
       <div class="key-element">
         <div class="key-element-icon"><img src="Icon_assets/${it.icon}" alt="" aria-hidden="true" /></div>
@@ -2143,7 +1745,7 @@ principles: () => `
 `,
 
 gtg: () => `
-  ${header('Design · The Concept', 'Go-to Guides & our solution', 'Our early concepts pointed us toward a clear direction, building on something Sharesies already had in place.')}
+  ${header('Design · The Concept', 'Go-to Guides & our solution', 'Our early concepts pointed us toward a clear direction — building on something Sharesies already had in place.')}
 
   ${sLabel('Starting point')}
   <h2 class="sub-head">Building on Go-to Guides</h2>
@@ -2153,17 +1755,17 @@ gtg: () => `
 
   ${sLabel('Direction')}
   <h2 class="sub-head">From content to coaching</h2>
-  <p class="prose-p">Our final design would aim to deliver this material in an interactive way, giving users the feeling of being coached through their first week with Sharesies, rather than reading content in isolation.</p>
+  <p class="prose-p">Our final design would aim to deliver this material in an interactive way — giving users the feeling of being coached through their first week with Sharesies, rather than reading content in isolation.</p>
 
   ${rule()}
 
   ${sLabel('Scope caveat')}
   <h2 class="sub-head">Principles over product</h2>
-  <p class="prose-p">The existing Go-to Guides only cover investing. While we'd prototype our solution for Invest specifically, our design principles would stay product-agnostic, considering wealth development broadly so the approach could extend to other products later.</p>
+  <p class="prose-p">The existing Go-to Guides only cover investing. While we'd prototype our solution for Invest specifically, our design principles would stay product-agnostic — considering wealth development broadly so the approach could extend to other products later.</p>
 `,
 
 workshop: () => `
-  ${header('Design · Workshop', 'Concepting Workshop', 'A major milestone: collaborating directly with designers at Sharesies to generate ideas grounded in both research and product expertise.')}
+  ${header('Design · Workshop', 'Concepting Workshop', 'A major milestone — collaborating directly with designers at Sharesies to generate ideas grounded in both research and product expertise.')}
 
   ${sLabel('Planning')}
   <h2 class="sub-head">Workshop structure</h2>
@@ -2186,7 +1788,7 @@ workshop: () => `
     <img src="sha_workshopimages/ws1.jpg" alt="Workshop photo 1" style="width:100%; height:260px; object-fit:cover; border-radius:8px; display:block;">
     <img src="sha_workshopimages/ws2.jpg" alt="Workshop photo 2" style="width:100%; height:260px; object-fit:cover; border-radius:8px; display:block;">
   </div>
-  <p style="font-size:14px; color:var(--ink-mid); margin-top:8px; margin-bottom:0;">Images were taken by me</p>
+  <p style="font-size:13px; color:var(--ink-mid); margin-top:8px; margin-bottom:0;">Images were taken by me</p>
 
   ${rule()}
 
@@ -2194,7 +1796,7 @@ workshop: () => `
   <h2 class="sub-head">Key takeaways</h2>
   ${termlistHTML([
     {title:'Go-to Guides are not the right resource', body:'Content was too advanced for our target user group. We shifted to the broader Sharesies Learn content.'},
-    {title:'Build a pathway towards wealth development', body:"Sharesies' products could form a pathway. Our design focused on Invest as the lowest barrier product."},
+    {title:'Build a pathway towards wealth development', body:"Sharesies' products could form a pathway — our design focused on Invest as the lowest barrier product."},
     {title:'Build a storyboarding framework', body:'Use workshop concepts to build a framework applicable across KiwiSaver and Save in future.'},
   ])}
 `,
@@ -2210,9 +1812,9 @@ concept: () => `
   <h2 class="sub-head">What converged</h2>
   <div class="key-elements-grid">
     ${[
-      {icon:'cog.svg',        title:'Content preview',      body:'Users can click on a module point to see what topics can be completed, deciding whether to commit before starting.'},
-      {icon:'visual.svg',     title:'Mixed media approach', body:'Video, short-form writing, and long-form articles, covering all methods and letting users select their preferred format.'},
-      {icon:'guide.svg',      title:'Access to all content',body:'Users can access content from any module at any point, reducing restriction and allowing self-directed learning.'},
+      {icon:'cog.svg',        title:'Content preview',      body:'Users can click on a module point to see what topics can be completed — deciding whether to commit before starting.'},
+      {icon:'visual.svg',     title:'Mixed media approach', body:'Video, short-form writing, and long-form articles — covering all methods and letting users select their preferred format.'},
+      {icon:'guide.svg',      title:'Access to all content',body:'Users can access content from any module at any point — reducing restriction and allowing self-directed learning.'},
       {icon:'heart_hand.svg', title:'Customised content',   body:'Questionnaires where user answers drive personalised content or investment recommendations.'},
     ].map(it => `
       <div class="key-element">
@@ -2228,8 +1830,8 @@ modules: () => `
 
   ${sLabel('Progression')}
   <h2 class="sub-head">Learning journey, Duolingo-style</h2>
-  <p class="prose-p">The convergent concept set us on a visual learning-journey direction, with modules that increase in complexity as users progress, just like Duolingo starts with basics and unlocks more advanced concepts over time.</p>
-  <p class="prose-p">Rather than writing new material from scratch, we looked at what Sharesies already had. Their content team had articles, videos, and guides spanning the basics of investing through to more advanced concepts, a wealth of material we could repurpose.</p>
+  <p class="prose-p">The convergent concept set us on a visual learning-journey direction — with modules that increase in complexity as users progress, just like Duolingo starts with basics and unlocks more advanced concepts over time.</p>
+  <p class="prose-p">Rather than writing new material from scratch, we looked at what Sharesies already had. Their content team had articles, videos, and guides spanning the basics of investing through to more advanced concepts — a wealth of material we could repurpose.</p>
 
   <img src="Icon_assets/workshop_concept.svg" alt="Learning progression visual" style="width:100%; display:block; margin-bottom:16px;">
 
@@ -2244,9 +1846,9 @@ modules: () => `
   ${sLabel('Topics')}
   <h2 class="sub-head">Three topics, each grounded in a finding</h2>
   ${termlistHTML([
-    {title:'Values', body:'Gives users a chance to reflect on what matters to them and how it shapes financial decisions. Grounded in Finding 13: it was important to participants that they could reflect their values in their investments.'},
-    {title:'Investment Types', body:'Builds knowledge of where users’ money goes and the language used across the investing space. Grounded in Finding 17: all beginner participants wanted guidance adjusted to their own goals and journey.'},
-    {title:'Risk and Time', body:'Helps users understand the potential outcomes of their investments and the tradeoffs between short and long horizons. Grounded in Finding 14: financial risk adds to the perception of investing as unsafe or intimidating.'},
+    {title:'Values', body:'Gives users a chance to reflect on what matters to them and how it shapes financial decisions. Grounded in Finding 13 — it was important to participants that they could reflect their values in their investments.'},
+    {title:'Investment Types', body:'Builds knowledge of where users’ money goes and the language used across the investing space. Grounded in Finding 17 — all beginner participants wanted guidance adjusted to their own goals and journey.'},
+    {title:'Risk and Time', body:'Helps users understand the potential outcomes of their investments and the tradeoffs between short and long horizons. Grounded in Finding 14 — financial risk adds to the perception of investing as unsafe or intimidating.'},
   ])}
 `,
 
@@ -2267,7 +1869,7 @@ lofi: () => `
   ${rule()}
 
   ${sLabel('Testing')}
-  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:16.5px; letter-spacing:0;">— 4 people, new to wealth development</span></h2>
+  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:15px; letter-spacing:0;">— 4 people, new to wealth development</span></h2>
   <div style="display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;">
     ${[['P1','F, 20s','Risk Low'],['P2','M, 30s','Risk Low'],['P3','M, 30s','Risk Med'],['P4','F, 20s','Risk Med']]
       .map(([p,d,r]) => `<div class="participant-card"><div class="p">${p}</div><div class="d">${esc(d)}</div><div class="r">${esc(r)}</div></div>`).join('')}
@@ -2293,9 +1895,9 @@ lofi: () => `
       <div>
         <img src="${src}" alt="${title}" style="width:100%; display:block; border-radius:8px; margin-bottom:12px;">
         <div class="q-screen-content">
-          <div style="font-size:12px; font-weight:700; color:var(--ink-mid); letter-spacing:.06em; margin-bottom:4px;">${label}</div>
-          <div style="font-size:15.5px; font-weight:600; color:var(--ink); margin-bottom:6px;">${title}</div>
-          <div style="font-size:14px; color:var(--ink-mid); line-height:1.6;">${body}</div>
+          <div style="font-size:11px; font-weight:700; color:var(--ink-mid); letter-spacing:.06em; margin-bottom:4px;">${label}</div>
+          <div style="font-size:14px; font-weight:600; color:var(--ink); margin-bottom:6px;">${title}</div>
+          <div style="font-size:13px; color:var(--ink-mid); line-height:1.6;">${body}</div>
         </div>
       </div>`).join('')}
   </div>
@@ -2310,16 +1912,16 @@ lofi: () => `
   <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:32px;">
     ${[
       {id:'2a', src:'SVGS/3a.svg',   label:'Module landing',   body:'A central hub showing all available learning modules with progress indicators, giving users a clear starting point and visible path forward.'},
-      {id:'2b', src:'SVGS/3b.svg',   label:'Values',           body:'An interactive screen where users select what matters to them, such as sustainability, growth, or community, so the experience reflects their personal priorities.'},
+      {id:'2b', src:'SVGS/3b.svg',   label:'Values',           body:'An interactive screen where users select what matters to them — sustainability, growth, community — so the experience reflects their personal priorities.'},
       {id:'2c', src:'SVGS/3c.svg',   label:'Time horizons',    body:'A timeline interaction helping users visualise short-term saving versus long-term wealth building, making abstract timeframes feel tangible.'},
       {id:'2d', src:'SVGS/3c_a.svg', label:'Risk',             body:'An interactive slider that translates abstract risk levels into a visual metaphor, letting users feel the trade-off rather than read about it.'},
       {id:'2e', src:'SVGS/3e.svg',   label:'Investment types', body:'A card-based breakdown of shares, funds, and bonds with plain-language descriptions. Self-contained building blocks users can learn at their own pace.'},
     ].map(({id, label, body, src}) => `
       <div>
         <img src="${src}" alt="${label}" style="width:100%; display:block; border-radius:8px; margin-bottom:12px;">
-        <div style="font-size:12px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">${id}</div>
-        <div style="font-size:15.5px; font-weight:600; color:var(--ink); margin-bottom:6px;">${label}</div>
-        <div style="font-size:14px; color:var(--ink-mid); line-height:1.6;">${body}</div>
+        <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">${id}</div>
+        <div style="font-size:14px; font-weight:600; color:var(--ink); margin-bottom:6px;">${label}</div>
+        <div style="font-size:13px; color:var(--ink-mid); line-height:1.6;">${body}</div>
       </div>`).join('')}
   </div>
 
@@ -2331,13 +1933,13 @@ lofi: () => `
 
   <div class="grid-2 grid-gap-lg">
     <div>
-      <div style="font-size:12px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">3a</div>
-      <div style="font-size:16.5px; font-weight:600; color:var(--ink); margin-bottom:8px;">Learn content articles</div>
+      <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">3a</div>
+      <div style="font-size:15px; font-weight:600; color:var(--ink); margin-bottom:8px;">Learn content articles</div>
       <p class="prose-p">Short, jargon-free articles that explain investing concepts in the moments users need them. Risk as they set it, types as they browse. Written with the Sharesies content team.</p>
     </div>
     <div>
-      <div style="font-size:12px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">3b</div>
-      <div style="font-size:16.5px; font-weight:600; color:var(--ink); margin-bottom:8px;">Time-boxed content</div>
+      <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">3b</div>
+      <div style="font-size:15px; font-weight:600; color:var(--ink); margin-bottom:8px;">Time-boxed content</div>
       <p class="prose-p">Each learning module includes estimated read times and bite-sized sections so users know what they're committing to, reducing the friction of "I don't have time to learn this right now."</p>
     </div>
   </div>
@@ -2349,9 +1951,9 @@ lofifindings: () => `
     {title:'Users navigated the journey map instinctively', body:'All four participants moved through within seconds. Visual progression markers gave confidence they were on a clear path.'},
     {title:'The values screen made it feel personal', body:'Every participant engaged and deliberated. One said it made the app feel "like it was built for them."'},
     {title:'Time horizons helped users articulate goals', body:'The timeline made participants put goals into words for the first time. We refined the visual scale for shorter timeframes.'},
-    {title:'The risk metaphor landed, but needed labels', body:"Users engaged immediately, but two couldn't connect the graphic to risk without a label. We added clearer copy."},
+    {title:'The risk metaphor landed, but needed labels', body:"Users engaged immediately — but two couldn't connect the graphic to risk without a label. We added clearer copy."},
     {title:'The questionnaire felt disconnected', body:"Participants couldn't see how their answers connected to the rest of the experience. Removed for mid-fi."},
-    {title:'Users wanted learning embedded, not separate', body:'Participants wanted to encounter content during the flow, not navigate to a separate section for it.'},
+    {title:'Users wanted learning embedded, not separate', body:'Participants wanted to encounter content during the flow — not navigate to a separate section for it.'},
   ])}
 `,
 
@@ -2365,24 +1967,24 @@ midfi: () => `
       <div style="background:#f4f2ec; border-radius: 12px; padding:20px; margin-bottom:16px; display:flex; justify-content:center;">
         <img src="SVGS/q_map.svg" alt="Lo-fi progression" style="width:100%; max-width:180px; display:block; border-radius:6px;">
       </div>
-      <div style="font-size:12px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">Before (Lo-fi)</div>
-      <div style="font-size:16.5px; font-weight:600; color:var(--ink); margin-bottom:8px;">Lo-fi progression</div>
+      <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">Before (Lo-fi)</div>
+      <div style="font-size:15px; font-weight:600; color:var(--ink); margin-bottom:8px;">Lo-fi progression</div>
       <p class="prose-p">Simple linear list. Users understood order but couldn't tell how far along they were or how long each step would take.</p>
     </div>
     <div>
       <div style="background:#f4f2ec; border-radius: 12px; padding:20px; margin-bottom:16px; display:flex; justify-content:center;">
         <img src="SVGS/q_m_map.svg" alt="Mid-fi progression" style="width:100%; max-width:180px; display:block; border-radius:6px;">
       </div>
-      <div style="font-size:12px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">After (Mid-fi)</div>
-      <div style="font-size:16.5px; font-weight:600; color:var(--ink); margin-bottom:8px;">Mid-fi progression</div>
-      <p class="prose-p">Visual progress bar, estimated completion times, and unlockable modules, giving users a stronger sense of where they are.</p>
+      <div style="font-size:11px; font-weight:700; color:#47446D; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px;">After (Mid-fi)</div>
+      <div style="font-size:15px; font-weight:600; color:var(--ink); margin-bottom:8px;">Mid-fi progression</div>
+      <p class="prose-p">Visual progress bar, estimated completion times, and unlockable modules — giving users a stronger sense of where they are.</p>
     </div>
   </div>
 
   ${rule()}
 
   ${sLabel('Guided interaction')}
-  <h2 class="sub-head">Guided interaction: Ethical Investing</h2>
+  <h2 class="sub-head">Guided interaction — Ethical Investing</h2>
   <div class="gi-stack">
     ${[
       {
@@ -2453,9 +2055,9 @@ midfi: () => `
   ${sLabel('Iteration')}
   <h2 class="sub-head">Other changes</h2>
   ${termlistHTML([
-    {title:'Questionnaire → Integrated onboarding prompts', body:'Separate questionnaire felt disconnected. Folded its purpose into guided screens, users now answer questions in context.'},
+    {title:'Questionnaire → Integrated onboarding prompts', body:'Separate questionnaire felt disconnected. Folded its purpose into guided screens — users now answer questions in context.'},
     {title:'Abstract risk slider → Labelled risk scale', body:'Added descriptive labels at each level and a one-line explanation of what each risk tier means in practice.'},
-    {title:'Separate learn section → Contextual learn cards', body:'Learn content now appears inline: risk explanations surface as you set your risk level.'},
+    {title:'Separate learn section → Contextual learn cards', body:'Learn content now appears inline — risk explanations surface as you set your risk level.'},
     {title:'Single-view investment types → Cards with comparison', body:'Added a comparison toggle so users could see shares, funds, and bonds next to each other.'},
     {title:'Uniform time horizon scale → Granular short-term scale', body:'Added granularity below three years while keeping the long-term view broad.'},
   ])}
@@ -2481,7 +2083,7 @@ midfitest: () => `
   ${rule()}
 
   ${sLabel('Testing')}
-  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:16.5px; letter-spacing:0;">— Six people, all new to wealth development</span></h2>
+  <h2 class="sub-head">Participants <span style="color:var(--ink-light); font-weight:400; font-size:15px; letter-spacing:0;">— Six people, all new to wealth development</span></h2>
   <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;">
     ${[['P1','F, 20s'],['P2','M, 20s'],['P3','F, 30s'],['P4','M, 30s'],['P5','F, 20s'],['P6','M, 20s']]
       .map(([p,d]) => `<div class="participant-card" style="min-width:90px;"><div class="p">${p}</div><div class="d">${esc(d)}</div></div>`).join('')}
@@ -2553,7 +2155,7 @@ hifi: () => `
 
   ${sLabel('My role')}
   <h2 class="sub-head">My contribution</h2>
-  ${callout('', 'I was responsible for the end-to-end visual design in Figma, from component library and colour system through to micro-interactions and the final clickable prototype used in our stakeholder demo.')}
+  ${callout('', 'I was responsible for the end-to-end visual design in Figma — from component library and colour system through to micro-interactions and the final clickable prototype used in our stakeholder demo.')}
 
 `,
 
@@ -2585,7 +2187,7 @@ limitations: () => `
   ${header('Outcome · Limitations', "What we'd do differently with more time.", 'Four months is a tight window for research, two rounds of prototyping, and a final build. These are the honest gaps.')}
   ${termlistHTML([
     {title:'Broader participant pool', body:'Our testing focused on people in their 20s and 30s. A wider age range and more diverse financial backgrounds would strengthen the findings.'},
-    {title:'Longitudinal validation', body:"We tested single sessions. We didn't track whether users actually returned in their first week. A diary study would reveal whether confidence persists."},
+    {title:'Longitudinal validation', body:"We tested single sessions — we didn't track whether users actually returned in their first week. A diary study would reveal whether confidence persists."},
     {title:'Real financial data', body:"The prototype used placeholder data. Testing with real numbers could shift user behaviour in ways we couldn't see."},
     {title:'Accessibility testing', body:"We met AA standards but didn't test with screen readers. The interactive slider and visual metaphors would need specific attention."},
     {title:'Developer handoff', body:'The project ended at the design stage. A proper handoff with annotated specs and component tokens would be the natural next step.'},
@@ -2595,9 +2197,9 @@ limitations: () => `
 future: () => `
   ${header('Outcome · Future Considerations', 'Where this could go next.', 'Four directions the team sketched out for where this work could head if Sharesies wanted to take it further.')}
   ${termlistHTML([
-    {title:'Adaptive learning paths', body:'Future versions could adapt module order based on user behaviour: if someone skips risk, surface it later in a different context.'},
+    {title:'Adaptive learning paths', body:'Future versions could adapt module order based on user behaviour — if someone skips risk, surface it later in a different context.'},
     {title:'Community and peer learning', body:'Our research showed users are drawn to human-feeling experiences. Shared milestones, anonymised peer portfolios, or group challenges could sustain motivation.'},
-    {title:'Post-first-investment support', body:'The prototype focuses on getting to the first investment. Designing the "second week", covering portfolio check-ins and market context, would complete the loop.'},
+    {title:'Post-first-investment support', body:'The prototype focuses on getting to the first investment. Designing the "second week" — portfolio check-ins, market context — would complete the loop.'},
     {title:'KiwiSaver and Save integration', body:'Extending the guided experience to Save and KiwiSaver would give users a holistic view of their financial journey.'},
   ])}
 `,
@@ -2606,7 +2208,7 @@ learnings: () => `
   ${header('Outcome · Key Learnings', "Four things I'm taking with me.", "The four lessons that changed how I'll approach the next project, written in the voice I'd use explaining them to a friend.")}
   ${termlistHTML([
     {title:'Research drives every decision', body:"The features that tested best were tied most directly to a specific insight. When I designed from assumption, the idea usually got cut. When I designed from a participant quote, it usually made it through."},
-    {title:'Cutting features is a design skill', body:"Removing the questionnaire felt uncomfortable at first: it was one of our earliest ideas. But the test data was clear, and the prototype got sharper without it."},
+    {title:'Cutting features is a design skill', body:"Removing the questionnaire felt uncomfortable at first — it was one of our earliest ideas. But the test data was clear, and the prototype got sharper without it."},
     {title:'Context matters more than content', body:"We wrote good learning content, but it didn't land until we moved it into the flow where users actually needed it. Where you put information is as important as what it says."},
     {title:'Designing with a real partner changes everything', body:"Working alongside Sharesies' content and design teams meant our decisions were grounded in real product constraints. The feedback was sharper and the work felt like it mattered beyond the classroom."},
   ])}
@@ -2657,41 +2259,6 @@ const menuBtn      = document.getElementById('menu-btn');
 
 let active = 'intro';
 let revealObserver = null;
-
-/* At-a-glance — STAR rows act as tabs over the process panel. */
-function setupGlance() {
-  const gl = contentInner.querySelector('.glance');
-  if (!gl) return;
-
-  const tabs  = Array.from(gl.querySelectorAll('[role="tab"]'));
-  const panel = gl.querySelector('[role="tabpanel"]');
-  const phase = gl.querySelector('.glance-phase');
-  if (!tabs.length || !panel) return;
-
-  function select(tab, moveFocus) {
-    tabs.forEach(t => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      t.tabIndex = on ? 0 : -1;
-    });
-    gl.setAttribute('data-active', tab.dataset.star);
-    panel.setAttribute('aria-labelledby', tab.id);
-    if (phase) phase.textContent = tab.dataset.phase;
-    if (moveFocus) tab.focus();
-  }
-
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(tab, false));
-    tab.addEventListener('keydown', (e) => {
-      let next = null;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
-      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
-      else if (e.key === 'Home') next = tabs[0];
-      else if (e.key === 'End') next = tabs[tabs.length - 1];
-      if (next) { e.preventDefault(); select(next, true); }
-    });
-  });
-}
 
 function setupImgFade() {
   contentInner.querySelectorAll('img:not(.reveal):not(.avatar-circle)').forEach(function(img) {
@@ -2895,7 +2462,6 @@ function render(id) {
   setupReveals();
   setupCarousel();
   setupImgFade();
-  setupGlance();
   updateNavStates();
   updateProgress();
 
@@ -2960,9 +2526,8 @@ render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
 </script>
 
 <script>
-/* ── Custom cursor — skip on touch devices ── */
+/* ── Custom cursor ── */
 (function() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
   const dot  = document.createElement('div'); dot.id  = 'cur-dot';  document.body.appendChild(dot);
   let mx=0,my=0,cx=0,cy=0;
@@ -3005,12 +2570,10 @@ function runReveal(canvas, fill) {
   }
   setTimeout(()=>requestAnimationFrame(step),60);
 }
-if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  document.querySelectorAll('img').forEach(img => {
-    if (img.complete) pixelReveal(img);
-    else img.addEventListener('load', () => pixelReveal(img), {once:true});
-  });
-}
+document.querySelectorAll('img').forEach(img => {
+  if (img.complete) pixelReveal(img);
+  else img.addEventListener('load', () => pixelReveal(img), {once:true});
+});
 
 /* ── Scroll reveal sections ── */
 const revObs = new IntersectionObserver(entries => {
@@ -3034,9 +2597,8 @@ document.querySelectorAll('p, li, .body-text, .stack-body').forEach(el => { if(e
 </script>
 
 <script>
-/* ── DS Cursor — skip on touch devices ── */
+/* ── DS Cursor ── */
 (function() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'ds-cursor-ring'; document.body.appendChild(ring);
   const dot  = document.createElement('div'); dot.id  = 'ds-cursor-dot';  document.body.appendChild(dot);
   let mx=0,my=0,cx=0,cy=0;

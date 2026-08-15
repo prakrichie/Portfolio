@@ -9,3 +9,15 @@ Thumbs.db
 .vscode/
 *.swp
 node_modules
+
+# Internal tooling
+.skill_extracted/
+
+# Large source media — kept local. GitHub hard-rejects >100MB, and these
+# are masters that already have compressed counterparts in the repo.
+*.mov
+smalledit_original.mp4
+
+# Design references, not site assets
+landing_page/up.png
+landing_page/landingpage_Ref.png

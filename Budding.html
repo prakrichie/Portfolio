@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budding: A ritual, not a tracker</title>
+<meta name="description" content="A case study on Budding, an iOS app that turns job rejection into a ritual through gesture, gamification, and accessible motion. Sole designer and developer. In progress.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BUDDING — case study, in progress
+
+   White canvas with a faint dot grid, so the page reads as a file
+   still open on the workbench rather than a finished artefact.
+
+   The mess is not decoration. It is load bearing:
+     finished content  → solid borders, aligned, quiet
+     unfinished content→ dashed borders, hatched fill, wip labels,
+                         and the one deliberate rotation on the page
+   So a reader can tell at a glance what is done and what is not.
+
+   The at-a-glance panel is the same component as Sharesies and
+   Tribes. Its CSS is token driven, so it is ported verbatim and the
+   Budding palette is aliased onto the generic token names it expects
+   (see TOKEN BRIDGE). One edit should work on all three pages.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  --paper:   #FFFFFF;
+  --paper-2: #F7F6F2;              /* warm second surface */
+  --ink:     #17251C;              /* 15.94:1 on paper */
+  --ink-mid: #4A5A50;              /* 7.32:1 — AAA body */
+  --ink-l:   #5F6E64;              /* 5.38:1 — AA small text */
+  --green:   #1D4636;              /* 10.60:1 — brand, structure */
+
+  /* Budding's earned colour, re-grounded for a light page. On the green
+     build these were barred from small type; on white the pale tints fail
+     harder still, so the pale lotus is now graphic-fill only and two
+     darkened variants carry anything that has to be read.
+       --lotus       1.87:1  → large graphic marks only, never type
+       --lotus-mid   5.05:1  → borders and non-text UI marks
+       --lotus-deep  8.39:1  → AAA at any size, including 10px mono */
+  --lotus:      #F2A9C4;
+  --lotus-mid:  #C43A6A;
+  --lotus-deep: #96154A;
+  --amber:      #B8791A;           /* 3.4:1 — non-text status dot */
+
+  --line:   rgba(23,37,28,.13);
+  --line-2: rgba(23,37,28,.26);
+  --hatch:  repeating-linear-gradient(45deg, transparent 0 7px, rgba(23,37,28,.035) 7px 14px);
+
+  --font: 'Nunito', ui-rounded, 'Segoe UI', system-ui, sans-serif;
+
+  --ease: cubic-bezier(.22,1,.36,1);
+  --nav-h: 54px;
+  --max: 1080px;
+
+  /* ── TOKEN BRIDGE ──────────────────────────────────────────────
+     The at-a-glance component is written against the neutral token
+     names used on Sharesies and Tribes. Mapping them here is what
+     lets the component drop in unchanged. */
+  --bg:            var(--paper);
+  --bg-2:          var(--paper-2);
+  --border:        var(--line);
+  --border-strong: var(--line-2);
+  --ink-light:     var(--ink-l);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--paper);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+/* The canvas. Faint enough to read as paper texture, present enough
+   to say this is still a working file. */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:-1;
+  background-image:radial-gradient(circle, rgba(23,37,28,.085) 1px, transparent 1px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+}
+a{color:inherit}
+svg{display:block}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ── nav ──────────────────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:60;
+  height:var(--nav-h);
+  display:flex;align-items:center;gap:10px;
+  padding:0 clamp(18px,4vw,40px);
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  font-size:14px;
+}
+.nav a{color:var(--ink-l);text-decoration:none;transition:color .2s var(--ease)}
+.nav a:hover{color:var(--ink)}
+.nav .sep{color:var(--line-2)}
+.nav .here{font-weight:700}
+.nav .status{
+  margin-left:auto;display:flex;align-items:center;gap:7px;
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:11px;letter-spacing:.04em;color:var(--ink-l);
+}
+.nav .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--amber);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.wrap{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:clamp(34px,5.5vw,64px) clamp(18px,4vw,40px) clamp(60px,9vw,110px);
+}
+
+/* ── hero ─────────────────────────────────────────────────────── */
+.hero{margin-bottom:clamp(36px,5vw,56px)}
+
+/* UNFINISHED. Dashed, hatched, crop marked. There is no reel yet and
+   the frame says so rather than pretending with a grey box. */
+.shot{
+  position:relative;
+  aspect-ratio:16/9;
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--paper-2);
+  background-image:var(--hatch);
+  border:1.5px dashed var(--line-2);
+  margin-bottom:clamp(30px,4.5vw,48px);
+}
+/* The reel is the reveal running live in an iframe, not a recording of it.
+   A 48s loop that is almost entirely text encodes badly — the compressed
+   version smeared on every transition and went soft on any high-DPI
+   screen. This stays vector-crisp at any size and costs ~200KB. */
+.shot-frame{display:none;width:100%;height:100%;border:0}
+.shot.has-video{
+  border-style:solid;border-color:var(--line);
+  background-image:none;
+}
+.shot.has-video .shot-frame{display:block}
+.shot.has-video .shot-empty,
+.shot.has-video .tape,
+.shot.has-video .crop{display:none}
+.shot.has-video .shot-toggle{display:grid}
+
+/* Registration marks. Reads as an artboard, and they disappear the
+   moment the frame holds real footage. */
+.crop{position:absolute;width:13px;height:13px;border:1.5px solid var(--lotus-mid);opacity:.5}
+.crop--tl{top:12px;left:12px;border-right:0;border-bottom:0}
+.crop--tr{top:12px;right:12px;border-left:0;border-bottom:0}
+.crop--bl{bottom:12px;left:12px;border-right:0;border-top:0}
+.crop--br{bottom:12px;right:12px;border-left:0;border-top:0}
+
+.shot-empty{
+  position:absolute;inset:0;
+  display:grid;place-content:center;justify-items:center;gap:16px;
+  text-align:center;padding:24px;
+}
+.shot-empty svg{width:clamp(74px,12vw,104px);height:auto}
+.shot-note{
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:11.5px;letter-spacing:.06em;color:var(--ink-l);
+}
+.blink{
+  display:inline-block;width:7px;height:13px;
+  background:var(--lotus-mid);vertical-align:-2px;margin-left:3px;
+  animation:blink 1.1s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* The one rotated thing in the hero. A strip of tape, not a badge. */
+.tape{
+  position:absolute;top:16px;right:-30px;
+  transform:rotate(34deg);
+  background:var(--lotus);
+  color:var(--lotus-deep);
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  padding:6px 40px;
+}
+
+.shot-toggle{
+  display:none;
+  position:absolute;right:14px;bottom:14px;
+  width:38px;height:38px;border-radius:50%;
+  place-content:center;
+  background:rgba(255,255,255,.82);
+  border:1px solid var(--line-2);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}
+.shot-toggle .ic-play{display:none}
+.shot-toggle[aria-pressed="true"] .ic-play{display:block}
+.shot-toggle[aria-pressed="true"] .ic-pause{display:none}
+
+.hero-title{
+  font-size:clamp(48px,9vw,104px);
+  line-height:.92;letter-spacing:-.035em;font-weight:800;
+  color:var(--green);
+  margin-bottom:10px;
+}
+.hero-pos{
+  font-size:clamp(20px,3vw,30px);
+  font-weight:700;color:var(--lotus-deep);
+  letter-spacing:-.01em;margin-bottom:clamp(26px,4vw,36px);
+}
+.hero-meta{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:22px 26px;
+  padding-top:26px;
+  border-top:1px solid var(--line);
+}
+.hero-meta dt{
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-l);margin-bottom:6px;
+}
+.hero-meta dd{font-size:16px;font-weight:700;line-height:1.35}
+
+/* ═══════════════════════════════════════════════════════════════
+   AT A GLANCE
+   Ported unchanged from Sharesies.html / Tribes.html. Only the
+   three --gl-* accents and the .is-pending rule differ.
+   FINISHED content, so: solid, aligned, no rotation, no hatch.
+   ═══════════════════════════════════════════════════════════════ */
+  .glance {
+    --gl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    --gl-accent:     var(--lotus-mid);    /* graphic marks */
+    --gl-accent-txt: var(--lotus-deep);   /* small text — AAA on both grounds */
+    --gl-rail:       var(--border-strong);
+
+    container: glance / inline-size;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+    margin: 0 0 32px;
+  }
+
+  /* ── Terminal chrome bar ── */
+  .glance-chrome {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-2);
+    font-family: var(--gl-mono);
+    font-size: 11.5px;
+    letter-spacing: .02em;
+    color: var(--ink-light);
+  }
+  .glance-led {
+    width: 7px; height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--gl-accent);
+  }
+  .glance-num  { font-weight: 700; color: var(--ink-mid); }
+  .glance-path { font-weight: 600; color: var(--gl-accent-txt); }
+  .glance-meta { margin-left: auto; }
+
+  /* ── Body ── */
+  .glance-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .glance-col--star { padding: 22px 20px 24px; }
+  .glance-col--flow {
+    container: flow / inline-size;
+    padding: 22px 20px 24px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+  }
+  .glance-col--flow:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: -2px; }
+  .glance-h {
+    font-family: var(--gl-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  /* ── STAR — clickable rows that drive the process panel ── */
+  .glance-star { display: grid; gap: 2px; }
+  .star-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+    width: calc(100% + 22px);
+    margin-inline: -11px;
+    padding: 10px 30px 11px 13px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color .2s var(--ease);
+  }
+  .star-row::before {              /* selected spine */
+    content: '';
+    position: absolute;
+    left: 2px; top: 10px; bottom: 10px;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--gl-accent);
+    opacity: 0;
+    transition: opacity .2s var(--ease);
+  }
+  .star-row::after {               /* clickable affordance */
+    content: '';
+    position: absolute;
+    right: 13px; top: 16px;
+    width: 5px; height: 5px;
+    border-top: 1.4px solid currentColor;
+    border-right: 1.4px solid currentColor;
+    transform: rotate(45deg);
+    color: var(--ink-light);
+    opacity: .45;
+    transition: opacity .2s var(--ease), color .2s var(--ease);
+  }
+  .star-row:hover { background: var(--bg-2); }
+  .star-row:hover::after { opacity: 1; }
+  .star-row:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: 1px; }
+  .star-row[aria-selected="true"] { background: var(--bg-2); }
+  .star-row[aria-selected="true"]::before { opacity: 1; }
+  .star-row[aria-selected="true"]::after { opacity: 1; color: var(--gl-accent); }
+  .star-row[aria-selected="true"] .star-body { color: var(--ink); }
+
+  .star-label {
+    display: block;
+    font-family: var(--gl-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--gl-accent-txt);
+  }
+  .star-body {
+    display: block;
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--ink-mid);
+    max-width: 66ch;
+    transition: color .2s var(--ease);
+  }
+  @container glance (min-width: 560px) {
+    .star-row { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
+    .star-label { padding-top: 3px; }
+  }
+
+  /* ── Skill tags ── */
+  .glance-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border-strong);
+  }
+  .glance-tags li {
+    font-family: var(--gl-mono);
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--ink-light);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 5px 8px;
+  }
+
+  /* ── Process panel ── */
+  .glance-panel-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .glance-phase {
+    margin-left: auto;
+    font-family: var(--gl-mono);
+    font-size: 10.5px;
+    letter-spacing: .04em;
+    color: var(--ink-light);
+    white-space: nowrap;
+  }
+
+  .glance-bands { display: grid; gap: 18px; }
+  .glance-band { display: grid; gap: 8px; }
+  .band-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--gl-mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    transition: color .2s var(--ease);
+  }
+  .band-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .band-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  @container flow (min-width: 300px) { .band-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container flow (min-width: 430px) { .band-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+  .flow-card {
+    display: grid;
+    gap: 2px;
+    padding: 11px 11px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--bg);
+    transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
+  }
+  /* UNFINISHED. Same dashed-and-hatched language as the hero frame. */
+  .flow-card.is-pending {
+    border-style: dashed;
+    border-color: var(--line-2);
+    background-color: transparent;
+    background-image: var(--hatch);
+  }
+  .flow-card.is-pending .flow-label { color: var(--ink-light); }
+
+  .flow-icon {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--ink-light);
+    transition: color .22s var(--ease);
+  }
+  .flow-icon svg { width: 18px; height: 18px; }
+  .flow-label {
+    font-size: clamp(11px, 2.9cqi, 12.5px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    hyphens: auto;                 /* safety net for long single-word labels */
+    overflow-wrap: break-word;
+  }
+  .flow-note {
+    font-size: clamp(10px, 2.5cqi, 11px);
+    line-height: 1.35;
+    color: var(--ink-light);
+  }
+
+  /* Selected STAR row lights its band */
+  .glance[data-active="task"]   .glance-band[data-band="task"]   .band-label,
+  .glance[data-active="action"] .glance-band[data-band="action"] .band-label,
+  .glance[data-active="result"] .glance-band[data-band="result"] .band-label { color: var(--gl-accent-txt); }
+
+  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-icon,
+  .glance[data-active="action"] .glance-band[data-band="action"] .flow-icon,
+  .glance[data-active="result"] .glance-band[data-band="result"] .flow-icon { color: var(--gl-accent-txt); }
+
+  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-card,
+  .glance[data-active="action"] .glance-band[data-band="action"] .flow-card,
+  .glance[data-active="result"] .glance-band[data-band="result"] .flow-card {
+    border-color: var(--gl-accent);
+    box-shadow: inset 0 0 0 1px var(--gl-accent);
+  }
+
+  /* ── Side by side on wide panels ── */
+  @container glance (min-width: 860px) {
+    .glance-body { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+    .glance-col--star { padding: 24px 28px 26px 24px; }
+    .glance-col--flow {
+      padding: 24px 24px 26px;
+      border-top: 0;
+      border-left: 1px solid var(--border);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .glance-meta { display: none; }
+  }
+
+/* ══════════════════════════════════════════════════════════════
+   THE PIVOT
+   The turn from "elegant and clean" to a thing you shoot at. The
+   layout says the same: an ordered opening, then the takeaways
+   scattered off the baseline, then evidence.
+   ══════════════════════════════════════════════════════════════ */
+.pivot{margin-top:clamp(46px,7vw,80px)}
+.pivot-h{
+  font-size:clamp(24px,3.6vw,32px);
+  font-weight:800;letter-spacing:-.02em;
+  color:var(--green);
+  text-align:center;
+  margin-bottom:clamp(20px,3vw,30px);
+}
+.pivot-p{
+  font-size:16px;line-height:1.65;
+  color:var(--ink-mid);
+  margin-bottom:18px;
+}
+
+.pivot-lead{
+  font-size:16px;line-height:1.6;
+  color:var(--ink);
+  text-decoration:underline;
+  text-underline-offset:4px;
+  text-decoration-color:var(--lotus-mid);
+  margin-bottom:6px;
+}
+
+/* One horizontal run of all five. Items size to their own text rather
+   than to equal columns — equal columns would strand the short phrases
+   in wide empty cells and force the long one to wrap, which is exactly
+   what stops a row reading as a single line. */
+.takeaways{
+  list-style:none;                   /* markers are drawn below, so they
+                                        sit with the text rather than in a
+                                        gutter outside the item */
+  display:flex;
+  flex-wrap:wrap;                    /* the whole phrase drops to the next
+                                        line rather than breaking mid-phrase */
+  gap:12px clamp(16px,2.2vw,26px);
+  margin:20px 0 clamp(26px,4vw,36px);
+}
+.takeaways li{
+  position:relative;
+  padding-left:18px;
+  font-size:16px;font-weight:700;line-height:1.35;
+  color:var(--lotus-deep);           /* 8.39:1 — AAA at this size */
+  white-space:nowrap;
+}
+.takeaways li::before{
+  content:'';
+  position:absolute;
+  left:0;top:.52em;                  /* optically centred on the first line */
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--lotus-mid);       /* non-text mark, so the mid tone is fine */
+}
+/* ── video placeholders ───────────────────────────────────────
+   Same dashed-and-hatched language as the hero frame, rather than a
+   flat grey box: on this page that is what "not shot yet" looks like,
+   and it keeps the unfinished state readable at a glance. */
+.vid{
+  position:relative;
+  border-radius:12px;
+  background:var(--paper-2);
+  background-image:var(--hatch);
+  border:1.5px dashed var(--line-2);
+  display:grid;place-items:center;
+}
+.vid--sm{aspect-ratio:2 / 1}
+.vid--lg{aspect-ratio:16 / 9;margin-top:clamp(24px,3.6vw,36px)}
+.vid-label{
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-mid);
+}
+
+.weapon{
+  display:grid;
+  grid-template-columns:minmax(0,320px) minmax(0,1fr);
+  gap:clamp(18px,3vw,30px);
+  align-items:start;
+  margin-top:clamp(18px,3vw,26px);
+}
+.weapon-copy h3{
+  font-size:clamp(19px,2.6vw,23px);
+  font-weight:700;letter-spacing:-.015em;
+  color:var(--green);
+  margin-bottom:10px;
+}
+.weapon-copy p{
+  font-size:14.5px;line-height:1.6;
+  color:var(--ink-mid);
+  max-width:52ch;
+}
+
+.pivot-cap{
+  margin-top:16px;
+  font-size:14.5px;line-height:1.55;
+  color:var(--ink-mid);
+  text-align:center;
+}
+
+@media (max-width:720px){
+  /* Too narrow to hold a phrase intact, so let them break normally
+     rather than run off the edge. */
+  .takeaways li{white-space:normal}
+  .weapon{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ── to be continued ──────────────────────────────────────────────
+   UNFINISHED, and the only rotated block on the page. A note left
+   on the canvas rather than a designed section. */
+.tbc{
+  position:relative;
+  max-width:560px;
+  margin:clamp(38px,6vw,60px) auto 0;
+  padding:clamp(28px,4vw,40px) clamp(24px,4vw,40px);
+  background:var(--paper-2);
+  background-image:var(--hatch);
+  border:1.5px dashed var(--line-2);
+  border-radius:12px;
+  transform:rotate(-.55deg);
+  text-align:center;
+}
+.tbc-eyebrow{
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--lotus-deep);margin-bottom:12px;
+}
+.tbc h2{
+  font-size:clamp(23px,3.4vw,30px);
+  font-weight:800;letter-spacing:-.02em;color:var(--green);
+  margin-bottom:10px;
+}
+.tbc p{
+  font-size:16px;line-height:1.65;color:var(--ink-mid);
+  max-width:44ch;margin:0 auto;
+}
+
+/* ── reveal ───────────────────────────────────────────────────── */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rise.in{opacity:1;transform:none}
+/* The TBC keeps its tilt through the reveal. */
+.tbc.rise{transform:translateY(18px) rotate(-.55deg)}
+.tbc.rise.in{transform:rotate(-.55deg)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rise{opacity:1;transform:none;transition:none}
+  .tbc.rise,.tbc.rise.in{transform:rotate(-.55deg)}
+  .nav .dot,.blink{animation:none}
+  .star-row,.star-row::before,.star-row::after,
+  .star-body,.band-label,.flow-card,.flow-icon{transition:none}
+}
+
+@media (max-width:640px){
+  .shot{aspect-ratio:4/3}
+  .tape{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/">Work</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <span class="here">Budding</span>
+  <span class="status"><span class="dot" aria-hidden="true"></span>in progress</span>
+</nav>
+
+<main class="wrap">
+
+  <!-- ═══ hero ═══════════════════════════════════════════════ -->
+  <header class="hero">
+    <figure class="shot" id="shot">
+      <iframe class="shot-frame" id="heroFrame" src="Motion/budding-reveal.html?embed"
+              title="Budding reveal: the logo draws itself, a rejection phrase repeats, then a card is either let go or grown into a flower for the garden"></iframe>
+
+      <span class="crop crop--tl" aria-hidden="true"></span>
+      <span class="crop crop--tr" aria-hidden="true"></span>
+      <span class="crop crop--bl" aria-hidden="true"></span>
+      <span class="crop crop--br" aria-hidden="true"></span>
+
+      <div class="shot-empty">
+        <svg viewBox="0 0 300 220" fill="none" aria-hidden="true">
+          <rect x="18" y="30" width="264" height="160" rx="18" fill="none" stroke="#17251C" stroke-opacity=".16" stroke-width="2" stroke-dasharray="7 7"/>
+          <g stroke="#1D4636" stroke-opacity=".55" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M150 178v-48"/>
+            <path d="M150 152c-18 0-31-11-31-24 16 0 31 10 31 24z"/>
+          </g>
+          <g>
+            <ellipse cx="150" cy="98" rx="20" ry="35" fill="#F2A9C4"/>
+            <ellipse cx="150" cy="98" rx="20" ry="35" fill="#F2A9C4" transform="rotate(52 150 106)"/>
+            <ellipse cx="150" cy="98" rx="20" ry="35" fill="#F2A9C4" transform="rotate(-52 150 106)"/>
+            <circle cx="150" cy="104" r="12" fill="#FFFFFF"/>
+          </g>
+        </svg>
+        <p class="shot-note">reel in progress<span class="blink" aria-hidden="true"></span></p>
+      </div>
+
+      <span class="tape" aria-hidden="true">wip</span>
+
+      <button class="shot-toggle" id="vidToggle" type="button" aria-pressed="false" aria-label="Pause the reel">
+        <svg width="16" height="18" viewBox="0 0 18 20" fill="none" aria-hidden="true">
+          <g class="ic-pause" stroke="#17251C" stroke-width="3.5" stroke-linecap="round"><path d="M5 3v14M13 3v14"/></g>
+          <path class="ic-play" d="M4 2.5v15l13-7.5z" fill="#17251C"/>
+        </svg>
+      </button>
+    </figure>
+
+    <h1 class="hero-title">Budding</h1>
+    <p class="hero-pos">It looks like a wellness app and behaves like a stress toy.</p>
+
+    <dl class="hero-meta">
+      <div><dt>Role</dt><dd>Sole designer &amp; developer</dd></div>
+      <div><dt>Platform</dt><dd>iOS</dd></div>
+      <div><dt>Tools</dt><dd>Figma, React Native</dd></div>
+      <div><dt>Status</dt><dd>In progress</dd></div>
+    </dl>
+  </header>
+
+  <!-- ═══ at a glance ════════════════════════════════════════ -->
+  <div class="rise" id="glanceMount"></div>
+
+  <!-- ═══ the pivot ══════════════════════════════════════════ -->
+  <section class="pivot rise" aria-labelledby="pivotTitle">
+    <h2 class="pivot-h" id="pivotTitle">The pivot</h2>
+
+    <p class="pivot-p">After showing the product and receiving feedback, a quote that encouraged me to change my design decision was &ldquo;don&rsquo;t be safe and take a risk&rdquo;. I took this onboard and decided to change and update my previous principles from a elegant, clean, and appearance.</p>
+
+    <p class="pivot-lead">The key takeaways were, make the user go</p>
+    <ul class="takeaways">
+      <li>have a laugh</li>
+      <li>stress relief</li>
+      <li>what is going on?</li>
+      <li>question the design and developer</li>
+      <li>have a go at it</li>
+    </ul>
+
+    <p class="pivot-p">This leaves an impression and add onto my principle of giving the user a buffer for applying for positions</p>
+    <p class="pivot-p">I thought to myself, what can make a user go &ldquo;what the..&rdquo; so I came up with this:</p>
+
+    <div class="weapon">
+      <figure class="vid vid--sm">
+        <figcaption class="vid-label">video placeholder</figcaption>
+      </figure>
+      <div class="weapon-copy">
+        <h3>The weapon design</h3>
+        <p>A 2d pixelated model created in a pixel making program and then transferring to Claude to developed as a accessible 3d .obj file</p>
+      </div>
+    </div>
+
+    <figure class="vid vid--lg">
+      <figcaption class="vid-label">video placeholder</figcaption>
+    </figure>
+    <p class="pivot-cap">Same mechanic of picking a card except now you can shoot it.</p>
+  </section>
+
+  <!-- ═══ to be continued ════════════════════════════════════ -->
+  <section class="tbc rise">
+    <p class="tbc-eyebrow">~/to-be-continued</p>
+    <h2>The rest is still being built.</h2>
+    <p>Testing, the outcome, and the shipped app are still ahead. This page grows as Budding does.</p>
+  </section>
+
+</main>
+
+<script>
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+/* At-a-glance icons — inline so they inherit currentColor and tint with the
+   accent when a band is active. */
+const GL_ICON = {
+  search: '<circle cx="7.4" cy="7.4" r="4.6"/><path d="M10.9 10.9L15.2 15.2"/>',
+  chat:   '<path d="M15.4 10.9a1.6 1.6 0 0 1-1.6 1.6H6.1L2.6 15.4V4.1a1.6 1.6 0 0 1 1.6-1.6h9.6a1.6 1.6 0 0 1 1.6 1.6z"/>',
+  window: '<rect x="2.6" y="2.6" width="12.8" height="12.8" rx="1.6"/><path d="M2.6 6.4h12.8"/><circle cx="4.9" cy="4.5" r=".7"/>',
+  tap:    '<circle cx="9" cy="9" r="2.2"/><path d="M5.3 5.3a5.2 5.2 0 0 0 0 7.4"/><path d="M12.7 12.7a5.2 5.2 0 0 0 0-7.4"/>',
+  code:   '<path d="M6.4 5.4L2.6 9l3.8 3.6"/><path d="M11.6 5.4L15.4 9l-3.8 3.6"/><path d="M10.2 3.6L7.8 14.4"/>',
+  bloom:  '<circle cx="9" cy="6.4" r="2.5"/><circle cx="5.7" cy="9.6" r="2.5"/><circle cx="12.3" cy="9.6" r="2.5"/><path d="M9 12.4v3.2"/>',
+};
+
+function glIcon(name) {
+  return `<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"
+    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${GL_ICON[name] || ''}</svg>`;
+}
+
+/* At-a-glance panel. The four STAR rows are tabs; selecting one lights the
+   process phases that belong to it.
+   cfg = {
+     meta,
+     star:  [{ id, label, body, phase }…],
+     tags:  [string…],
+     bands: [{ band, label, steps: [{ icon, label, note, pending }…] }…],
+   } */
+function glanceHTML(cfg) {
+  const first = cfg.star[0].id;
+
+  const tabs = cfg.star.map((s, i) => `
+        <button type="button" class="star-row" role="tab" id="gl-tab-${s.id}"
+                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.name || s.label)}"
+                aria-controls="gl-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
+                tabindex="${i === 0 ? '0' : '-1'}">
+          <span class="star-label">${esc(s.label)}</span>
+          <span class="star-body">${esc(s.body)}</span>
+        </button>`).join('');
+
+  const tags = cfg.tags.map(t => `<li>${esc(t)}</li>`).join('');
+
+  const bands = cfg.bands.map(b => `
+          <div class="glance-band" data-band="${b.band}">
+            <div class="band-label">${esc(b.label)}</div>
+            <div class="band-cards">
+              ${b.steps.map(s => `
+              <div class="flow-card${s.pending ? ' is-pending' : ''}">
+                <span class="flow-icon">${glIcon(s.icon)}</span>
+                <span class="flow-label">${esc(s.label)}</span>
+                <span class="flow-note">${esc(s.note)}</span>
+              </div>`).join('')}
+            </div>
+          </div>`).join('');
+
+  return `
+  <section class="glance" data-active="${first}" aria-label="At a glance">
+    <div class="glance-chrome">
+      <span class="glance-led" aria-hidden="true"></span>
+      <span class="glance-num">04</span>
+      <span class="glance-path">~/at-a-glance</span>
+      <span class="glance-meta">${esc(cfg.meta)}</span>
+    </div>
+    <div class="glance-body">
+      <div class="glance-col glance-col--star">
+        <div class="glance-star" role="tablist" aria-orientation="vertical" aria-label="Project summary">${tabs}
+        </div>
+        <ul class="glance-tags">${tags}</ul>
+      </div>
+      <div class="glance-col glance-col--flow" id="gl-panel" role="tabpanel"
+           aria-labelledby="gl-tab-${first}" tabindex="0">
+        <div class="glance-panel-head">
+          <span class="glance-h">Design process</span>
+          <span class="glance-phase">${esc(cfg.star[0].phase)}</span>
+        </div>
+        <div class="glance-bands">${bands}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+document.getElementById('glanceMount').innerHTML = glanceHTML({
+  meta: '5 months · sole designer',
+  star: [
+    { id:'situation', label:'1', name:'Situation', phase:'6 phases',
+      body:'Jobseekers are feeling discouraged and alone when they receive a rejection email. There is no moment to close the loop, and no sense that anyone else is going through the same thing.' },
+    { id:'task', label:'2', name:'Task', phase:'2 of 6 phases',
+      body:'Building an iOS app that lets users dump or track their rejection progress through gamification, clean animations, and gesture-based interactions, with accessibility at the forefront. I handled the research, wireframing, prototyping, and developing while learning React Native and iOS development along the way.' },
+    { id:'action', label:'3', name:'Action', phase:'3 of 6 phases',
+      body:'I started in Figma and intentionally avoided desk research to prevent existing products from influencing my direction. Instead I focused on LinkedIn, Reddit, Instagram, and qualitative interviews with 5 to 6 job seekers, asking what they would do with a physical copy of their rejection. Around 70% said they would throw it away or destroy it, while others wanted to track theirs. That shaped the core act, making the actions digital through slicing, scrunching, and throwing cards away. To keep track, a flower blossoms once enough cards are reached and the user stores it in their garden, alongside a community counter that creates connection without exposing personal data.' },
+    { id:'result', label:'4', name:'Result', phase:'1 of 6 phases',
+      body:'To be continued. Budding is still in build, so the testing, the outcome, and the shipped app are all still ahead.' },
+  ],
+  tags: ['user research', 'interaction design', 'gesture design', 'accessibility', 'motion design', 'React Native'],
+  bands: [
+    { band:'task', label:'Task', steps:[
+      { icon:'search', label:'Research',   note:'LinkedIn, Reddit, Instagram' },
+      { icon:'chat',   label:'Interviews', note:'5 to 6 job seekers' },
+    ]},
+    { band:'action', label:'Action', steps:[
+      { icon:'window', label:'Wireframe', note:'Figma, no desk research' },
+      { icon:'tap',    label:'Prototype', note:'Gesture and motion' },
+      { icon:'code',   label:'Build',     note:'React Native, iOS' },
+    ]},
+    { band:'result', label:'Result', steps:[
+      { icon:'bloom', label:'Ship', note:'Still in build', pending:true },
+    ]},
+  ],
+});
+
+/* At-a-glance — STAR rows act as tabs over the process panel. */
+(function setupGlance() {
+  const gl = document.querySelector('.glance');
+  if (!gl) return;
+
+  const tabs  = Array.from(gl.querySelectorAll('[role="tab"]'));
+  const panel = gl.querySelector('[role="tabpanel"]');
+  const phase = gl.querySelector('.glance-phase');
+  if (!tabs.length || !panel) return;
+
+  function select(tab, moveFocus) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    gl.setAttribute('data-active', tab.dataset.star);
+    panel.setAttribute('aria-labelledby', tab.id);
+    if (phase) phase.textContent = tab.dataset.phase;
+    if (moveFocus) tab.focus();
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab, false));
+    tab.addEventListener('keydown', (e) => {
+      let next = null;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); select(next, true); }
+    });
+  });
+})();
+
+/* ── hero reel ────────────────────────────────────────────────
+   Motion/budding-reveal.html?embed — the 48s reveal, running live rather
+   than recorded. The frame stays dashed, hatched and taped until it
+   actually loads, then goes solid, drops the wip marks and reveals the
+   control.
+
+   The loop autoplays and runs well past 5 seconds, so WCAG 2.2.2 requires
+   a way to stop it. The iframe owns its own timeline, so the button talks
+   to it by postMessage; the reveal listens and halts every timer. */
+(function () {
+  var shot   = document.getElementById('shot');
+  var frame  = document.getElementById('heroFrame');
+  var toggle = document.getElementById('vidToggle');
+  if (!shot || !frame || !toggle) return;
+
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var paused = false;
+
+  function setPressed(p) {
+    paused = p;
+    toggle.setAttribute('aria-pressed', p ? 'true' : 'false');
+    toggle.setAttribute('aria-label', p ? 'Play the reel' : 'Pause the reel');
+  }
+  /* Same document, same origin — and the payload is two literal strings,
+     so there is nothing here worth narrowing the target origin for. */
+  function send(msg) {
+    if (frame.contentWindow) frame.contentWindow.postMessage(msg, '*');
+  }
+
+  frame.addEventListener('load', function () {
+    shot.classList.add('has-video');
+    if (reduce) { send('budding:pause'); setPressed(true); }
+  });
+
+  toggle.addEventListener('click', function () {
+    send(paused ? 'budding:play' : 'budding:pause');
+    setPressed(!paused);
+  });
+})();
+
+/* ── section entrances ───────────────────────────────────────── */
+(function () {
+  var els = document.querySelectorAll('.rise');
+  if (!els.length) return;
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+
+  els.forEach(function (el) { obs.observe(el); });
+})();
+</script>
+
+</body>
+</html>

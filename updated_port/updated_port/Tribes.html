@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tribes: Designing a gesture-led social MVP</title>
-<meta name="description" content="A case study on designing an MVP for Tribes, a personalised social app built around gesture-based interactions and curated content.">
+<title>Tribes — Designing a gesture-led social MVP</title>
+<meta name="description" content="A case study on designing an MVP for Tribes — a personalised social app built around gesture-based interactions and curated content.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ───────────────────────────────────────
      TOKENS — Tribes dark mode, AAA contrast
@@ -31,7 +31,7 @@
     --accent-deep:  #5ac4d4;   /* cyan — pills, small accents (AAA w/ --bg text) */
     --accent-tint:  rgba(180,79,224,0.14);
 
-    --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
     --topnav-h: 56px;
     --sidebar-w: 260px;
@@ -82,12 +82,12 @@
     position: relative;
     z-index: 20;
   }
-  .topnav .crumb-work { font-size: 14px; color: var(--ink-light); }
-  .topnav .crumb-sep  { font-size: 14px; color: var(--border-strong); margin: 0 10px; }
-  .topnav .crumb-now  { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .topnav .crumb-work { font-size: 13px; color: var(--ink-light); }
+  .topnav .crumb-sep  { font-size: 13px; color: var(--border-strong); margin: 0 10px; }
+  .topnav .crumb-now  { font-size: 13px; font-weight: 500; color: var(--ink); }
   .topnav .topnav-spacer { flex: 1; }
   .topnav .topnav-links { display: flex; gap: 28px; }
-  .topnav .topnav-links a { font-size: 14px; color: var(--ink-light); }
+  .topnav .topnav-links a { font-size: 13px; color: var(--ink-light); }
   .topnav .topnav-links a:hover { color: var(--ink); }
   .topnav .menu-btn {
     display: none;
@@ -121,15 +121,15 @@
     padding: 22px 22px 18px;
     border-bottom: 1px solid var(--border);
   }
-  .sidebar-head .kicker { font-size: 13px; color: var(--ink); margin-bottom: 4px; letter-spacing: .01em; }
-  .sidebar-head .title  { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -.005em; }
+  .sidebar-head .kicker { font-size: 12px; color: var(--ink); margin-bottom: 4px; letter-spacing: .01em; }
+  .sidebar-head .title  { font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -.005em; }
 
   .progress { padding: 14px 22px 4px; }
   .progress-row {
     display: flex; justify-content: space-between; align-items: baseline;
     margin-bottom: 6px;
   }
-  .progress-row span { font-size: 12px; color: var(--ink); font-weight: 500; }
+  .progress-row span { font-size: 11px; color: var(--ink); font-weight: 500; }
   .progress-row .pct { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
   .progress-track {
     height: 8px; background: var(--border); border-radius: 99px; overflow: hidden;
@@ -143,7 +143,7 @@
   .nav-groups { padding: 8px 0 24px; }
   .nav-group { margin-top: 14px; }
   .nav-group-label {
-    font-size: 12px; font-weight: 600;
+    font-size: 11px; font-weight: 600;
     color: var(--ink-light);
     padding: 0 22px;
     margin-bottom: 4px;
@@ -171,7 +171,7 @@
     border: 1.5px solid var(--border-strong);
   }
   .nav-label {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 400;
     color: var(--ink-mid);
     line-height: 1.35;
@@ -228,12 +228,12 @@
      CONTENT ATOMS
   ─────────────────────────────────────── */
   .eyebrow {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--ink-light);
     margin-bottom: 14px;
   }
   h1.section-title {
-    font-size: 37px;
+    font-size: 34px;
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -.03em;
@@ -242,13 +242,13 @@
   }
   .accent-pink { color: var(--accent); }
   .lede {
-    font-size: 19.5px;
+    font-size: 18px;
     line-height: 1.6;
     color: var(--ink-mid);
     margin-bottom: 32px;
   }
   h2.sub-head {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: -.02em;
@@ -259,7 +259,7 @@
   .rule { height: 1px; background: var(--border); margin: 32px 0; border: 0; }
   .rule-accent { height: 2px; background: var(--accent); margin: 32px 0; border: 0; width: 60px; }
   .section-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: .09em;
     text-transform: uppercase;
@@ -268,7 +268,7 @@
   }
   .section-label .sublabel {
     font-weight: 400;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: none;
     letter-spacing: 0;
   }
@@ -280,10 +280,10 @@
     background: var(--bg);
   }
   .card.is-muted { background: var(--bg-2); }
-  .card-h { font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-  .card-body { font-size: 15.5px; color: var(--ink-mid); line-height: 1.6; }
+  .card-h { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  .card-body { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
   .card-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     color: var(--ink-light);
     letter-spacing: .04em;
@@ -319,10 +319,10 @@
   .list-row.is-mine .icon-box { background: var(--accent); border-color: var(--accent); }
   .list-row .icon-box svg rect { fill: rgba(244,242,236,0.5); }
   .list-row.is-mine .icon-box svg rect { fill: #fff; }
-  .list-row .row-title { font-size: 16.5px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-  .list-row .row-body { font-size: 15.5px; color: var(--ink-mid); line-height: 1.6; }
+  .list-row .row-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .list-row .row-body { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
   .list-row .row-pill {
-    font-size: 11px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
     background: var(--accent-deep); color: var(--bg);
     padding: 3px 9px; border-radius: 20px;
     white-space: nowrap; margin-top: 3px;
@@ -342,7 +342,7 @@
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     color: var(--ink-light);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: .04em;
     text-transform: uppercase;
   }
@@ -354,23 +354,23 @@
     background: var(--bg-2);
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 600; color: var(--ink-mid);
+    font-size: 13px; font-weight: 600; color: var(--ink-mid);
   }
   .avatar.is-me .avatar-circle { background: var(--accent-deep); color: var(--bg); border-color: var(--accent-deep); }
-  .avatar-name { font-size: 13px; color: var(--ink-mid); }
+  .avatar-name { font-size: 12px; color: var(--ink-mid); }
   .avatar.is-me .avatar-name { color: var(--ink); font-weight: 600; }
 
   .prose-p {
-    font-size: 17.5px; color: var(--ink-mid); line-height: 1.75;
+    font-size: 16px; color: var(--ink-mid); line-height: 1.75;
     margin-bottom: 28px;
   }
   .prose-p:last-child { margin-bottom: 0; }
 
   .pm-check {
     display: flex; gap: 8px; margin-bottom: 8px;
-    font-size: 15.5px; color: var(--ink-mid); line-height: 1.55;
+    font-size: 14px; color: var(--ink-mid); line-height: 1.55;
   }
-  .pm-check .sym { font-size: 15.5px; margin-top: -1px; flex: 0 0 12px; font-weight: 700; }
+  .pm-check .sym { font-size: 14px; margin-top: -1px; flex: 0 0 12px; font-weight: 700; }
   .pm-check.is-plus .sym { color: var(--accent-deep); }
   .pm-check.is-minus .sym { color: var(--accent); }
 
@@ -381,11 +381,11 @@
     border-left: 3px solid var(--accent);
     border-radius: 0 8px 8px 0;
   }
-  .quote-card .q { font-size: 16.5px; color: var(--ink); line-height: 1.6; font-weight: 500; }
+  .quote-card .q { font-size: 15px; color: var(--ink); line-height: 1.6; font-weight: 500; }
   .quote-card cite {
     display: block;
     margin-top: 8px;
-    font-size: 13px;
+    font-size: 12px;
     font-style: normal;
     color: var(--ink-light);
     letter-spacing: .04em;
@@ -402,12 +402,12 @@
   }
   .termlist-item:last-child { border-bottom: 1px solid var(--border); }
   .termlist-term {
-    font-size: 15.5px; font-weight: 600;
+    font-size: 14px; font-weight: 600;
     color: var(--ink);
     letter-spacing: -.005em;
   }
   .termlist-def {
-    font-size: 17.5px; line-height: 1.75;
+    font-size: 16px; line-height: 1.75;
     color: var(--ink);
   }
   @media (max-width: 700px) {
@@ -425,7 +425,7 @@
   }
   .brief-product-name {
     display: inline-block;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: .09em;
     text-transform: uppercase;
@@ -436,7 +436,7 @@
     margin-bottom: 12px;
   }
   .brief-product-body {
-    font-size: 17.5px;
+    font-size: 16px;
     line-height: 1.75;
     color: var(--ink);
   }
@@ -460,13 +460,13 @@
     margin-bottom: 28px;
   }
   .attention-block-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--ink);
     margin-bottom: 12px;
   }
   .attention-block-body {
-    font-size: 17.5px;
+    font-size: 16px;
     line-height: 1.7;
     color: var(--ink);
   }
@@ -485,21 +485,21 @@
   }
   .by-numbers-item { border-top: 2px solid var(--accent); padding-top: 8px; }
   .by-numbers-num {
-    font-size: 65px;
+    font-size: 60px;
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.03em;
     color: var(--ink);
   }
   .by-numbers-lbl {
-    font-size: 15.5px;
+    font-size: 14px;
     color: var(--ink);
     line-height: 1.5;
     margin-top: 4px;
   }
   @media (max-width: 900px) {
     .by-numbers { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .by-numbers-num { font-size: 35px; }
+    .by-numbers-num { font-size: 32px; }
   }
   @media (max-width: 480px) {
     .by-numbers { grid-template-columns: 1fr; }
@@ -518,9 +518,9 @@
     background: var(--bg-2); border: 1px solid var(--border);
     margin: 0 auto 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 600; color: var(--ink);
+    font-size: 13px; font-weight: 600; color: var(--ink);
   }
-  .flow-step .label { font-size: 15.5px; font-weight: 600; color: var(--ink); }
+  .flow-step .label { font-size: 14px; font-weight: 600; color: var(--ink); }
 
   /* Participant card */
   .participant-card {
@@ -531,9 +531,9 @@
     text-align: center;
     min-width: 100px;
   }
-  .participant-card .p { font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-  .participant-card .d { font-size: 13px; color: var(--ink-mid); }
-  .participant-card .r { font-size: 13px; color: var(--ink-light); }
+  .participant-card .p { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .participant-card .d { font-size: 12px; color: var(--ink-mid); }
+  .participant-card .r { font-size: 12px; color: var(--ink-light); }
 
   /* Screen card (Feedback & Testing) */
   .screen-grid {
@@ -562,15 +562,15 @@
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 14px;
     color: var(--ink-light);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: .04em;
     text-transform: uppercase;
   }
-  .screen-card .t { font-size: 16.5px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .screen-card .t { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
   .screen-card ul { list-style: disc; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
-  .screen-card li { font-size: 14px; line-height: 1.55; color: var(--ink-mid); }
+  .screen-card li { font-size: 13px; line-height: 1.55; color: var(--ink-mid); }
   .priority-legend {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--ink-light);
     display: flex;
     align-items: center;
@@ -604,7 +604,7 @@
     background: var(--bg);
   }
   .gesture-group-item .ttl {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -613,7 +613,7 @@
   }
   .gesture-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .gesture-tag {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--ink);
     background: var(--bg-2);
@@ -635,19 +635,19 @@
     align-items: center;
     gap: 16px;
   }
-  .navstrip .prev { font-size: 13px; color: var(--ink-light); }
+  .navstrip .prev { font-size: 12px; color: var(--ink-light); }
   .navstrip .prev:hover { color: var(--ink); }
   .navstrip .next { text-align: right; }
-  .navstrip .next .next-label { font-size: 11.5px; color: var(--ink-light); margin-bottom: 3px; }
-  .navstrip .next .next-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .navstrip .next .next-label { font-size: 10.5px; color: var(--ink-light); margin-bottom: 3px; }
+  .navstrip .next .next-title { font-size: 13px; font-weight: 600; color: var(--ink); }
 
   /* ───────────────────────────────────────
      RESPONSIVE
   ─────────────────────────────────────── */
   @media (max-width: 900px) {
     .content-inner { padding: 36px 32px 80px; }
-    h1.section-title { font-size: 30.5px; }
-    .lede { font-size: 15.5px; }
+    h1.section-title { font-size: 28px; }
+    .lede { font-size: 14px; }
     .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
     .brief-products { grid-template-columns: 1fr; row-gap: 28px; column-gap: 0; }
   }
@@ -679,7 +679,7 @@
     .scrim.is-open { opacity: 1; pointer-events: auto; }
 
     .content-inner { padding: 28px 22px 72px; }
-    h1.section-title { font-size: 26px; }
+    h1.section-title { font-size: 24px; }
   }
   @media (max-width: 480px) {
     .content-inner { padding: 24px 18px 64px; }
@@ -689,37 +689,27 @@
   img:not(.avatar-circle) { opacity: 0; transition: opacity 0.45s ease; }
   img:not(.avatar-circle).is-loaded { opacity: 1; }
 
-  /* ── Custom cursor — desktop / fine-pointer only ── */
-  @media (hover: hover) and (pointer: fine) {
-    body { cursor: none !important; }
-    #cur-ring {
-      position: fixed; pointer-events: none; z-index: 9999;
-      width: 14px; height: 14px;
-      border: 1.5px solid #f4f2ec;
-      border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: width .18s, height .18s, border-color .18s, opacity .18s;
-      mix-blend-mode: exclusion;
-    }
-    #cur-dot {
-      position: fixed; pointer-events: none; z-index: 9999;
-      width: 4px; height: 4px;
-      background: #b44fe0;
-      border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: transform .08s;
-    }
-    body:has(a:hover) #cur-ring,
-    body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #b44fe0; }
+  /* ── Custom cursor ── */
+  body { cursor: none !important; }
+  #cur-ring {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 14px; height: 14px;
+    border: 1.5px solid #f4f2ec;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: width .18s, height .18s, border-color .18s, opacity .18s;
+    mix-blend-mode: exclusion;
   }
-
-  /* ── Touch reset — neutralise hover-driven effects on touch ── */
-  @media (hover: none) {
-    .nav-item:hover { background: transparent; }
-    .nav-item:hover .nav-label { color: var(--ink-mid); }
-    .nav-item:hover .nav-dot { border-color: var(--border-strong); }
-    .topnav .menu-btn:hover { background: transparent; }
+  #cur-dot {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 4px; height: 4px;
+    background: #b44fe0;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: transform .08s;
   }
+  body:has(a:hover) #cur-ring,
+  body:has(button:hover) #cur-ring { width: 30px; height: 30px; border-color: #b44fe0; }
 
   /* ── Pixel canvas overlay ── */
   .px-canvas {
@@ -750,282 +740,6 @@
 
   </style>
 <link rel="stylesheet" href="design-system.css">
-<style>
-  /* design-system.css is linked AFTER this page own <style>, so its :root
-     wins the cascade — the token has to be re-asserted here or the page
-     silently falls back to JetBrains Mono. Scoped to this page: index.html
-     keeps the old face until it is migrated too.
-     The name stays --font-mono because design-system.css references it by
-     that name in six places. */
-  :root{ --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; }
-
-  /* ───────────────────────────────────────
-     AT A GLANCE
-     STAR summary + design process flow.
-     Self-contained: page tokens only, no new deps.
-     Container queries drive the two layout switches:
-       .glance     ≥860px → STAR | process side by side
-       .glance-col--flow ≥340px → horizontal node flow
-     Below either threshold it degrades to stacked /
-     vertical timeline, which is also the no-support base.
-  ─────────────────────────────────────── */
-  .glance {
-    --gl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    --gl-accent:     var(--accent);       /* purple — graphic accent */
-    --gl-accent-txt: var(--accent-deep);  /* cyan — AAA small text on --bg */
-    --gl-rail:       var(--border-strong);
-
-    container: glance / inline-size;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg);
-    overflow: hidden;
-    margin: 0 0 32px;
-  }
-
-  /* ── Terminal chrome bar ── */
-  .glance-chrome {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-2);
-    font-family: var(--gl-mono);
-    font-size: 11.5px;
-    letter-spacing: .02em;
-    color: var(--ink-light);
-  }
-  .glance-led {
-    width: 7px; height: 7px;
-    flex: none;
-    border-radius: 50%;
-    background: var(--gl-accent);
-  }
-  .glance-num  { font-weight: 700; color: var(--ink-mid); }
-  .glance-path { font-weight: 600; color: var(--gl-accent-txt); }
-  .glance-meta { margin-left: auto; }
-
-  /* ── Body ── */
-  .glance-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .glance-col--star { padding: 22px 20px 24px; }
-  .glance-col--flow {
-    container: flow / inline-size;
-    padding: 22px 20px 24px;
-    background: var(--bg-2);
-    border-top: 1px solid var(--border);
-  }
-  .glance-col--flow:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: -2px; }
-  .glance-h {
-    font-family: var(--gl-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-  }
-
-  /* ── STAR — clickable rows that drive the process panel ── */
-  .glance-star { display: grid; gap: 2px; }
-  .star-row {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 3px;
-    width: calc(100% + 22px);
-    margin-inline: -11px;
-    padding: 10px 30px 11px 13px;
-    border: 0;
-    border-radius: 8px;
-    background: none;
-    text-align: left;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    transition: background-color .2s var(--ease);
-  }
-  .star-row::before {              /* selected spine */
-    content: '';
-    position: absolute;
-    left: 2px; top: 10px; bottom: 10px;
-    width: 2px;
-    border-radius: 2px;
-    background: var(--gl-accent);
-    opacity: 0;
-    transition: opacity .2s var(--ease);
-  }
-  .star-row::after {               /* clickable affordance */
-    content: '';
-    position: absolute;
-    right: 13px; top: 16px;
-    width: 5px; height: 5px;
-    border-top: 1.4px solid currentColor;
-    border-right: 1.4px solid currentColor;
-    transform: rotate(45deg);
-    color: var(--ink-light);
-    opacity: .45;
-    transition: opacity .2s var(--ease), color .2s var(--ease);
-  }
-  .star-row:hover { background: var(--bg-2); }
-  .star-row:hover::after { opacity: 1; }
-  .star-row:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: 1px; }
-  .star-row[aria-selected="true"] { background: var(--bg-2); }
-  .star-row[aria-selected="true"]::before { opacity: 1; }
-  .star-row[aria-selected="true"]::after { opacity: 1; color: var(--gl-accent); }
-  .star-row[aria-selected="true"] .star-body { color: var(--ink); }
-
-  .star-label {
-    display: block;
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    color: var(--gl-accent-txt);
-  }
-  .star-body {
-    display: block;
-    font-size: 14.5px;
-    line-height: 1.62;
-    color: var(--ink-mid);
-    max-width: 66ch;
-    transition: color .2s var(--ease);
-  }
-  @container glance (min-width: 560px) {
-    .star-row { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
-    .star-label { padding-top: 3px; }
-  }
-
-  /* ── Skill tags ── */
-  .glance-tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px dashed var(--border-strong);
-  }
-  .glance-tags li {
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    line-height: 1.4;
-    color: var(--ink-light);
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 5px 8px;
-  }
-
-  /* ── Process panel ── */
-  .glance-panel-head {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  .glance-phase {
-    margin-left: auto;
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    letter-spacing: .04em;
-    color: var(--ink-light);
-    white-space: nowrap;
-  }
-
-  .glance-bands { display: grid; gap: 18px; }
-  .glance-band { display: grid; gap: 8px; }
-  .band-label {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-family: var(--gl-mono);
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    transition: color .2s var(--ease);
-  }
-  .band-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-  .band-cards {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-  @container flow (min-width: 300px) { .band-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @container flow (min-width: 430px) { .band-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-  .flow-card {
-    display: grid;
-    gap: 2px;
-    padding: 11px 11px 12px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    background: var(--bg);
-    transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
-  }
-  .flow-icon {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--ink-light);
-    transition: color .22s var(--ease);
-  }
-  .flow-icon svg { width: 18px; height: 18px; }
-  .flow-label {
-    font-size: clamp(11px, 2.9cqi, 12.5px);
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--ink);
-    hyphens: auto;                 /* safety net for long single-word labels */
-    overflow-wrap: break-word;
-  }
-  .flow-note {
-    font-size: clamp(10px, 2.5cqi, 11px);
-    line-height: 1.35;
-    color: var(--ink-light);
-  }
-
-  /* Selected STAR row lights its band */
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .band-label,
-  .glance[data-active="action"] .glance-band[data-band="action"] .band-label,
-  .glance[data-active="result"] .glance-band[data-band="result"] .band-label { color: var(--gl-accent-txt); }
-
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-icon,
-  .glance[data-active="action"] .glance-band[data-band="action"] .flow-icon,
-  .glance[data-active="result"] .glance-band[data-band="result"] .flow-icon { color: var(--gl-accent-txt); }
-
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-card,
-  .glance[data-active="action"] .glance-band[data-band="action"] .flow-card,
-  .glance[data-active="result"] .glance-band[data-band="result"] .flow-card {
-    border-color: var(--gl-accent);
-    box-shadow: inset 0 0 0 1px var(--gl-accent);
-  }
-
-  /* ── Side by side on wide panels ── */
-  @container glance (min-width: 860px) {
-    .glance-body { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-    .glance-col--star { padding: 24px 28px 26px 24px; }
-    .glance-col--flow {
-      padding: 24px 24px 26px;
-      border-top: 0;
-      border-left: 1px solid var(--border);
-    }
-  }
-
-  @media (max-width: 520px) {
-    .glance-meta { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .star-row, .star-row::before, .star-row::after,
-    .star-body, .band-label, .flow-card, .flow-icon { transition: none; }
-  }
-</style>
 </head>
 <body class="portfolio-page">
 
@@ -1185,90 +899,6 @@ function img(label, h = 140) {
   return `<div class="img-ph" style="height:${h}px; margin-bottom: 16px;">${esc(label)}</div>`;
 }
 
-/* At-a-glance icons — inline so they inherit currentColor and tint with the
-   accent when a band is active. Existing SVGs in /Icon_assets have baked-in
-   fills and would not theme across the light and dark case study pages. */
-const GL_ICON = {
-  search: '<circle cx="7.4" cy="7.4" r="4.6"/><path d="M10.9 10.9L15.2 15.2"/>',
-  target: '<circle cx="9" cy="9" r="6.3"/><circle cx="9" cy="9" r="2.4"/>',
-  bulb:   '<circle cx="9" cy="7.3" r="4.3"/><path d="M6.9 13h4.2M7.5 15.4h3"/>',
-  window: '<rect x="2.6" y="2.6" width="12.8" height="12.8" rx="1.6"/><path d="M2.6 6.4h12.8"/><circle cx="4.9" cy="4.5" r=".7"/>',
-  check:  '<circle cx="9" cy="9" r="6.3"/><path d="M6 9.2l2.2 2.2 3.9-4.6"/>',
-  arrow:  '<path d="M3.4 14.6L14.6 3.4"/><path d="M7.6 3.4h7v7"/>',
-  stack:  '<rect x="5.4" y="2.6" width="7.2" height="3" rx=".8"/><rect x="4.2" y="7.5" width="9.6" height="3" rx=".8"/><rect x="3" y="12.4" width="12" height="3" rx=".8"/>',
-  tree:   '<rect x="6.6" y="2.4" width="4.8" height="3.4" rx=".8"/><rect x="1.8" y="11.8" width="4.4" height="3.4" rx=".8"/><rect x="11.8" y="11.8" width="4.4" height="3.4" rx=".8"/><path d="M9 5.8v2.9M4 11.8V8.7h10v3.1"/>',
-  tap:    '<circle cx="9" cy="9" r="2.2"/><path d="M5.3 5.3a5.2 5.2 0 0 0 0 7.4"/><path d="M12.7 12.7a5.2 5.2 0 0 0 0-7.4"/>',
-  grid:   '<rect x="2.4" y="2.4" width="5.6" height="5.6" rx="1"/><rect x="10" y="2.4" width="5.6" height="5.6" rx="1"/><rect x="2.4" y="10" width="5.6" height="5.6" rx="1"/><rect x="10" y="10" width="5.6" height="5.6" rx="1"/>',
-  code:   '<path d="M6.4 5.4L2.6 9l3.8 3.6"/><path d="M11.6 5.4L15.4 9l-3.8 3.6"/><path d="M10.2 3.6L7.8 14.4"/>',
-};
-
-function glIcon(name) {
-  return `<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"
-    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${GL_ICON[name] || ''}</svg>`;
-}
-
-/* At-a-glance panel. The four STAR rows are tabs; selecting one lights the
-   process phases that belong to it.
-   cfg = {
-     meta,
-     star:  [{ id, label, body, phase }…],
-     tags:  [string…],
-     bands: [{ band, label, steps: [{ n, icon, label, note }…] }…],
-   } */
-function glanceHTML(cfg) {
-  const first = cfg.star[0].id;
-
-  const tabs = cfg.star.map((s, i) => `
-        <button type="button" class="star-row" role="tab" id="gl-tab-${s.id}"
-                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.label)}"
-                aria-controls="gl-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
-                tabindex="${i === 0 ? '0' : '-1'}">
-          <span class="star-label">${esc(s.label)}</span>
-          <span class="star-body">${esc(s.body)}</span>
-        </button>`).join('');
-
-  const tags = cfg.tags.map(t => `<li>${esc(t)}</li>`).join('');
-
-  const bands = cfg.bands.map(b => `
-          <div class="glance-band" data-band="${b.band}">
-            <div class="band-label">${esc(b.label)}</div>
-            <div class="band-cards">
-              ${b.steps.map(s => `
-              <div class="flow-card">
-                <span class="flow-icon">${glIcon(s.icon)}</span>
-                <span class="flow-label">${esc(s.label)}</span>
-                <span class="flow-note">${esc(s.note)}</span>
-              </div>`).join('')}
-            </div>
-          </div>`).join('');
-
-  return `
-  <section class="glance" data-active="${first}" aria-label="At a glance">
-    <div class="glance-chrome">
-      <span class="glance-led" aria-hidden="true"></span>
-      <span class="glance-num">04</span>
-      <span class="glance-path">~/at-a-glance</span>
-      <span class="glance-meta">${esc(cfg.meta)}</span>
-    </div>
-    <div class="glance-body">
-      <div class="glance-col glance-col--star">
-        <div class="glance-star" role="tablist" aria-orientation="vertical" aria-label="Project summary">${tabs}
-        </div>
-        <ul class="glance-tags">${tags}</ul>
-      </div>
-      <div class="glance-col glance-col--flow" id="gl-panel" role="tabpanel"
-           aria-labelledby="gl-tab-${first}" tabindex="0">
-        <div class="glance-panel-head">
-          <span class="glance-h">Design process</span>
-          <span class="glance-phase">${esc(cfg.star[0].phase)}</span>
-        </div>
-        <div class="glance-bands">${bands}
-        </div>
-      </div>
-    </div>
-  </section>`;
-}
-
 /* shared section header */
 function header(eyebrow, title, lede) {
   const titleHTML = esc(title).replace(/\*\*(.+?)\*\*/g, '<span class="accent-pink">$1</span>');
@@ -1286,38 +916,9 @@ function header(eyebrow, title, lede) {
 const CONTENT = {
 
 intro: () => `
-  ${header('Overview · Intro', 'Tribes: designing a gesture-led social **MVP.**', 'Tribes is a social app built around personalised AI, curated search, and gesture-based interaction. I led the UX/UI for the MVP, shaping the first interactive prototype investors would see.')}
+  ${header('Overview · Intro', 'Tribes — designing a gesture-led social **MVP.**', 'Tribes is a social app built around personalised AI, curated search, and gesture-based interaction. I led the UX/UI for the MVP — shaping the first interactive prototype investors would see.')}
 
-  <img src="Tribe_assets/TRI_hero.jpg" alt="Tribes hero: MiPage and Tribe screens" loading="lazy" decoding="async" style="width: 100%; display: block; border-radius: 12px; margin-bottom: 16px;" />
-
-  ${glanceHTML({
-    meta: '4 months · sole designer',
-    star: [
-      { id:'situation', label:'Situation', phase:'6 phases',
-        body:'An early-stage social discovery app with a founder and lead engineer, but no designer.' },
-      { id:'task', label:'Task', phase:'2 of 6 phases',
-        body:'Sole designer taking the product from early concept to an investor-ready MVP, working independently and owning every design decision.' },
-      { id:'action', label:'Action', phase:'3 of 6 phases',
-        body:'Built the UX foundations from scratch, covering design principles, information architecture, personas and user flows. Designed gesture-based navigation for a mobile-first product with a planned VR future. Created and evolved a working style guide and component library, prepared handover files, worked with the engineer daily and reviewed implemented designs to improve the final experience.' },
-      { id:'result', label:'Result', phase:'1 of 6 phases',
-        body:'Delivered a high-fidelity Figma prototype the founder used to pitch investors. Grew confident managing my own time and working independently on defined design work.' },
-    ],
-    tags: ['design system', 'component library', 'interaction design', 'developer handover', 'mobile + web', 'responsive design'],
-    bands: [
-      { band:'task', label:'Task', steps:[
-        { icon:'stack', label:'Foundations',  note:'Design principles' },
-        { icon:'tree',  label:'Architecture', note:'IA & user flows' },
-      ]},
-      { band:'action', label:'Action', steps:[
-        { icon:'tap',    label:'Interaction Design',  note:'Gesture patterns' },
-        { icon:'grid',   label:'System & Components', note:'Style guide' },
-        { icon:'window', label:'Prototype',           note:'Hi-fi in Figma' },
-      ]},
-      { band:'result', label:'Result', steps:[
-        { icon:'code', label:'Handover', note:'Dev collaboration' },
-      ]},
-    ],
-  })}
+  <img src="Tribe_assets/TRI_hero.jpg" alt="Tribes hero — MiPage and Tribe screens" loading="lazy" decoding="async" style="width: 100%; display: block; border-radius: 12px; margin-bottom: 16px;" />
 
   ${sLabel('By the numbers')}
   <div class="by-numbers" role="list">
@@ -1325,7 +926,7 @@ intro: () => `
       ['4',  'Months working with Victor and Hank on the MVP'],
       ['2',  'Lo-fi prototypes tested side-by-side (proto_a, proto_b)'],
       ['5',  'Design principles guiding every decision'],
-      ['4',  'Core screens in scope: MiPage, Tribe, Media, Add Users'],
+      ['4',  'Core screens in scope — MiPage, Tribe, Media, Add Users'],
     ].map(([n, l]) => `
       <div class="by-numbers-item" role="listitem">
         <div class="by-numbers-num">${n}</div>
@@ -1353,7 +954,7 @@ intro: () => `
 `,
 
 brief: () => `
-  ${header('Overview · Brief', 'Project Brief', "Aligning start-up vision with design principles, shaping an MVP that could stand in front of investors. The big question going in: what even is an MVP, and where do I start?")}
+  ${header('Overview · Brief', 'Project Brief', "Aligning start-up vision with design principles — shaping an MVP that could stand in front of investors. The big question going in: what even is an MVP, and where do I start?")}
 
   ${sLabel('Objectives')}
   <div class="brief-products" style="grid-template-columns:repeat(2,1fr); row-gap:24px;">
@@ -1377,7 +978,7 @@ brief: () => `
     <div class="attention-block-body">
       <ul>
         ${[
-          "What's an MVP? Starting from scratch with no prior product work to inherit.",
+          "What's an MVP? — starting from scratch with no prior product work to inherit.",
           'Finding time between this, other projects, and full-time study.',
           'Future-proofing decisions so mobile UI could extend into VR down the line.',
           'Proposing improvements to founders and validating decisions without a design team to check with.',
@@ -1388,48 +989,48 @@ brief: () => `
 `,
 
 story: () => `
-  ${header('Overview · How I Got Here', 'How I got here', 'The personal backstory: how I ended up on the Tribes team.')}
+  ${header('Overview · How I Got Here', 'How I got here', 'The personal backstory — how I ended up on the Tribes team.')}
 
   <p class="prose-p">Through frequently visiting a local cafe, I ended up connecting with the owner, Victor. He was interested in my projects, and I shared previous and in-progress work. A few months down the road, he recruited me to lead the UX/UI on Tribes alongside Hank, the software engineer.</p>
 
-  <p class="prose-p">What pulled me in was the vision: a social app grown into a large network between users, friends, and family, with plans to extend into virtual reality and use AI to guide and assist users along the way.</p>
+  <p class="prose-p">What pulled me in was the vision — a social app grown into a large network between users, friends, and family, with plans to extend into virtual reality and use AI to guide and assist users along the way.</p>
 
-  <p class="prose-p">With AI rapidly changing how we interact with everyday tools, this was a perfect opportunity to jump on board and learn how AI could be used as a learning and guidance tool, not just a novelty feature.</p>
+  <p class="prose-p">With AI rapidly changing how we interact with everyday tools, this was a perfect opportunity to jump on board and learn how AI could be used as a learning and guidance tool — not just a novelty feature.</p>
 `,
 
 research: () => `
-  ${header('Research · Approach', 'Research approach', "Victor emphasised gesture controls as the main interaction pattern, part of future-proofing for VR. Research started there.")}
+  ${header('Research · Approach', 'Research approach', "Victor emphasised gesture controls as the main interaction pattern — part of future-proofing for VR. Research started there.")}
 
   ${sLabel('Research goals')}
   ${listCardHTML([
     {title:'Polished social platforms', body:'Conducting desk research on successful social media platforms and what makes their product feel defined and intentional.', mine:true},
     {title:'Shared patterns & systems', body:'Discovering what patterns, design systems, and navigations these platforms have in common.', mine:true},
-    {title:'VR products & games', body:'Looking at products and games that use virtual reality: how they handle space, input, and onboarding.'},
+    {title:'VR products & games', body:'Looking at products and games that use virtual reality — how they handle space, input, and onboarding.'},
   ])}
 
   <div class="attention-block">
     <div class="attention-block-title">What I couldn't get to</div>
-    <div class="attention-block-body">Time constraints meant I wasn't able to run my own user interviews or surveys at this stage. That's called out honestly: it's the first thing I'd fix with more runway.</div>
+    <div class="attention-block-body">Time constraints meant I wasn't able to run my own user interviews or surveys at this stage. That's called out honestly — it's the first thing I'd fix with more runway.</div>
   </div>
 `,
 
 findings: () => `
-  ${header('Research · Findings', 'What the research turned up', "Two threads came out of the desk research: user behaviour patterns, and shared design-system moves across successful social apps.")}
+  ${header('Research · Findings', 'What the research turned up', "Two threads came out of the desk research — user behaviour patterns, and shared design-system moves across successful social apps.")}
 
   ${sLabel('Behaviour')}
   ${termlistHTML([
-    {title:'Personalised algorithms', body:'Personalised algorithms keep users engaged: the feed feels like it was made for them.'},
+    {title:'Personalised algorithms', body:'Personalised algorithms keep users engaged — the feed feels like it was made for them.'},
     {title:'Short-term content', body:'Short-form content has minimal cognitive effort and holds attention longer than long-form equivalents.'},
     {title:'Social validation', body:'Likes, shares, and reposts give users lightweight feedback loops that reinforce re-engagement.'},
   ])}
 
   ${sLabel('Design systems')}
   ${termlistHTML([
-    {title:'Simple onboarding', body:'Guided, forgiving onboarding: users never feel dropped into complexity on day one.'},
+    {title:'Simple onboarding', body:'Guided, forgiving onboarding — users never feel dropped into complexity on day one.'},
     {title:'Familiar patterns', body:"Reuse of system conventions means users don't have to re-learn how to navigate."},
     {title:'Accessibility built in', body:'Colours and typography that meet contrast and readability standards from the start.'},
     {title:'Approachable colour', body:'Familiar, warm palettes rather than stark or alarming combinations.'},
-    {title:'Breathing room', body:'Generous spacing: content can stretch without feeling cramped.'},
+    {title:'Breathing room', body:'Generous spacing — content can stretch without feeling cramped.'},
   ])}
 `,
 
@@ -1438,10 +1039,10 @@ principles: () => `
 
   <div class="brief-products" style="grid-template-columns:repeat(2,1fr); row-gap:32px;">
     ${[
-      ['Accessibility', 'Colour, typography, and interaction patterns that work for the widest range of users, from first-time sign-ups to long-term members.'],
-      ['Empowering',    'Every screen should leave the user feeling more capable, not more confused. Interactions give users real control over what they see and share.'],
+      ['Accessibility', 'Colour, typography, and interaction patterns that work for the widest range of users — from first-time sign-ups to long-term members.'],
+      ['Empowering',    'Every screen should leave the user feeling more capable — not more confused. Interactions give users real control over what they see and share.'],
       ['Engaging',      'Movement, feedback, and content density that keeps users exploring without overwhelming them.'],
-      ['Meaningful',    'Content and connections feel personal, not performative, shaped around people users actually trust.'],
+      ['Meaningful',    'Content and connections feel personal, not performative — shaped around people users actually trust.'],
       ['Interactive',   'Gesture-first interactions that reward exploration and future-proof the experience for VR.'],
     ].map(([n,d]) => `
       <div class="brief-product">
@@ -1466,7 +1067,7 @@ ideation: () => `
   <div class="grid-2" style="margin-bottom: 28px;">
     <div>
       ${listCardHTML([
-        {title:'Structure', body:'How the app is organised: what lives where.'},
+        {title:'Structure', body:'How the app is organised — what lives where.'},
         {title:'Component layout', body:'Placement and hierarchy of UI elements per screen.'},
         {title:'Content layout', body:'How content stacks, flows, and surfaces to the user.'},
         {title:'Interaction patterns', body:'Gesture controls and how users would discover them.'},
@@ -1482,23 +1083,23 @@ ideation: () => `
     </div>
   </div>
 
-  ${quote("Are we able to make the home screen different from traditional pages? Something like a quadrant view?", 'Victor — Co-founder')}
+  ${quote("Are we able to make the home screen different from traditional pages — something like a quadrant view?", 'Victor — Co-founder')}
 
   <div class="attention-block">
     <div class="attention-block-title">Reframing the homepage</div>
-    <div class="attention-block-body">Existing references didn't give me enough to work with. I took Victor's quadrant-view prompt and sketched my own rendition of a homepage that met the brief and aligned with UX principles. It was a challenge, but a fun one, and it became the basis for what we'd test.</div>
+    <div class="attention-block-body">Existing references didn't give me enough to work with. I took Victor's quadrant-view prompt and sketched my own rendition of a homepage that met the brief and aligned with UX principles. It was a challenge, but a fun one — and it became the basis for what we'd test.</div>
   </div>
 
   ${sLabel('Sketches')}
-  ${img('Sketch strip: 12 pages of homepage, gestures, and flows', 260)}
+  ${img('Sketch strip — 12 pages of homepage, gestures, and flows', 260)}
 `,
 
 testing: () => `
   ${header('Design · Feedback & Testing', 'Observing how gestures actually land', "Because gesture controls are the key interaction, I wanted to observe how users would react without being told what to do.")}
 
-  <p class="prose-p">I built two lo-fi prototypes, <strong>proto_a</strong> and <strong>proto_b</strong>, and set up a task for Victor and Hank. Each was handed my phone with the prototypes loaded, and asked to get from point A (the homepage) to point B (the contents) using only gestures.</p>
+  <p class="prose-p">I built two lo-fi prototypes — <strong>proto_a</strong> and <strong>proto_b</strong> — and set up a task for Victor and Hank. Each was handed my phone with the prototypes loaded, and asked to get from point A (the homepage) to point B (the contents) using only gestures.</p>
 
-  <p class="prose-p">Watching their hands told me more than any survey would. One prototype had them interacting like it was a mini-game: they didn't need to be prompted, didn't ask for help, didn't stop. That was proto_a. It moved on to hi-fi.</p>
+  <p class="prose-p">Watching their hands told me more than any survey would. One prototype had them interacting like it was a mini-game — they didn't need to be prompted, didn't ask for help, didn't stop. That was proto_a. It moved on to hi-fi.</p>
 
   ${ruleAccent()}
 
@@ -1563,13 +1164,13 @@ testing: () => `
 `,
 
 hifi: () => `
-  ${header('Design · Hi-fidelity', 'Hi-fi prototyping', 'The MiPage and Tribe screens went into hi-fi first: those are the features that differentiate Tribes from other social apps. Media and Add Users are lower-priority and could be polished later.')}
+  ${header('Design · Hi-fidelity', 'Hi-fi prototyping', 'The MiPage and Tribe screens went into hi-fi first — those are the features that differentiate Tribes from other social apps. Media and Add Users are lower-priority and could be polished later.')}
 
   ${sLabel('Constraints')}
-  <p class="prose-p">Time restrictions meant I couldn't build a fully polished, dev-ready style guide. Since I was the only designer using it, a lightweight version was enough: specs tight enough to keep me consistent, loose enough not to slow the team down.</p>
+  <p class="prose-p">Time restrictions meant I couldn't build a fully polished, dev-ready style guide. Since I was the only designer using it, a lightweight version was enough — specs tight enough to keep me consistent, loose enough not to slow the team down.</p>
 
   ${sLabel('Style guide')}
-  ${img('Tribes style guide: type, colour, components', 220)}
+  ${img('Tribes style guide — type, colour, components', 220)}
 
   ${quote("Are we able to add a quora push animation? The user's friends receive a notification asking for dining suggestions.", 'Victor — Co-founder')}
 
@@ -1583,7 +1184,7 @@ hifi: () => `
 
   <div class="attention-block">
     <div class="attention-block-title">New addition</div>
-    <div class="attention-block-body">A Quora-style push animation: users receive notifications from Tribe members asking for recommendations. Brought requests out of chat and into the main flow.</div>
+    <div class="attention-block-body">A Quora-style push animation — users receive notifications from Tribe members asking for recommendations. Brought requests out of chat and into the main flow.</div>
   </div>
 `,
 
@@ -1613,11 +1214,11 @@ centrenav: () => `
 
   </div>
 
-  ${img('Centre Navigation diagram: gesture states', 280)}
+  ${img('Centre Navigation diagram — gesture states', 280)}
 
   <div class="attention-block">
     <div class="attention-block-title">Why gestures instead of tabs</div>
-    <div class="attention-block-body">Tabs work for mobile, but they don't translate to VR. A single interactive centre element, one that responds to tap and hold, keeps the mobile UX coherent today and maps cleanly to future spatial interactions.</div>
+    <div class="attention-block-body">Tabs work for mobile, but they don't translate to VR. A single interactive centre element — one that responds to tap and hold — keeps the mobile UX coherent today and maps cleanly to future spatial interactions.</div>
   </div>
 `,
 
@@ -1640,7 +1241,7 @@ final: () => `
       </div>`).join('')}
   </div>
 
-  ${img('Final hero: MiPage & Tribe', 320)}
+  ${img('Final hero — MiPage & Tribe', 320)}
 
   <div class="grid-2 grid-gap-lg" style="margin-bottom: 28px;">
     ${img('Tap & swipe gestures', 220)}
@@ -1653,16 +1254,16 @@ final: () => `
     ${img('Screenshot to MiPage', 180)}
   </div>
 
-  ${callout('Video walkthrough', 'A full interactive walkthrough video is in progress: it will cover the MiPage &rarr; Tribe flow end-to-end, with gesture annotations.')}
+  ${callout('Video walkthrough', 'A full interactive walkthrough video is in progress — it will cover the MiPage &rarr; Tribe flow end-to-end, with gesture annotations.')}
 `,
 
 reflection: () => `
-  ${header('Outcome · Reflection', "What Tribes taught me", "Four months, two founders, one MVP: here's what I'd take with me.")}
+  ${header('Outcome · Reflection', "What Tribes taught me", "Four months, two founders, one MVP — here's what I'd take with me.")}
 
   ${termlistHTML([
-    {title:'Gestures are a promise', body:"Gesture-based UX isn't just a cool interaction: it's a commitment to communicate affordances clearly. If the prototype doesn't show users how to move, the whole thing loses momentum."},
+    {title:'Gestures are a promise', body:"Gesture-based UX isn't just a cool interaction — it's a commitment to communicate affordances clearly. If the prototype doesn't show users how to move, the whole thing loses momentum."},
     {title:'Alignment beats artefacts', body:'Aligning with Victor and Hank early mattered more than having polished deliverables. Translating business goals into interaction priorities week-by-week kept us from drifting.'},
-    {title:'User research was the gap', body:"Time constraints meant I ran fewer user interviews than I wanted. That's the single biggest thing I'd change with more runway: real users, not just founder stand-ins."},
+    {title:'User research was the gap', body:"Time constraints meant I ran fewer user interviews than I wanted. That's the single biggest thing I'd change with more runway — real users, not just founder stand-ins."},
     {title:"What I'd push further", body:'With more time, I would iterate through additional usability sessions, refine the feedback loop around errors, and push hi-fi further so the animations feel as intentional as the layout.'},
   ])}
 `,
@@ -1732,41 +1333,6 @@ function updateProgress() {
   progressPct.textContent = pct + '%';
 }
 
-/* At-a-glance — STAR rows act as tabs over the process panel. */
-function setupGlance() {
-  const gl = contentInner.querySelector('.glance');
-  if (!gl) return;
-
-  const tabs  = Array.from(gl.querySelectorAll('[role="tab"]'));
-  const panel = gl.querySelector('[role="tabpanel"]');
-  const phase = gl.querySelector('.glance-phase');
-  if (!tabs.length || !panel) return;
-
-  function select(tab, moveFocus) {
-    tabs.forEach(t => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      t.tabIndex = on ? 0 : -1;
-    });
-    gl.setAttribute('data-active', tab.dataset.star);
-    panel.setAttribute('aria-labelledby', tab.id);
-    if (phase) phase.textContent = tab.dataset.phase;
-    if (moveFocus) tab.focus();
-  }
-
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(tab, false));
-    tab.addEventListener('keydown', (e) => {
-      let next = null;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
-      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
-      else if (e.key === 'Home') next = tabs[0];
-      else if (e.key === 'End') next = tabs[tabs.length - 1];
-      if (next) { e.preventDefault(); select(next, true); }
-    });
-  });
-}
-
 function setupImgFade() {
   contentInner.querySelectorAll('img:not(.avatar-circle)').forEach(function(img) {
     if (img.complete && img.naturalWidth > 0) {
@@ -1794,7 +1360,6 @@ function render(id) {
   updateNavStates();
   updateProgress();
   setupImgFade();
-  setupGlance();
 
   if (history.replaceState) {
     history.replaceState(null, '', window.location.pathname);
@@ -1854,9 +1419,8 @@ render(NAV_ORDER.includes(hashId) ? hashId : 'intro');
 </script>
 
 <script>
-/* ── Custom cursor — skip on touch devices ── */
+/* ── Custom cursor ── */
 (function() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'cur-ring'; document.body.appendChild(ring);
   const dot  = document.createElement('div'); dot.id  = 'cur-dot';  document.body.appendChild(dot);
   let mx=0,my=0,cx=0,cy=0;
@@ -1899,12 +1463,10 @@ function runReveal(canvas, fill) {
   }
   setTimeout(()=>requestAnimationFrame(step),60);
 }
-if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  document.querySelectorAll('img').forEach(img => {
-    if (img.complete) pixelReveal(img);
-    else img.addEventListener('load', () => pixelReveal(img), {once:true});
-  });
-}
+document.querySelectorAll('img').forEach(img => {
+  if (img.complete) pixelReveal(img);
+  else img.addEventListener('load', () => pixelReveal(img), {once:true});
+});
 
 /* ── Scroll reveal sections ── */
 const revObs = new IntersectionObserver(entries => {
@@ -1928,9 +1490,8 @@ document.querySelectorAll('p, li, .body-text, .stack-body').forEach(el => { if(e
 </script>
 
 <script>
-/* ── DS Cursor — skip on touch devices ── */
+/* ── DS Cursor ── */
 (function() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const ring = document.createElement('div'); ring.id = 'ds-cursor-ring'; document.body.appendChild(ring);
   const dot  = document.createElement('div'); dot.id  = 'ds-cursor-dot';  document.body.appendChild(dot);
   let mx=0,my=0,cx=0,cy=0;
