@@ -23,7 +23,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* ── Reset ─────────────────────────────────── */
@@ -39,6 +39,7 @@
            White           #ffffff   card bg / page fill
         ─────────────────────────────────────────── */
         :root {
+            --font:     'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif;
             --pampas:   #f4f2ec;
             --rangoon:  #1b1a17;
             --friar:    #edeae2;
@@ -60,7 +61,7 @@
 
         /* ── Base ───────────────────────────────────── */
         body {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-weight: 400;
             background: var(--pampas);
             color: var(--rangoon);
@@ -91,7 +92,7 @@
         }
 
         .nav-logo {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 20px;
             color: var(--rangoon);
             text-decoration: none;
@@ -191,7 +192,7 @@
 
         /* h1: DM Serif Display 96px/fw400 */
         .hero-heading {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: clamp(52px, 7.5vw, 96px);
             font-weight: 400;
             line-height: .97;
@@ -202,7 +203,7 @@
 
         /* tagline: DM Serif Display 32px italic */
         .hero-tagline {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: clamp(22px, 2.5vw, 32px);
             font-weight: 400;
             font-style: italic;
@@ -467,7 +468,7 @@
         }
 
         .stack-header {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -489,7 +490,7 @@
         }
 
         .stack-title {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: clamp(44px, 6.5vw, 88px);
             font-weight: 400;
             line-height: 0.97;
@@ -522,7 +523,7 @@
         }
 
         .stack-body {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: clamp(17px, 1.35vw, 20px);
             font-weight: 300;
             line-height: 1.65;
@@ -665,7 +666,7 @@
         .stat-item + .stat-item { border-left: 1px solid var(--border); }
 
         .stat-number {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 36px;
             font-weight: 400;
             color: var(--rangoon);
@@ -705,7 +706,7 @@
         }
 
         .section-title {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-weight: 700;
             font-size: clamp(32px, 4vw, 52px);
             letter-spacing: -0.02em;
@@ -718,7 +719,7 @@
         }
 
         .section-meta {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 12px;
             color: var(--ink-soft);
             display: flex;
@@ -814,7 +815,7 @@
             gap: 10px;
             border-bottom: 1px solid var(--line);
             background: var(--surface-2);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 12px;
         }
 
@@ -822,7 +823,7 @@
             display: flex;
             align-items: center;
             gap: 7px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 11px;
             color: var(--ink-soft);
             font-weight: 500;
@@ -947,7 +948,7 @@
         .card--locked:hover .lock-icon { transform: scale(1.1) rotate(-6deg); }
 
         .lock-text {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 0.05em;
@@ -971,7 +972,7 @@
         }
 
         .tag {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 11px;
             padding: 4px 9px;
             border-radius: 4px;
@@ -999,7 +1000,7 @@
         }
 
         .title {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-weight: 700;
             font-size: 26px;
             letter-spacing: -0.02em;
@@ -1029,7 +1030,7 @@
         }
 
         .desc {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 14px;
             line-height: 1.6;
             color: var(--ink-soft);
@@ -1037,7 +1038,7 @@
         }
 
         .desc--locked {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 13px;
             display: flex;
             align-items: center;
@@ -1062,7 +1063,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 13px;
             font-weight: 500;
         }
@@ -1081,7 +1082,7 @@
         }
 
         .foot-cta .arrow {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-weight: 500;
             display: inline-block;
             transition: transform 0.3s ease;
@@ -1133,7 +1134,7 @@
         }
 
         .cta-heading {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: clamp(28px, 3.2vw, 41.6px);
             font-weight: 400;
             color: var(--pampas);
@@ -1161,11 +1162,11 @@
         .cvp-content { display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative; z-index: 1; }
         .cvp-play { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid rgba(244,242,236,.3); display: flex; align-items: center; justify-content: center; color: var(--pampas); text-decoration: none; transition: border-color .2s, transform .2s, background .2s; padding-left: 3px; }
         .cvp-play:hover { border-color: var(--roughy); background: rgba(201,74,26,.15); transform: scale(1.08); color: var(--roughy); }
-        .cvp-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(244,242,236,.3); letter-spacing: .06em; }
+        .cvp-meta { font-family: var(--font); font-size: 10px; color: rgba(244,242,236,.3); letter-spacing: .06em; }
         .creative-text { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
-        .creative-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--roughy); }
-        .creative-heading { font-family: 'JetBrains Mono', monospace; font-size: clamp(22px, 2.4vw, 32px); font-weight: 400; line-height: 1.2; letter-spacing: -.02em; color: var(--pampas); }
-        .creative-body { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 300; line-height: 1.7; color: rgba(244,242,236,.65); max-width: 380px; }
+        .creative-eyebrow { font-family: var(--font); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--roughy); }
+        .creative-heading { font-family: var(--font); font-size: clamp(22px, 2.4vw, 32px); font-weight: 400; line-height: 1.2; letter-spacing: -.02em; color: var(--pampas); }
+        .creative-body { font-family: var(--font); font-size: 14px; font-weight: 300; line-height: 1.7; color: rgba(244,242,236,.65); max-width: 380px; }
         .creative-body strong { color: var(--pampas); font-weight: 500; }
 
         /* Quiet way through to the work-in-progress landing. Sits under the
@@ -1173,7 +1174,7 @@
            at a whisper until hovered — a footnote, not a second CTA. */
         .creative-wip {
             margin-top: 14px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 12.5px;
             line-height: 1.5;
             color: rgba(244,242,236,.5);
@@ -1198,8 +1199,8 @@
         @keyframes wip-pulse { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
         @media (prefers-reduced-motion: reduce) { .creative-wip .wip-led { animation: none } }
         .creative-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .creative-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 400; color: rgba(244,242,236,.5); border: 1px solid rgba(244,242,236,.18); border-radius: 100px; padding: 4px 12px; }
-        .creative-cta { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--pampas); text-decoration: none; border-bottom: 1px solid rgba(244,242,236,.25); padding-bottom: 2px; width: fit-content; transition: border-color .2s, color .2s; margin-top: 4px; }
+        .creative-tag { font-family: var(--font); font-size: 11px; font-weight: 400; color: rgba(244,242,236,.5); border: 1px solid rgba(244,242,236,.18); border-radius: 100px; padding: 4px 12px; }
+        .creative-cta { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--pampas); text-decoration: none; border-bottom: 1px solid rgba(244,242,236,.25); padding-bottom: 2px; width: fit-content; transition: border-color .2s, color .2s; margin-top: 4px; }
         .creative-cta:hover { color: var(--roughy); border-color: var(--roughy); }
         @media (max-width: 768px) {
             .creative-feature { grid-template-columns: 1fr; }
@@ -1224,7 +1225,7 @@
         }
 
         .footer-logo {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 17.6px;
             font-weight: 400;
             color: var(--rangoon);
@@ -1333,7 +1334,7 @@
 
         /* Terminal prompt above eyebrow */
         .hero-prompt {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font);
             font-size: 12px;
             color: var(--roughy);
             margin-bottom: 12px;

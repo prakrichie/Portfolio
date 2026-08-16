@@ -7,7 +7,7 @@
 <meta name="description" content="A case study on designing an MVP for Tribes, a personalised social app built around gesture-based interactions and curated content.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ───────────────────────────────────────
      TOKENS, Tribes dark mode, AAA contrast
@@ -31,7 +31,7 @@
     --accent-deep:  #5ac4d4;   /* cyan, pills, small accents (AAA w/ --bg text) */
     --accent-tint:  rgba(180,79,224,0.14);
 
-    --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif;
 
     --topnav-h: 56px;
     --sidebar-w: 260px;
@@ -753,11 +753,10 @@
 <style>
   /* design-system.css is linked AFTER this page own <style>, so its :root
      wins the cascade, the token has to be re-asserted here or the page
-     silently falls back to JetBrains Mono. Scoped to this page: index.html
-     keeps the old face until it is migrated too.
+     silently falls back to design-system.css's own default.
      The name stays --font-mono because design-system.css references it by
      that name in six places. */
-  :root{ --font-mono: 'Familjen Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  :root{ --font-mono: 'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif; }
 
   /* ───────────────────────────────────────
      AT A GLANCE

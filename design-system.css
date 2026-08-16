@@ -34,11 +34,11 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   3. TYPOGRAPHY SCALE (JetBrains Mono throughout)
+   3. TYPOGRAPHY SCALE (Nunito throughout)
    Scale: 11 / 12 / 13 / 14 / 16 / 20 / 28 / 36 / 48 / 72
 ───────────────────────────────────────────────────────── */
 :root {
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: 'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif;
 
   /* Font sizes */
   --text-2xs: 11px;   /* legal, meta, timestamps          */
