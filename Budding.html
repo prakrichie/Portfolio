@@ -132,6 +132,53 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ── hero ─────────────────────────────────────────────────────── */
 .hero{margin-bottom:clamp(36px,5vw,56px)}
 
+/* The hero holds the reel alone. It keeps full width because its 48s loop is
+   made almost entirely of type — shrink it and it stops being readable, which
+   is the same reason it runs as a live iframe rather than a compressed video. */
+.shots{
+  display:grid;
+  gap:clamp(18px,3vw,28px);
+  margin-bottom:clamp(30px,4.5vw,48px);
+}
+
+/* A captioned pair, sitting under the weapon design. Two placeholders lose
+   nothing at half width, so they share a row and drop to one column when the
+   column is too narrow to hold them side by side. */
+.shots-pair{
+  display:grid;
+  gap:clamp(18px,3vw,28px);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));
+  margin-top:clamp(24px,3.6vw,36px);
+}
+.shots .shots-pair{margin-top:0}       /* no double gap if it ever nests again */
+.shot-item{display:grid;gap:12px}
+
+/* Heads the four feature clips. h3 rather than h2: it sits inside "The pivot",
+   at the same level as "The weapon design" above it. */
+.feat-h{
+  font-size:clamp(19px,2.6vw,23px);
+  font-weight:700;letter-spacing:-.015em;
+  color:var(--green);
+  margin:clamp(30px,4.5vw,44px) 0 0;
+}
+.feat-h + .shots-pair{margin-top:clamp(14px,2vw,18px)}   /* heading owns the gap */
+
+/* figcaption, not a heading element. These label their figures rather than
+   opening sections, and the surrounding copy already owns the <h1>/<h3>
+   structure — extra headings here would invert the outline. */
+.shot-cap{display:grid;gap:3px}
+.shot-cap-t{
+  font-size:clamp(16px,2vw,19px);
+  font-weight:700;letter-spacing:-.015em;
+  color:var(--green);
+  line-height:1.25;
+}
+.shot-cap-n{
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:11px;letter-spacing:.06em;
+  color:var(--ink-l);
+}
+
 /* UNFINISHED. Dashed, hatched, crop marked. There is no reel yet and
    the frame says so rather than pretending with a grey box. */
 .shot{
@@ -142,13 +189,88 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   background:var(--paper-2);
   background-image:var(--hatch);
   border:1.5px dashed var(--line-2);
-  margin-bottom:clamp(30px,4.5vw,48px);
 }
 /* The reel is the reveal running live in an iframe, not a recording of it.
    A 48s loop that is almost entirely text encodes badly — the compressed
    version smeared on every transition and went soft on any high-DPI
    screen. This stays vector-crisp at any size and costs ~200KB. */
 .shot-frame{display:none;width:100%;height:100%;border:0}
+
+/* The four gesture clips. Same contract as .shot-frame: hidden until the file
+   is actually there, at which point .has-video drops the unfinished language.
+   The sources are 1920×1080, the frame is 16/9, so cover fills it exactly and
+   crops nothing. */
+.shot-media{display:none;width:100%;height:100%;object-fit:cover}
+.shot.has-video .shot-media{display:block}
+
+/* ── clips at rest ─────────────────────────────────────────────
+   Nothing plays on arrival. A resting clip is blurred, which does two jobs:
+   it says "there is something here, but it is not running yet", and it stops
+   four looping videos from competing with the copy for attention.
+
+   The scale is not decoration — blur samples past the element's edge and
+   leaves a translucent rim, so the frame is over-scaled slightly to push
+   that rim outside the crop.
+
+   Blur tracks the paused state rather than being a one-shot reveal, so the
+   frame always tells you whether it is running.
+
+   Scoped to .shot only. The weapon model in the pivot is a short silent loop
+   that plays on its own, and it keeps that behaviour. */
+.shot-media{
+  filter:blur(14px);
+  transform:scale(1.07);
+  transition:filter .45s var(--ease), transform .45s var(--ease);
+}
+.shot.is-playing .shot-media{filter:none;transform:none}
+
+/* The affordance. The whole frame is the button, not a small target in a
+   corner — the clip reads as one clickable object, and it gives a 16:9 hit
+   area instead of 38px. */
+.clip-btn{
+  display:none;
+  position:absolute;inset:0;z-index:3;
+  place-content:center;justify-items:center;gap:12px;
+  background:rgba(23,37,28,.10);
+  border:0;
+  cursor:pointer;
+  transition:background-color .3s var(--ease);
+}
+.shot.has-video .clip-btn{display:grid}
+.clip-btn:focus-visible{outline:2px solid var(--lotus-deep);outline-offset:-4px}
+
+.clip-cue{
+  width:52px;height:52px;          /* fixed: .shot is not a query container */
+  border-radius:50%;
+  display:grid;place-content:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line-2);
+  transition:transform .25s var(--ease), opacity .25s var(--ease);
+}
+.clip-cue svg{width:18px;height:18px}
+.clip-cue .ic-pause{display:none}
+.clip-btn:hover .clip-cue{transform:scale(1.08)}
+
+.clip-hint{
+  font-family:var(--gl-mono,ui-monospace,monospace);
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);
+  background:rgba(255,255,255,.86);
+  padding:4px 11px;border-radius:100px;
+  transition:opacity .25s var(--ease);
+}
+
+/* Playing: the overlay gets out of the way but stays clickable, so a second
+   click pauses. It comes back on hover or keyboard focus, which is what makes
+   pause discoverable rather than hidden. */
+.is-playing .clip-btn{background:none}
+.is-playing .clip-cue{opacity:0;transform:scale(.9)}
+.is-playing .clip-hint{opacity:0}
+.is-playing .clip-btn:hover .clip-cue,
+.is-playing .clip-btn:focus-visible .clip-cue{opacity:1;transform:none}
+.is-playing .clip-cue .ic-play{display:none}
+.is-playing .clip-cue .ic-pause{display:block}
+
 .shot.has-video{
   border-style:solid;border-color:var(--line);
   background-image:none;
@@ -683,7 +805,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 
 @media (max-width:640px){
+  /* The taller box suits an empty placeholder, but a 16:9 clip inside it would
+     be cropped down the sides, so frames holding real footage keep their ratio. */
   .shot{aspect-ratio:4/3}
+  .shot--clip{aspect-ratio:16/9}
   .tape{display:none}
 }
 </style>
@@ -701,7 +826,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   <!-- ═══ hero ═══════════════════════════════════════════════ -->
   <header class="hero">
-    <figure class="shot" id="shot">
+    <div class="shots">
+
+    <figure class="shot-item">
+    <div class="shot" id="shot">
       <iframe class="shot-frame" id="heroFrame" src="Motion/budding-reveal.html?embed"
               title="Budding reveal: the logo draws itself, a rejection phrase repeats, then a card is either let go or grown into a flower for the garden"></iframe>
 
@@ -735,7 +863,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           <path class="ic-play" d="M4 2.5v15l13-7.5z" fill="#17251C"/>
         </svg>
       </button>
+    </div>
+      <figcaption class="shot-cap">
+        <span class="shot-cap-t">The reveal</span>
+        <span class="shot-cap-n">48s loop · running live</span>
+      </figcaption>
     </figure>
+
+    </div>
 
     <h1 class="hero-title">Budding</h1>
     <p class="hero-pos">It looks like a wellness app and behaves like a stress toy.</p>
@@ -785,10 +920,185 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       </div>
     </div>
 
-    <figure class="vid vid--lg">
-      <figcaption class="vid-label">video placeholder</figcaption>
-    </figure>
-    <p class="pivot-cap">Same mechanic of picking a card except now you can shoot it.</p>
+    <h3 class="feat-h">Features</h3>
+
+    <div class="shots-pair">
+
+      <!-- Gun. Still to be shot, so the frame keeps the dashed-and-hatched
+           language rather than faking it with a grey box. The placeholder art
+           is a stand-in and does not depict the weapon yet. -->
+      <figure class="shot-item">
+        <div class="shot shot--clip">
+          <video class="shot-media" muted loop playsinline preload="metadata"
+                 aria-label="The gun mechanic: a rejection card is shot">
+            <source src="videos/Gun.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="clip-btn" aria-label="Play the Gun clip">
+            <span class="clip-cue">
+              <svg class="ic-play" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2.5v13l11-6.5z" fill="#17251C"/></svg>
+              <svg class="ic-pause" viewBox="0 0 18 18" fill="none" aria-hidden="true"><g stroke="#17251C" stroke-width="3" stroke-linecap="round"><path d="M6 3v12M12 3v12"/></g></svg>
+            </span>
+            <span class="clip-hint">click to play</span>
+          </button>
+
+          <span class="crop crop--tl" aria-hidden="true"></span>
+          <span class="crop crop--tr" aria-hidden="true"></span>
+          <span class="crop crop--bl" aria-hidden="true"></span>
+          <span class="crop crop--br" aria-hidden="true"></span>
+
+          <div class="shot-empty">
+            <svg viewBox="0 0 300 220" fill="none" aria-hidden="true">
+              <rect x="18" y="30" width="264" height="160" rx="18" fill="none" stroke="#17251C" stroke-opacity=".16" stroke-width="2" stroke-dasharray="7 7"/>
+              <g fill="#1D4636" fill-opacity=".5">
+                <rect x="72" y="92" width="132" height="24" rx="3"/>
+                <rect x="72" y="92" width="44" height="50" rx="3"/>
+                <rect x="80" y="132" width="30" height="42" rx="3"/>
+              </g>
+              <rect x="192" y="96" width="16" height="16" rx="2" fill="#F2A9C4"/>
+              <g stroke="#C43A6A" stroke-width="4" stroke-linecap="round">
+                <path d="M222 104h24M218 84l18-12M218 124l18 12"/>
+              </g>
+            </svg>
+            <p class="shot-note">clip in progress<span class="blink" aria-hidden="true"></span></p>
+          </div>
+        </div>
+        <figcaption class="shot-cap">
+          <span class="shot-cap-t">Gun</span>
+          <span class="shot-cap-n">What&rsquo;s going on?</span>
+        </figcaption>
+      </figure>
+
+      <!-- Scrunch. Same as above: the bloom art is a placeholder, not the
+           scrunch gesture it will eventually hold. -->
+      <figure class="shot-item">
+        <div class="shot shot--clip">
+          <video class="shot-media" muted loop playsinline preload="metadata"
+                 aria-label="The scrunch mechanic: a rejection card is crumpled and thrown">
+            <source src="videos/Srunch.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="clip-btn" aria-label="Play the Scrunch clip">
+            <span class="clip-cue">
+              <svg class="ic-play" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2.5v13l11-6.5z" fill="#17251C"/></svg>
+              <svg class="ic-pause" viewBox="0 0 18 18" fill="none" aria-hidden="true"><g stroke="#17251C" stroke-width="3" stroke-linecap="round"><path d="M6 3v12M12 3v12"/></g></svg>
+            </span>
+            <span class="clip-hint">click to play</span>
+          </button>
+
+          <span class="crop crop--tl" aria-hidden="true"></span>
+          <span class="crop crop--tr" aria-hidden="true"></span>
+          <span class="crop crop--bl" aria-hidden="true"></span>
+          <span class="crop crop--br" aria-hidden="true"></span>
+
+          <div class="shot-empty">
+            <svg viewBox="0 0 300 220" fill="none" aria-hidden="true">
+              <rect x="18" y="30" width="264" height="160" rx="18" fill="none" stroke="#17251C" stroke-opacity=".16" stroke-width="2" stroke-dasharray="7 7"/>
+              <path d="M150 58l46 24-12 42 28 30-42 20-36-16-40 14 8-42-24-32 42-18z"
+                    fill="#FFFFFF" stroke="#1D4636" stroke-opacity=".55" stroke-width="4" stroke-linejoin="round"/>
+              <g stroke="#17251C" stroke-opacity=".2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M150 58l-14 44 32 14-16 42M136 102l-42-8M168 116l42-10"/>
+              </g>
+            </svg>
+            <p class="shot-note">clip in progress<span class="blink" aria-hidden="true"></span></p>
+          </div>
+        </div>
+        <figcaption class="shot-cap">
+          <span class="shot-cap-t">Scrunch</span>
+          <span class="shot-cap-n">Let&rsquo;s do a trickshot</span>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <div class="shots-pair">
+
+      <!-- Slice. Holds the card-and-cut art the Gun frame was carrying, which
+           belongs to this gesture rather than to the weapon. -->
+      <figure class="shot-item">
+        <div class="shot shot--clip">
+          <video class="shot-media" muted loop playsinline preload="metadata"
+                 aria-label="The slice mechanic: a rejection card is cut apart">
+            <source src="videos/Slice.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="clip-btn" aria-label="Play the Slice clip">
+            <span class="clip-cue">
+              <svg class="ic-play" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2.5v13l11-6.5z" fill="#17251C"/></svg>
+              <svg class="ic-pause" viewBox="0 0 18 18" fill="none" aria-hidden="true"><g stroke="#17251C" stroke-width="3" stroke-linecap="round"><path d="M6 3v12M12 3v12"/></g></svg>
+            </span>
+            <span class="clip-hint">click to play</span>
+          </button>
+
+          <span class="crop crop--tl" aria-hidden="true"></span>
+          <span class="crop crop--tr" aria-hidden="true"></span>
+          <span class="crop crop--bl" aria-hidden="true"></span>
+          <span class="crop crop--br" aria-hidden="true"></span>
+
+          <div class="shot-empty">
+            <svg viewBox="0 0 300 220" fill="none" aria-hidden="true">
+              <rect x="18" y="30" width="264" height="160" rx="18" fill="none" stroke="#17251C" stroke-opacity=".16" stroke-width="2" stroke-dasharray="7 7"/>
+              <g transform="rotate(-11 150 110)">
+                <rect x="104" y="64" width="92" height="118" rx="10" fill="#FFFFFF" stroke="#1D4636" stroke-opacity=".55" stroke-width="4"/>
+                <g stroke="#17251C" stroke-opacity=".2" stroke-width="5" stroke-linecap="round">
+                  <path d="M120 96h60M120 114h60M120 132h38"/>
+                </g>
+              </g>
+              <path d="M64 152L236 74" stroke="#C43A6A" stroke-width="4" stroke-linecap="round"/>
+              <g stroke="#1D4636" stroke-opacity=".38" stroke-width="4" stroke-linecap="round">
+                <path d="M56 98h16M46 116h26M60 134h12"/>
+              </g>
+            </svg>
+            <p class="shot-note">clip in progress<span class="blink" aria-hidden="true"></span></p>
+          </div>
+        </div>
+        <figcaption class="shot-cap">
+          <span class="shot-cap-t">Slice</span>
+          <span class="shot-cap-n">Slice and dice</span>
+        </figcaption>
+      </figure>
+
+      <!-- Bloom. Holds the garden art, likewise moved off the Scrunch frame. -->
+      <figure class="shot-item">
+        <div class="shot shot--clip">
+          <video class="shot-media" muted loop playsinline preload="metadata"
+                 aria-label="The bloom mechanic: a flower grows and joins the garden">
+            <source src="videos/Plant.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="clip-btn" aria-label="Play the Bloom clip">
+            <span class="clip-cue">
+              <svg class="ic-play" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2.5v13l11-6.5z" fill="#17251C"/></svg>
+              <svg class="ic-pause" viewBox="0 0 18 18" fill="none" aria-hidden="true"><g stroke="#17251C" stroke-width="3" stroke-linecap="round"><path d="M6 3v12M12 3v12"/></g></svg>
+            </span>
+            <span class="clip-hint">click to play</span>
+          </button>
+
+          <span class="crop crop--tl" aria-hidden="true"></span>
+          <span class="crop crop--tr" aria-hidden="true"></span>
+          <span class="crop crop--bl" aria-hidden="true"></span>
+          <span class="crop crop--br" aria-hidden="true"></span>
+
+          <div class="shot-empty">
+            <svg viewBox="0 0 300 220" fill="none" aria-hidden="true">
+              <rect x="18" y="30" width="264" height="160" rx="18" fill="none" stroke="#17251C" stroke-opacity=".16" stroke-width="2" stroke-dasharray="7 7"/>
+              <g stroke="#1D4636" stroke-opacity=".55" stroke-width="4" stroke-linecap="round">
+                <path d="M60 168h180"/>
+                <path d="M96 168v-34M150 168v-54M204 168v-26"/>
+              </g>
+              <g>
+                <circle cx="96" cy="122" r="11" fill="#F2A9C4"/>
+                <circle cx="150" cy="102" r="15" fill="#F2A9C4"/>
+                <circle cx="204" cy="130" r="9" fill="#F2A9C4"/>
+                <circle cx="150" cy="102" r="5" fill="#FFFFFF"/>
+              </g>
+            </svg>
+            <p class="shot-note">clip in progress<span class="blink" aria-hidden="true"></span></p>
+          </div>
+        </div>
+        <figcaption class="shot-cap">
+          <span class="shot-cap-t">Bloom</span>
+          <span class="shot-cap-n">Watch it grow</span>
+        </figcaption>
+      </figure>
+
+    </div>
   </section>
 
   <!-- ═══ to be continued ════════════════════════════════════ -->
@@ -1011,6 +1321,53 @@ document.getElementById('glanceMount').innerHTML = glanceHTML({
       }, { threshold: 0.25 }).observe(fig);
     } else {
       play();
+    }
+  });
+})();
+
+/* The four feature clips: blurred and paused until asked. The hero .shot holds
+   an iframe rather than a <video>, so it finds no media child and is skipped. */
+(function () {
+  document.querySelectorAll('.shot').forEach(function (fig) {
+    var vid = fig.querySelector('.shot-media');
+    if (!vid) return;
+
+    /* Fires once the first frame is decodable, which is also the frame that
+       shows through the blur while the clip is at rest. */
+    vid.addEventListener('loadeddata', function () { fig.classList.add('has-video'); });
+
+    var btn = fig.querySelector('.clip-btn');
+    if (!btn) return;
+
+    var label = (btn.getAttribute('aria-label') || 'Play the clip').replace(/^Play the /, '');
+    /* The user's intent, deliberately kept apart from vid.paused: scrolling a
+       playing clip out of view stops it to save decoding, and that must not
+       read as the user having paused it. */
+    var wants = false;
+
+    function play() { var p = vid.play(); if (p && p.catch) p.catch(function () {}); }
+
+    function sync() {
+      fig.classList.toggle('is-playing', wants);
+      btn.setAttribute('aria-label', (wants ? 'Pause the ' : 'Play the ') + label);
+    }
+    sync();
+
+    btn.addEventListener('click', function () {
+      wants = !wants;
+      if (wants) play(); else vid.pause();
+      sync();
+    });
+
+    /* Off-screen playback is wasted decoding, so it stops — but the intent
+       is remembered and picked back up on return. */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!wants) return;
+          if (e.isIntersecting) play(); else vid.pause();
+        });
+      }, { threshold: 0.25 }).observe(fig);
     }
   });
 })();
