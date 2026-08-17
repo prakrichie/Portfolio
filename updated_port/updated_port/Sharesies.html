@@ -32,6 +32,8 @@
     --brand-pink:  #D83F6E;   /* large type & accents — AAA ≥18px/14px bold */
     --pink-deep:   #9E1A4A;   /* small text AAA on white/pink-bg (7.76:1) */
     --pink-tint:   #FCEEF2;   /* soft pink wash for quote/callout bodies */
+    --cta-pink:    #D23D6B;   /* brand-pink darkened 3% — 4.55:1 on white, so
+                                 white CTA type passes AA at normal size */
     --purple:      #47446D;   /* H2/H3 heading colour — AAA on white */
     --cream:       #F4F2EC;   /* warm alt page background */
 
@@ -1204,6 +1206,273 @@
   }
   .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* ───────────────────────────────────────
+     AT A GLANCE — stepper
+     Five steps, one at a time: a matted visual, a
+     progress rail, the step's prose, then Next.
+
+     The rail is the idea worth keeping. The active step
+     is a wide bar with its name sitting immediately to
+     its left; every other step is a small tick. The name
+     therefore travels along the rail as you advance, so
+     position and label are read together instead of
+     needing a separate "3 of 5" counter.
+
+     Only the active label is in the DOM flow — the others
+     are display:none, so the rail re-centres itself around
+     whichever label is showing.
+  ─────────────────────────────────────── */
+  .stepper { margin: 0 0 28px; }
+
+  /* Matted frame, per the reference: grey surround, image
+     sitting on white inside it. The ratio is fixed so the
+     page does not jump as steps change — the five assets
+     run from wide landscape to tall portrait. */
+  .stepper-media {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(12px, 3vw, 32px);
+  }
+  .stepper-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: var(--bg);
+    border-radius: 4px;
+  }
+
+  /* ── Progress rail ── */
+  .stepper-rail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 14px 0 24px;
+  }
+  .st-tick {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 0;          /* invisible hit area; keeps the bars visually thin */
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .st-tick-bar {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--border-strong);
+    transition: width .32s var(--ease), background-color .32s var(--ease);
+  }
+  .st-tick[aria-selected="true"] .st-tick-bar {
+    width: 52px;
+    background: var(--brand-pink);
+  }
+  .st-tick-label {
+    display: none;
+    font-size: 12px;
+    color: var(--ink-mid);
+    white-space: nowrap;
+  }
+  .st-tick[aria-selected="true"] .st-tick-label { display: inline; }
+  .st-tick:hover .st-tick-bar { background: var(--ink-light); }
+  .st-tick[aria-selected="true"]:hover .st-tick-bar { background: var(--pink-deep); }
+  .st-tick:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3px; border-radius: 4px; }
+
+  @media (pointer: coarse) {
+    .st-tick { padding: 17px 2px; }   /* 44px target without changing the visual */
+  }
+
+  /* ── Step prose ── */
+  .st-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .stepper-panel:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 4px; }
+  .st-quote {
+    max-width: 60ch;
+    margin: 0 auto 28px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  /* ── Next ── */
+  .stepper-actions { display: flex; justify-content: flex-end; margin-top: 26px; }
+  .st-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 100px;
+    transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .st-next:hover:not([disabled]) { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .st-next:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 2px; }
+  .st-next[disabled] { opacity: .35; cursor: default; }
+  .st-next svg { width: 13px; height: 13px; }
+
+  @media (max-width: 560px) {
+    .st-tick[aria-selected="true"] .st-tick-bar { width: 34px; }
+    .stepper-actions { justify-content: stretch; }
+    .st-next { width: 100%; justify-content: center; }
+  }
+
+  /* ── The CTA that opens it ──
+     Full-width pill, per LONG PILL.png.
+
+     At 14.25px this is normal-size text, so it needs 4.5:1 rather than the
+     3:1 that large text gets. White on --brand-pink is only 4.32:1, so the
+     fill is --cta-pink: the same hue darkened 3% to reach 4.55:1. The two are
+     linked — changing either the size or the fill means rechecking both. */
+  .glance-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    margin: 4px 0 28px;
+    padding: 15px 22px;
+    background: var(--cta-pink);
+    color: #fff;
+    border: 0;
+    border-radius: 100px;
+    font-size: 14.25px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: .01em;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color .2s var(--ease), transform .12s var(--ease);
+  }
+  .glance-cta:hover { background: var(--pink-deep); }
+  /* Press feedback: the control should acknowledge the tap before the overlay
+     has finished arriving, so the click never feels dropped. */
+  .glance-cta:active { transform: scale(.99); }
+  .glance-cta:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 3px; }
+  .glance-cta svg { width: 17px; height: 17px; flex: none; }
+
+  /* ── Overlay ──
+     Motion follows two rules. First, enter and exit are not symmetric:
+     arriving is decelerated and a touch slower (260ms) so the panel feels
+     placed, leaving is accelerated and quicker (150ms) because a dismissed
+     thing should get out of the way. Second, nothing animates position from
+     far away — a 12px rise and a 2.5% scale is enough to read as "this came
+     forward", and it keeps the text legible the whole time.
+
+     Visibility is transitioned with a delay rather than toggled, so the exit
+     is actually seen; without it the panel would vanish on the first frame.
+     No hidden attribute: the closed state is the CSS default, so the overlay
+     is inert before the script has even run. */
+  .stepper-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: grid;
+    place-items: center;
+    padding: clamp(10px, 4vw, 40px);
+    background: rgba(13, 13, 13, .55);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s cubic-bezier(.4, 0, 1, 1),
+                visibility 0s linear .15s;
+  }
+  .stepper-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity .22s cubic-bezier(0, 0, .2, 1),
+                visibility 0s;
+  }
+
+  .stepper-dialog {
+    width: min(100%, 980px);
+    max-height: 92dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;   /* scrolling the panel must not chase the page */
+    background: var(--bg);
+    border-radius: 14px;
+    padding: clamp(16px, 3vw, 28px);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .30);
+
+    transform: translateY(12px) scale(.975);
+    transition: transform .15s cubic-bezier(.4, 0, 1, 1);
+  }
+  .stepper-overlay.is-open .stepper-dialog {
+    transform: none;
+    transition: transform .26s cubic-bezier(.16, 1, .3, 1);
+  }
+  .stepper-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .stepper-dialog-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .st-close {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .st-close:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .st-close:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 2px; }
+  .st-close svg { width: 15px; height: 15px; }
+
+  /* Inside the dialog the media is already framed by the dialog itself. */
+  .stepper-dialog .stepper { margin-bottom: 0; }
+
+  @media (max-width: 560px) {
+    .glance-cta { padding: 14px 18px; gap: 12px; }
+    .stepper-dialog { padding: 14px; max-height: 96dvh; }
+  }
+
+  /* Reduced motion still needs the state change to be perceivable, so opacity
+     is kept (shortened) and only the travel and scale are dropped. */
+  @media (prefers-reduced-motion: reduce) {
+    .st-tick-bar, .st-next, .st-close { transition: none; }
+    .glance-cta { transition: background-color .2s var(--ease); }
+    .glance-cta:active { transform: none; }
+    .stepper-overlay,
+    .stepper-overlay.is-open { transition: opacity .1s linear, visibility 0s; }
+    .stepper-dialog,
+    .stepper-overlay.is-open .stepper-dialog { transform: none; transition: none; }
+  }
+
   </style>
 <link rel="stylesheet" href="design-system.css">
 </head>
@@ -1372,6 +1641,87 @@ function img(label, h = 140) {
   return `<div class="img-ph" style="height:${h}px; margin-bottom: 16px;">${esc(label)}</div>`;
 }
 
+/* At-a-glance stepper.
+   cfg = { steps: [{ title, img, imgAlt, body }] }
+   where body is an array of paragraphs; an entry of the shape
+   { quote: '…' } renders as a centred pull quote instead.
+
+   Stashed on STEPPER so setupStepper() can re-render a step without
+   re-parsing it back out of the DOM. One stepper per rendered section. */
+let STEPPER = null;
+
+function stepPanelHTML(s) {
+  const body = s.body.map(b => b && b.quote
+    ? `<p class="st-quote">&ldquo;${esc(b.quote)}&rdquo;</p>`
+    : `<p class="prose-p">${esc(b)}</p>`).join('');
+  return `<h3 class="st-title">${esc(s.title)}</h3>${body}`;
+}
+
+function stepperHTML(cfg) {
+  STEPPER = cfg;
+
+  const first = cfg.steps[0];
+  const total = cfg.steps.length;
+
+  /* Every tick carries its own label; CSS reveals only the selected one, so
+     advancing a step needs nothing but an aria-selected flip. */
+  const ticks = cfg.steps.map((s, i) => `
+        <button type="button" class="st-tick" role="tab" id="st-tab-${i}"
+                aria-controls="st-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
+                tabindex="${i === 0 ? '0' : '-1'}"
+                aria-label="Step ${i + 1} of ${total}: ${esc(s.title)}">
+          <span class="st-tick-label">${esc(s.title)}</span>
+          <span class="st-tick-bar"></span>
+        </button>`).join('');
+
+  const cta = cfg.ctaLabel || 'Only have 5 minutes? have a read here!';
+
+  return `
+  <button type="button" class="glance-cta" id="st-open" aria-haspopup="dialog" aria-expanded="false" aria-controls="st-overlay">
+    <span>${esc(cta)}</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M7 17L17 7"/><path d="M8 7h9v9"/>
+    </svg>
+  </button>
+
+  <div class="stepper-overlay" id="st-overlay">
+    <div class="stepper-dialog" role="dialog" aria-modal="true" aria-labelledby="st-dialog-title">
+      <div class="stepper-dialog-head">
+        <h2 class="stepper-dialog-title" id="st-dialog-title">At a glance</h2>
+        <button type="button" class="st-close" id="st-close" aria-label="Close at a glance">
+          <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" aria-hidden="true" focusable="false">
+            <path d="M4 4l10 10M14 4L4 14"/>
+          </svg>
+        </button>
+      </div>
+
+  <section class="stepper" aria-label="At a glance">
+    <div class="stepper-media">
+      <img class="stepper-img" id="st-img" src="${esc(first.img)}" alt="${esc(first.imgAlt)}">
+    </div>
+
+    <div class="stepper-rail" role="tablist" aria-label="At a glance steps">${ticks}
+    </div>
+
+    <div class="stepper-panel" id="st-panel" role="tabpanel"
+         aria-labelledby="st-tab-0" tabindex="0">${stepPanelHTML(first)}</div>
+
+    <div class="stepper-actions">
+      <button type="button" class="st-next" id="st-next">
+        Next
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M7 3.5L12.5 9 7 14.5"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+    </div>
+  </div>`;
+}
+
 /* ───────────────────────────────────────
    CONTENT TEMPLATES
 ─────────────────────────────────────── */
@@ -1381,6 +1731,59 @@ intro: () => `
   ${header('Overview · Intro', 'Designing a guided first-week experience for **new investors.**', 'New Sharesies users sign up, then stall. We were asked to help close the gap between creating an account and making a first investment.')}
 
   <img src="Sharesies_hs1.jpg" alt="Sharesies onboarding hero" style="width:100%; height:440px; object-fit:contain; border-radius:8px; display:block; margin:-8px 0 16px;" />
+
+  ${stepperHTML({
+    steps: [
+      {
+        title: 'Problem statement',
+        img: 'Sharesies_hs1.jpg',
+        imgAlt: 'Sharesies onboarding hero',
+        body: [
+          'Sharesies discovered that new investors were often uncertain and overwhelmed when making their first investment, with a lack of confidence creating barriers to get started.',
+        ],
+      },
+      {
+        title: 'Role',
+        img: 'Icon_assets/workshop_concept.svg',
+        imgAlt: 'Workshop concepting output from the Sharesies design session',
+        body: [
+          'I was the UX/UI Designer, owning the onboarding research, user interviews, usability testing, workshops, wireframing, prototyping, and UI design.',
+          'My responsibility was to understand onboarding experience and how it could either build or create barriers for a new user. I conducted user interviews to understand the barriers to investing, usability testing to test assumptions and identify pain points, and workshops with the Sharesies design team to explore different directions and gather feedback.',
+          'I then used these findings to inform and reinforce design decisions throughout concept development and prototyping.',
+        ],
+      },
+      {
+        title: 'Challenges',
+        img: 'SVGS/q_map.svg',
+        imgAlt: 'Questionnaire flow map from the lo-fi prototype',
+        body: [
+          'We needed to somehow balance education and simplicity. New investors needed enough guidance to feel confident, while avoiding onboarding experience that felt like a lengthy tutorial or presented too much information at once. We also had to determine which ideas were genuinely useful to users.',
+        ],
+      },
+      {
+        title: 'What I did',
+        img: 'SVGS/sha_lofi_p.svg',
+        imgAlt: 'Lo-fidelity prototype screens',
+        body: [
+          "Interviewed 9 participants, 6 who were relatively new to understand the barriers and 3 experienced investors who managed to build confidence and overcome those barriers. From those interviews, we used those findings to be built into four design principles which were: User-centered, Simplicity, Guidance, and Connection. Although, accessibility wasn't discovered in the interviews, I felt like it was necessary addition to ensure the experience was inclusive.",
+          'From the onboarding research that was brought in was looking at other products such as Duolingo, who showed effective methods of progressive guidance, affordances, and feedback and Plants vs Zombies, they cleverly disguised their onboarding tutorial as an actual stage and users would learn through interaction. Now the question for this was',
+          { quote: 'How could I take these principles to investing without gamifying the experience?' },
+          "It was a tough question but a question I wanted to tackle. We also collaborated with the Sharesies design team through a Crazy 8's session to explore different directions and challenge different concepts.",
+          'From all the data that has been collected the prototyping was built in Figma, reinforced by research, data, insights, design principles, and UX fundamentals. Taking it to usability testing, participants tested the prototypes to understand the success and constraints. We listened to the feedback we received and onboarded it, however there was another consideration and that was to actually observe the user behaviours when they interacted with the app, the way they tapped, and if they understood the affordances. Those interactions were as important as the verbal feedback as those led me to question "why did some users stay longer on this screen" and action was taken to reduce the amount of clutter on the screen there was.',
+        ],
+      },
+      {
+        title: 'Key learning',
+        img: 'SHA_Screenshot/SHA_DD.svg',
+        imgAlt: 'The Double Diamond design process framework',
+        body: [
+          "I learned that good onboarding isn't about giving users everything they need to know upfront and it's about providing the right guidance at the right moment and allowing the experience itself to help users learn.",
+          'I also learned the importance of testing assumptions early. Our initial concept of a questionnaire seemed promising from a design perspective, but from testing it revealed it only caused friction.',
+          'Most importantly though, I learned to treat design as an iterative process rather than becoming attached to an initial solution.',
+        ],
+      },
+    ],
+  })}
 
   ${sLabel('By the numbers')}
   <div class="by-numbers" role="list">
@@ -2260,6 +2663,118 @@ const menuBtn      = document.getElementById('menu-btn');
 let active = 'intro';
 let revealObserver = null;
 
+/* Ticks are the tablist; Next walks the same index. Re-rendering the single
+   panel beats holding five in the DOM, and swapping one <img> src means only
+   the current step's asset is ever fetched. The img keeps its .is-loaded class
+   across swaps, so it stays visible while the next asset decodes rather than
+   flashing back to opacity 0. */
+let stepperKeyHandler = null;
+
+function setupStepper() {
+  /* render() replaces contentInner wholesale, so a dialog left open on a
+     previous section would leak its document-level key listener. */
+  if (stepperKeyHandler) {
+    document.removeEventListener('keydown', stepperKeyHandler);
+    stepperKeyHandler = null;
+  }
+
+  const st = contentInner.querySelector('.stepper');
+  if (!st || !STEPPER) return;
+
+  const steps = STEPPER.steps;
+  const ticks = Array.from(st.querySelectorAll('.st-tick'));
+  const panel = st.querySelector('#st-panel');
+  const image = st.querySelector('#st-img');
+  const next  = st.querySelector('#st-next');
+  if (!ticks.length || !panel) return;
+
+  let cur = 0;
+
+  function select(i, moveFocus) {
+    cur = Math.max(0, Math.min(steps.length - 1, i));
+    const s = steps[cur];
+
+    ticks.forEach((t, j) => {
+      const on = j === cur;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+
+    if (image && s.img && image.getAttribute('src') !== s.img) {
+      image.src = s.img;
+      image.alt = s.imgAlt || '';
+    }
+
+    panel.setAttribute('aria-labelledby', 'st-tab-' + cur);
+    panel.innerHTML = stepPanelHTML(s);
+
+    if (next) next.disabled = cur === steps.length - 1;
+    if (moveFocus) ticks[cur].focus();
+  }
+
+  ticks.forEach((t, i) => {
+    t.addEventListener('click', () => select(i, false));
+    t.addEventListener('keydown', (e) => {
+      let n = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % ticks.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + ticks.length) % ticks.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = ticks.length - 1;
+      if (n !== null) { e.preventDefault(); select(n, true); }
+    });
+  });
+
+  if (next) next.addEventListener('click', () => select(cur + 1, false));
+
+  /* ── Overlay ── */
+  const overlay  = contentInner.querySelector('#st-overlay');
+  const dialog   = overlay && overlay.querySelector('.stepper-dialog');
+  const openBtn  = contentInner.querySelector('#st-open');
+  const closeBtn = contentInner.querySelector('#st-close');
+  if (!overlay || !dialog || !openBtn || !closeBtn) return;
+
+  const FOCUSABLE = 'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  let lastFocus = null;
+
+  function openDialog() {
+    lastFocus = document.activeElement;
+    overlay.classList.add('is-open');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.addEventListener('keydown', stepperKeyHandler);
+    /* Focus the close button rather than the first tick: it is the reliable
+       way out, and it puts the caret at the top of the panel. */
+    closeBtn.focus();
+  }
+
+  function closeDialog() {
+    overlay.classList.remove('is-open');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', stepperKeyHandler);
+    /* Focus goes back to the control that opened it, or the user is stranded
+       at the top of the document. */
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  stepperKeyHandler = function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); closeDialog(); return; }
+    if (e.key !== 'Tab') return;
+
+    /* Keep Tab inside the dialog. Only the selected tick is tabbable, which is
+       what the roving tabindex above already guarantees. */
+    const f = Array.from(dialog.querySelectorAll(FOCUSABLE));
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+
+  openBtn.addEventListener('click', openDialog);
+  closeBtn.addEventListener('click', closeDialog);
+  /* mousedown, not click: a drag that starts inside and ends on the backdrop
+     should not count as a dismiss. */
+  overlay.addEventListener('mousedown', (e) => { if (e.target === overlay) closeDialog(); });
+}
+
 function setupImgFade() {
   contentInner.querySelectorAll('img:not(.reveal):not(.avatar-circle)').forEach(function(img) {
     if (img.complete && img.naturalWidth > 0) {
@@ -2462,6 +2977,7 @@ function render(id) {
   setupReveals();
   setupCarousel();
   setupImgFade();
+  setupStepper();
   updateNavStates();
   updateProgress();
 

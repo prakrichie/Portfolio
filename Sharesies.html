@@ -32,6 +32,8 @@
     --brand-pink:  #D83F6E;   /* large type & accents, AAA ≥18px/14px bold */
     --pink-deep:   #9E1A4A;   /* small text AAA on white/pink-bg (7.76:1) */
     --pink-tint:   #FCEEF2;   /* soft pink wash for quote/callout bodies */
+    --cta-pink:    #D23D6B;   /* brand-pink darkened 3% — 4.55:1 on white, so
+                                 white CTA type passes AA at normal size */
     --purple:      #47446D;   /* H2/H3 heading colour, AAA on white */
     --cream:       #F4F2EC;   /* warm alt page background */
 
@@ -1224,20 +1226,17 @@
   :root{ --font-mono: 'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif; }
 
   /* ───────────────────────────────────────
-     AT A GLANCE
-     STAR summary + design process flow.
-     Self-contained: page tokens only, no new deps.
-     Container queries drive the two layout switches:
-       .glance     ≥860px → STAR | process side by side
-       .glance-col--flow ≥340px → horizontal node flow
-     Below either threshold it degrades to stacked /
-     vertical timeline, which is also the no-support base.
+     AT A GLANCE — design process
+     The five STAR steps that used to sit beside this panel now live in the
+     stepper overlay (see below), so this is no longer a tablist: it is the
+     process flow and the skill tags, in one column, always fully shown.
+     That also drops the old "selected row lights its band" highlighting,
+     which had nothing left to be driven by.
   ─────────────────────────────────────── */
   .glance {
     --gl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
     --gl-accent:     var(--brand-pink);   /* graphic accent, large elements */
     --gl-accent-txt: var(--pink-deep);    /* small text accent, AAA on white */
-    --gl-rail:       var(--border-strong);
 
     container: glance / inline-size;
     border: 1px solid var(--border);
@@ -1272,132 +1271,22 @@
 
   /* ── Body ── */
   .glance-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .glance-col--star { padding: 22px 20px 24px; }
-  .glance-col--flow {
     container: flow / inline-size;
     padding: 22px 20px 24px;
-    background: var(--bg-2);
-    border-top: 1px solid var(--border);
   }
-  .glance-col--flow:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: -2px; }
-  .glance-h {
-    font-family: var(--gl-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-  }
-
-  /* ── STAR, clickable rows that drive the process panel ── */
-  .glance-star { display: grid; gap: 2px; }
-  .star-row {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 3px;
-    width: calc(100% + 22px);
-    margin-inline: -11px;
-    padding: 10px 30px 11px 13px;
-    border: 0;
-    border-radius: 8px;
-    background: none;
-    text-align: left;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    transition: background-color .2s var(--ease);
-  }
-  .star-row::before {              /* selected spine */
-    content: '';
-    position: absolute;
-    left: 2px; top: 10px; bottom: 10px;
-    width: 2px;
-    border-radius: 2px;
-    background: var(--gl-accent);
-    opacity: 0;
-    transition: opacity .2s var(--ease);
-  }
-  .star-row::after {               /* clickable affordance */
-    content: '';
-    position: absolute;
-    right: 13px; top: 16px;
-    width: 5px; height: 5px;
-    border-top: 1.4px solid currentColor;
-    border-right: 1.4px solid currentColor;
-    transform: rotate(45deg);
-    color: var(--ink-light);
-    opacity: .45;
-    transition: opacity .2s var(--ease), color .2s var(--ease);
-  }
-  .star-row:hover { background: var(--bg-2); }
-  .star-row:hover::after { opacity: 1; }
-  .star-row:focus-visible { outline: 2px solid var(--gl-accent); outline-offset: 1px; }
-  .star-row[aria-selected="true"] { background: var(--bg-2); }
-  .star-row[aria-selected="true"]::before { opacity: 1; }
-  .star-row[aria-selected="true"]::after { opacity: 1; color: var(--gl-accent); }
-  .star-row[aria-selected="true"] .star-body { color: var(--ink); }
-
-  .star-label {
-    display: block;
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    color: var(--gl-accent-txt);
-  }
-  .star-body {
-    display: block;
-    font-size: 14.5px;
-    line-height: 1.62;
-    color: var(--ink-mid);
-    max-width: 66ch;
-    transition: color .2s var(--ease);
-  }
-  @container glance (min-width: 560px) {
-    .star-row { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
-    .star-label { padding-top: 3px; }
-  }
-
-  /* ── Skill tags ── */
-  .glance-tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px dashed var(--border-strong);
-  }
-  .glance-tags li {
-    font-family: var(--gl-mono);
-    font-size: 10.5px;
-    line-height: 1.4;
-    color: var(--ink-light);
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 5px 8px;
-  }
-
-  /* ── Process panel ── */
   .glance-panel-head {
     display: flex;
     align-items: baseline;
     gap: 12px;
     margin-bottom: 18px;
   }
-  .glance-phase {
-    margin-left: auto;
+  .glance-h {
     font-family: var(--gl-mono);
-    font-size: 10.5px;
-    letter-spacing: .04em;
-    color: var(--ink-light);
-    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--gl-accent-txt);
   }
 
   .glance-bands { display: grid; gap: 18px; }
@@ -1412,7 +1301,6 @@
     letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--ink-light);
-    transition: color .2s var(--ease);
   }
   .band-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
@@ -1431,13 +1319,11 @@
     border: 1px solid var(--border);
     border-radius: 9px;
     background: var(--bg);
-    transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
   }
   .flow-icon {
     display: block;
     margin-bottom: 5px;
-    color: var(--ink-light);
-    transition: color .22s var(--ease);
+    color: var(--gl-accent-txt);
   }
   .flow-icon svg { width: 18px; height: 18px; }
   .flow-label {
@@ -1454,40 +1340,355 @@
     color: var(--ink-light);
   }
 
-  /* Selected STAR row lights its band */
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .band-label,
-  .glance[data-active="action"] .glance-band[data-band="action"] .band-label,
-  .glance[data-active="result"] .glance-band[data-band="result"] .band-label { color: var(--gl-accent-txt); }
-
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-icon,
-  .glance[data-active="action"] .glance-band[data-band="action"] .flow-icon,
-  .glance[data-active="result"] .glance-band[data-band="result"] .flow-icon { color: var(--gl-accent-txt); }
-
-  .glance[data-active="task"]   .glance-band[data-band="task"]   .flow-card,
-  .glance[data-active="action"] .glance-band[data-band="action"] .flow-card,
-  .glance[data-active="result"] .glance-band[data-band="result"] .flow-card {
-    border-color: var(--gl-accent);
-    box-shadow: inset 0 0 0 1px var(--gl-accent);
+  /* ── Skill tags ── */
+  .glance-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border-strong);
   }
-
-  /* ── Side by side on wide panels ── */
-  @container glance (min-width: 860px) {
-    .glance-body { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-    .glance-col--star { padding: 24px 28px 26px 24px; }
-    .glance-col--flow {
-      padding: 24px 24px 26px;
-      border-top: 0;
-      border-left: 1px solid var(--border);
-    }
+  .glance-tags li {
+    font-family: var(--gl-mono);
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--ink-light);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 5px 8px;
   }
 
   @media (max-width: 520px) {
     .glance-meta { display: none; }
   }
 
+  /* ───────────────────────────────────────
+     AT A GLANCE — stepper, opened from the CTA pill
+     Five steps, one at a time: a matted visual, a progress rail, the step's
+     prose, then Next.
+
+     The rail is the idea worth keeping. The active step is a wide bar with
+     its name sitting immediately to its left; every other step is a small
+     tick. The name therefore travels along the rail as you advance, so
+     position and label are read together instead of needing a separate
+     "3 of 5" counter. Only the active label is in flow — the others are
+     display:none — so the rail re-centres around whichever label is showing.
+  ─────────────────────────────────────── */
+  .stepper { margin: 0; }
+
+  /* Matted frame: grey surround, image on white inside it. The ratio is fixed
+     so the panel does not jump as steps change — the five assets run from
+     wide landscape to tall portrait. */
+  .stepper-media {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(12px, 3vw, 32px);
+  }
+  .stepper-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: var(--bg);
+    border-radius: 4px;
+  }
+
+  /* ── Progress rail ── */
+  .stepper-rail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 14px 0 24px;
+  }
+  .st-tick {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 0;          /* invisible hit area; keeps the bars visually thin */
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .st-tick-bar {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--border-strong);
+    transition: width .32s var(--ease), background-color .32s var(--ease);
+  }
+  .st-tick[aria-selected="true"] .st-tick-bar {
+    width: 52px;
+    background: var(--brand-pink);
+  }
+  .st-tick-label {
+    display: none;
+    font-size: 12px;
+    color: var(--ink-mid);
+    white-space: nowrap;
+  }
+  .st-tick[aria-selected="true"] .st-tick-label { display: inline; }
+  .st-tick:hover .st-tick-bar { background: var(--ink-light); }
+  .st-tick[aria-selected="true"]:hover .st-tick-bar { background: var(--pink-deep); }
+  .st-tick:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3px; border-radius: 4px; }
+
+  @media (pointer: coarse) {
+    .st-tick { padding: 17px 2px; }   /* 44px target without changing the visual */
+  }
+
+  /* ── Step prose ── */
+  .st-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .stepper-panel:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 4px; }
+  .st-body {
+    font-size: 15px;
+    color: var(--ink-mid);
+    line-height: 1.72;
+    margin-bottom: 20px;
+  }
+  .st-body:last-child { margin-bottom: 0; }
+  .st-quote {
+    max-width: 60ch;
+    margin: 0 auto 20px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  /* ── Next ── */
+  .stepper-actions { display: flex; justify-content: flex-end; margin-top: 24px; }
+  .st-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .st-next:hover:not([disabled]) { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .st-next:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 2px; }
+  .st-next[disabled] { opacity: .35; cursor: default; }
+  .st-next svg { width: 13px; height: 13px; }
+
+  /* ── The CTA that opens it ──
+     Full-width pill, per LONG PILL.png.
+
+     At 14.25px this is normal-size text, so it needs 4.5:1 rather than the
+     3:1 that large text gets. White on --brand-pink is only 4.32:1, so the
+     fill is --cta-pink: the same hue darkened 3% to reach 4.55:1. The two are
+     linked — changing either the size or the fill means rechecking both. */
+  .glance-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    margin: 4px 0 28px;
+    padding: 15px 22px;
+    background: var(--cta-pink);
+    color: #fff;
+    border: 0;
+    border-radius: 100px;
+    font-size: 14.25px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: .01em;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color .2s var(--ease), transform .12s var(--ease);
+  }
+  .glance-cta:hover { background: var(--pink-deep); }
+  /* Press feedback: the control should acknowledge the tap before the overlay
+     has finished arriving, so the click never feels dropped. */
+  .glance-cta:active { transform: scale(.99); }
+  .glance-cta:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 3px; }
+  .glance-cta svg { width: 17px; height: 17px; flex: none; }
+
+  /* ── Overlay ──
+     Motion follows two rules. First, enter and exit are not symmetric:
+     arriving is decelerated and a touch slower (260ms) so the panel feels
+     placed, leaving is accelerated and quicker (150ms) because a dismissed
+     thing should get out of the way. Second, nothing animates position from
+     far away — a 12px rise and a 2.5% scale is enough to read as "this came
+     forward", and it keeps the text legible the whole time.
+
+     Visibility is transitioned with a delay rather than toggled, so the exit
+     is actually seen; without it the panel would vanish on the first frame.
+     No hidden attribute: the closed state is the CSS default, so the overlay
+     is inert before the script has even run. */
+  .stepper-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: grid;
+    place-items: center;
+    padding: clamp(10px, 4vw, 40px);
+    background: rgba(13, 13, 13, .55);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s cubic-bezier(.4, 0, 1, 1),
+                visibility 0s linear .15s;
+  }
+  .stepper-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity .22s cubic-bezier(0, 0, .2, 1),
+                visibility 0s;
+  }
+
+  /* Near-fullscreen by design: this is the content, not a card floating on
+     top of it. It fills the viewport minus a margin and lays out as a column,
+     so the visual can claim whatever height is left after the rail, the prose
+     and the controls have been measured — rather than being pinned to a fixed
+     16:9 box the way the inline version is.
+
+     The dialog itself does not scroll. Its children do, which is what stops a
+     long step (step 4 runs ~1800 characters) from pushing the image and the
+     Next control off-screen. */
+  .stepper-dialog {
+    width: min(96vw, 1280px);
+    height: min(94dvh, 940px);
+    display: flex;
+    flex-direction: column;
+    overscroll-behavior: contain;
+    background: var(--bg);
+    border-radius: 16px;
+    padding: clamp(16px, 2.4vw, 26px);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, .34);
+
+    /* Expands out to size rather than sliding in — the panel grows from the
+       page instead of arriving from somewhere off it. */
+    transform: scale(.94);
+    transition: transform .15s cubic-bezier(.4, 0, 1, 1);
+  }
+  .stepper-overlay.is-open .stepper-dialog {
+    transform: none;
+    transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+  }
+
+  /* ── Filling the dialog ──
+     3:2 split of the free height between visual and prose. Both are flex
+     items with min-height:0 so they can actually shrink; without that, a long
+     body would blow the column out and defeat the fixed dialog height. */
+  .stepper-dialog .stepper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .stepper-dialog .stepper-media {
+    flex: 3 1 0;
+    min-height: 140px;
+    display: grid;
+  }
+  .stepper-dialog .stepper-img {
+    aspect-ratio: auto;      /* the box sets the size in here, not the ratio */
+    height: 100%;
+    min-height: 0;
+  }
+  .stepper-dialog .stepper-rail,
+  .stepper-dialog .stepper-actions { flex: none; }
+  .stepper-dialog .stepper-panel {
+    flex: 2 1 0;
+    min-height: 96px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 6px;      /* keeps text off its own scrollbar */
+  }
+
+  .stepper-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .stepper-dialog-title {
+    font-family: var(--gl-mono, ui-monospace, monospace);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--pink-deep);
+  }
+  .st-close {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .st-close:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .st-close:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 2px; }
+  .st-close svg { width: 15px; height: 15px; }
+
+  @media (max-width: 560px) {
+    .glance-cta { padding: 14px 18px; gap: 12px; }
+  }
+
+  /* Below this, or on a short landscape viewport, splitting a fixed height
+     between image and prose leaves both too small to use. Hand it back to
+     normal flow and let the dialog scroll as one column instead. */
+  @media (max-width: 640px), (max-height: 560px) {
+    .stepper-dialog {
+      display: block;
+      height: auto;
+      max-height: 94dvh;
+      overflow-y: auto;
+      padding: 14px;
+    }
+    .stepper-dialog .stepper { display: block; }
+    .stepper-dialog .stepper-media { min-height: 0; }
+    .stepper-dialog .stepper-img { aspect-ratio: 4 / 3; height: auto; }
+    .stepper-dialog .stepper-panel {
+      overflow: visible;
+      min-height: 0;
+      padding-right: 0;
+    }
+  }
+
+  /* Reduced motion still needs the state change to be perceivable, so opacity
+     is kept (shortened) and only the travel and scale are dropped. */
   @media (prefers-reduced-motion: reduce) {
-    .star-row, .star-row::before, .star-row::after,
-    .star-body, .band-label, .flow-card, .flow-icon { transition: none; }
+    .st-tick-bar, .st-next, .st-close { transition: none; }
+    .glance-cta { transition: background-color .2s var(--ease); }
+    .glance-cta:active { transform: none; }
+    .stepper-overlay,
+    .stepper-overlay.is-open { transition: opacity .1s linear, visibility 0s; }
+    .stepper-dialog,
+    .stepper-overlay.is-open .stepper-dialog { transform: none; transition: none; }
   }
 </style>
 </head>
@@ -1657,8 +1858,8 @@ function img(label, h = 140) {
 }
 
 /* At-a-glance icons, inline so they inherit currentColor and tint with the
-   accent when a band is active. Existing SVGs in /Icon_assets have baked-in
-   fills and would not theme across the light and dark case study pages. */
+   accent. Existing SVGs in /Icon_assets have baked-in fills and would not
+   theme across the light and dark case study pages. */
 const GL_ICON = {
   search: '<circle cx="7.4" cy="7.4" r="4.6"/><path d="M10.9 10.9L15.2 15.2"/>',
   target: '<circle cx="9" cy="9" r="6.3"/><circle cx="9" cy="9" r="2.4"/>',
@@ -1666,11 +1867,6 @@ const GL_ICON = {
   window: '<rect x="2.6" y="2.6" width="12.8" height="12.8" rx="1.6"/><path d="M2.6 6.4h12.8"/><circle cx="4.9" cy="4.5" r=".7"/>',
   check:  '<circle cx="9" cy="9" r="6.3"/><path d="M6 9.2l2.2 2.2 3.9-4.6"/>',
   arrow:  '<path d="M3.4 14.6L14.6 3.4"/><path d="M7.6 3.4h7v7"/>',
-  stack:  '<rect x="5.4" y="2.6" width="7.2" height="3" rx=".8"/><rect x="4.2" y="7.5" width="9.6" height="3" rx=".8"/><rect x="3" y="12.4" width="12" height="3" rx=".8"/>',
-  tree:   '<rect x="6.6" y="2.4" width="4.8" height="3.4" rx=".8"/><rect x="1.8" y="11.8" width="4.4" height="3.4" rx=".8"/><rect x="11.8" y="11.8" width="4.4" height="3.4" rx=".8"/><path d="M9 5.8v2.9M4 11.8V8.7h10v3.1"/>',
-  tap:    '<circle cx="9" cy="9" r="2.2"/><path d="M5.3 5.3a5.2 5.2 0 0 0 0 7.4"/><path d="M12.7 12.7a5.2 5.2 0 0 0 0-7.4"/>',
-  grid:   '<rect x="2.4" y="2.4" width="5.6" height="5.6" rx="1"/><rect x="10" y="2.4" width="5.6" height="5.6" rx="1"/><rect x="2.4" y="10" width="5.6" height="5.6" rx="1"/><rect x="10" y="10" width="5.6" height="5.6" rx="1"/>',
-  code:   '<path d="M6.4 5.4L2.6 9l3.8 3.6"/><path d="M11.6 5.4L15.4 9l-3.8 3.6"/><path d="M10.2 3.6L7.8 14.4"/>',
 };
 
 function glIcon(name) {
@@ -1678,26 +1874,11 @@ function glIcon(name) {
     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${GL_ICON[name] || ''}</svg>`;
 }
 
-/* At-a-glance panel. The four STAR rows are tabs; selecting one lights the
-   process phases that belong to it.
-   cfg = {
-     meta,
-     star:  [{ id, label, body, phase }…],
-     tags:  [string…],
-     bands: [{ band, label, steps: [{ n, icon, label, note }…] }…],
-   } */
+/* At-a-glance panel: the design process flow plus the skill tags.
+   The five STAR steps it used to carry now live in the stepper overlay, so
+   this is no longer a tablist and needs no JS.
+   cfg = { meta, tags: [string…], bands: [{ band, label, steps: [{ icon, label, note }…] }…] } */
 function glanceHTML(cfg) {
-  const first = cfg.star[0].id;
-
-  const tabs = cfg.star.map((s, i) => `
-        <button type="button" class="star-row" role="tab" id="gl-tab-${s.id}"
-                data-star="${s.id}" data-phase="${esc(s.phase)}" aria-label="${esc(s.name || s.label)}"
-                aria-controls="gl-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
-                tabindex="${i === 0 ? '0' : '-1'}">
-          <span class="star-label">${esc(s.label)}</span>
-          <span class="star-body">${esc(s.body)}</span>
-        </button>`).join('');
-
   const tags = cfg.tags.map(t => `<li>${esc(t)}</li>`).join('');
 
   const bands = cfg.bands.map(b => `
@@ -1714,7 +1895,7 @@ function glanceHTML(cfg) {
           </div>`).join('');
 
   return `
-  <section class="glance" data-active="${first}" aria-label="At a glance">
+  <section class="glance" aria-label="Design process at a glance">
     <div class="glance-chrome">
       <span class="glance-led" aria-hidden="true"></span>
       <span class="glance-num">04</span>
@@ -1722,22 +1903,94 @@ function glanceHTML(cfg) {
       <span class="glance-meta">${esc(cfg.meta)}</span>
     </div>
     <div class="glance-body">
-      <div class="glance-col glance-col--star">
-        <div class="glance-star" role="tablist" aria-orientation="vertical" aria-label="Project summary">${tabs}
-        </div>
-        <ul class="glance-tags">${tags}</ul>
+      <div class="glance-panel-head">
+        <span class="glance-h">Design process</span>
       </div>
-      <div class="glance-col glance-col--flow" id="gl-panel" role="tabpanel"
-           aria-labelledby="gl-tab-${first}" tabindex="0">
-        <div class="glance-panel-head">
-          <span class="glance-h">Design process</span>
-          <span class="glance-phase">${esc(cfg.star[0].phase)}</span>
-        </div>
-        <div class="glance-bands">${bands}
-        </div>
+      <div class="glance-bands">${bands}
       </div>
+      <ul class="glance-tags">${tags}</ul>
     </div>
   </section>`;
+}
+
+/* At-a-glance stepper, opened from the CTA pill.
+   cfg = { ctaLabel?, steps: [{ title, img, imgAlt, body }] }
+   where body is an array of paragraphs; an entry of the shape { quote: '…' }
+   renders as a centred pull quote instead.
+
+   Stashed on STEPPER so setupStepper() can re-render a step without re-parsing
+   it back out of the DOM. One stepper per rendered section. */
+let STEPPER = null;
+
+function stepPanelHTML(s) {
+  const body = s.body.map(b => b && b.quote
+    ? `<p class="st-quote">&ldquo;${esc(b.quote)}&rdquo;</p>`
+    : `<p class="st-body">${esc(b)}</p>`).join('');
+  return `<h3 class="st-title">${esc(s.title)}</h3>${body}`;
+}
+
+function stepperHTML(cfg) {
+  STEPPER = cfg;
+
+  const first = cfg.steps[0];
+  const total = cfg.steps.length;
+  const cta   = cfg.ctaLabel || 'Only have 5 minutes? have a read here!';
+
+  /* Every tick carries its own label; CSS reveals only the selected one, so
+     advancing a step needs nothing but an aria-selected flip. */
+  const ticks = cfg.steps.map((s, i) => `
+            <button type="button" class="st-tick" role="tab" id="st-tab-${i}"
+                    aria-controls="st-panel" aria-selected="${i === 0 ? 'true' : 'false'}"
+                    tabindex="${i === 0 ? '0' : '-1'}"
+                    aria-label="Step ${i + 1} of ${total}: ${esc(s.title)}">
+              <span class="st-tick-label">${esc(s.title)}</span>
+              <span class="st-tick-bar"></span>
+            </button>`).join('');
+
+  return `
+  <button type="button" class="glance-cta" id="st-open" aria-haspopup="dialog" aria-expanded="false" aria-controls="st-overlay">
+    <span>${esc(cta)}</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M7 17L17 7"/><path d="M8 7h9v9"/>
+    </svg>
+  </button>
+
+  <div class="stepper-overlay" id="st-overlay">
+    <div class="stepper-dialog" role="dialog" aria-modal="true" aria-labelledby="st-dialog-title">
+      <div class="stepper-dialog-head">
+        <h2 class="stepper-dialog-title" id="st-dialog-title">At a glance</h2>
+        <button type="button" class="st-close" id="st-close" aria-label="Close at a glance">
+          <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" aria-hidden="true" focusable="false">
+            <path d="M4 4l10 10M14 4L4 14"/>
+          </svg>
+        </button>
+      </div>
+
+      <section class="stepper" aria-label="At a glance">
+        <div class="stepper-media">
+          <img class="stepper-img" id="st-img" src="${esc(first.img)}" alt="${esc(first.imgAlt)}">
+        </div>
+
+        <div class="stepper-rail" role="tablist" aria-label="At a glance steps">${ticks}
+        </div>
+
+        <div class="stepper-panel" id="st-panel" role="tabpanel"
+             aria-labelledby="st-tab-0" tabindex="0">${stepPanelHTML(first)}</div>
+
+        <div class="stepper-actions">
+          <button type="button" class="st-next" id="st-next">
+            Next
+            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M7 3.5L12.5 9 7 14.5"/>
+            </svg>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>`;
 }
 
 /* ───────────────────────────────────────
@@ -1750,18 +2003,61 @@ intro: () => `
 
   <img src="Sharesies_hs1.jpg" alt="Sharesies onboarding hero" style="width:100%; height:440px; object-fit:contain; border-radius:8px; display:block; margin:-8px 0 16px;" />
 
+  ${stepperHTML({
+    steps: [
+      {
+        title: 'Problem statement',
+        img: 'Sharesies_hs1.jpg',
+        imgAlt: 'Sharesies onboarding hero',
+        body: [
+          'Sharesies discovered that new investors were often uncertain and overwhelmed when making their first investment, with a lack of confidence creating barriers to get started.',
+        ],
+      },
+      {
+        title: 'Role',
+        img: 'Icon_assets/workshop_concept.svg',
+        imgAlt: 'Workshop concepting output from the Sharesies design session',
+        body: [
+          'I was the UX/UI Designer, owning the onboarding research, user interviews, usability testing, workshops, wireframing, prototyping, and UI design.',
+          'My responsibility was to understand onboarding experience and how it could either build or create barriers for a new user. I conducted user interviews to understand the barriers to investing, usability testing to test assumptions and identify pain points, and workshops with the Sharesies design team to explore different directions and gather feedback.',
+          'I then used these findings to inform and reinforce design decisions throughout concept development and prototyping.',
+        ],
+      },
+      {
+        title: 'Challenges',
+        img: 'SVGS/q_map.svg',
+        imgAlt: 'Questionnaire flow map from the lo-fi prototype',
+        body: [
+          'We needed to somehow balance education and simplicity. New investors needed enough guidance to feel confident, while avoiding onboarding experience that felt like a lengthy tutorial or presented too much information at once. We also had to determine which ideas were genuinely useful to users.',
+        ],
+      },
+      {
+        title: 'What I did',
+        img: 'SVGS/sha_lofi_p.svg',
+        imgAlt: 'Lo-fidelity prototype screens',
+        body: [
+          "Interviewed 9 participants, 6 who were relatively new to understand the barriers and 3 experienced investors who managed to build confidence and overcome those barriers. From those interviews, we used those findings to be built into four design principles which were: User-centered, Simplicity, Guidance, and Connection. Although, accessibility wasn't discovered in the interviews, I felt like it was necessary addition to ensure the experience was inclusive.",
+          'From the onboarding research that was brought in was looking at other products such as Duolingo, who showed effective methods of progressive guidance, affordances, and feedback and Plants vs Zombies, they cleverly disguised their onboarding tutorial as an actual stage and users would learn through interaction. Now the question for this was',
+          { quote: 'How could I take these principles to investing without gamifying the experience?' },
+          "It was a tough question but a question I wanted to tackle. We also collaborated with the Sharesies design team through a Crazy 8's session to explore different directions and challenge different concepts.",
+          'From all the data that has been collected the prototyping was built in Figma, reinforced by research, data, insights, design principles, and UX fundamentals. Taking it to usability testing, participants tested the prototypes to understand the success and constraints. We listened to the feedback we received and onboarded it, however there was another consideration and that was to actually observe the user behaviours when they interacted with the app, the way they tapped, and if they understood the affordances. Those interactions were as important as the verbal feedback as those led me to question "why did some users stay longer on this screen" and action was taken to reduce the amount of clutter on the screen there was.',
+        ],
+      },
+      {
+        title: 'Key learning',
+        img: 'SHA_Screenshot/SHA_DD.svg',
+        imgAlt: 'The Double Diamond design process framework',
+        body: [
+          "I learned that good onboarding isn't about giving users everything they need to know upfront and it's about providing the right guidance at the right moment and allowing the experience itself to help users learn.",
+          'I also learned the importance of testing assumptions early. Our initial concept of a questionnaire seemed promising from a design perspective, but from testing it revealed it only caused friction.',
+          'Most importantly though, I learned to treat design as an iterative process rather than becoming attached to an initial solution.',
+        ],
+      },
+    ],
+  })}
+
   ${glanceHTML({
     meta: '4 months · team of 4',
-    star: [
-      { id:'situation', label:'1', name:'Situation', phase:'6 phases',
-        body:"A four-month capstone embedded with Sharesies' in-house design team. New investors sign up but often never make their first investment. The first week is where confidence is won or lost." },
-      { id:'task', label:'2', name:'Task', phase:'2 of 6 phases',
-        body:'Explored at how other investing platforms onboard new users, then ran interviews with 9 participants across different ages and professions, all new to investing. I used affinity mapping to turn what I heard into meaningful insights, which grounded the design decisions in helping users feel confident.' },
-      { id:'action', label:'3', name:'Action', phase:'3 of 6 phases',
-        body:'Explored the user problem and reframed the brief after discovering an existing onboarding flow. Four design principles, with accessibility and guidance at the forefront, shaped the initial lo-fi concepts. Usability testing with new and experienced investors revealed that users felt more engaged when guided throughout their journey, leading to gamification to provide progress and encouragement. The final delivery of the prototype was grounded in research, stakeholder engagement, and my own design principles and values.' },
-      { id:'result', label:'4', name:'Result', phase:'1 of 6 phases',
-        body:'Presented final designs and research to the Sharesies team, who responded positively to the direction. Learned to turn a mid-project pivot into a research-led decision rather than a setback.' },
-    ],
     tags: ['user research', 'usability testing', 'affinity mapping', 'personas & journeys', 'Figma prototyping', 'workshop facilitation'],
     bands: [
       { band:'task', label:'Task', steps:[
@@ -2658,38 +2954,141 @@ let active = 'intro';
 let revealObserver = null;
 
 /* At-a-glance, STAR rows act as tabs over the process panel. */
-function setupGlance() {
-  const gl = contentInner.querySelector('.glance');
-  if (!gl) return;
+/* At-a-glance stepper. Ticks are the tablist; Next walks the same index.
+   Re-rendering the single panel beats holding five in the DOM, and swapping
+   one <img> src means only the current step's asset is ever fetched. The img
+   keeps its .is-loaded class across swaps, so it stays visible while the next
+   asset decodes rather than flashing back to opacity 0. */
+let stepperKeyHandler = null;
+let stepperOverlayEl  = null;   /* portaled onto <body>, see setupStepper */
 
-  const tabs  = Array.from(gl.querySelectorAll('[role="tab"]'));
-  const panel = gl.querySelector('[role="tabpanel"]');
-  const phase = gl.querySelector('.glance-phase');
-  if (!tabs.length || !panel) return;
+/* At-a-glance stepper. Ticks are the tablist; Next walks the same index.
+   Re-rendering the single panel beats holding five in the DOM, and swapping
+   one <img> src means only the current step's asset is ever fetched. The img
+   keeps its .is-loaded class across swaps, so it stays visible while the next
+   asset decodes rather than flashing back to opacity 0. */
+function setupStepper() {
+  /* Tear down what the previous render left behind. The overlay is portaled
+     onto <body>, so replacing contentInner does NOT remove it — without this
+     every section change would leave another copy behind. */
+  if (stepperKeyHandler) {
+    document.removeEventListener('keydown', stepperKeyHandler);
+    stepperKeyHandler = null;
+  }
+  if (stepperOverlayEl && stepperOverlayEl.parentNode) {
+    stepperOverlayEl.parentNode.removeChild(stepperOverlayEl);
+  }
+  stepperOverlayEl = null;
 
-  function select(tab, moveFocus) {
-    tabs.forEach(t => {
-      const on = t === tab;
+  const openBtn = contentInner.querySelector('#st-open');
+  const overlay = contentInner.querySelector('#st-overlay');
+  if (!openBtn || !overlay || !STEPPER) return;
+
+  /* Portal the overlay onto <body>, the same way the poster lightbox does.
+
+     setupReveals() adds .reveal to every direct child of .section, and the
+     overlay is one of them. .reveal carries a transform, and a transformed
+     ancestor becomes the containing block for position:fixed descendants — so
+     inset:0 was resolving against the content column rather than the viewport.
+     That is why the backdrop blurred only the column and the panel sat off to
+     one side instead of centred. Moving it to <body> puts it back on the
+     viewport; dropping the class clears the inherited transform and the
+     opacity:0 that came with it. */
+  document.body.appendChild(overlay);
+  overlay.classList.remove('reveal', 'is-in');
+  stepperOverlayEl = overlay;
+
+  /* Everything below is queried from the overlay, not contentInner — it no
+     longer lives there. */
+  const dialog   = overlay.querySelector('.stepper-dialog');
+  const closeBtn = overlay.querySelector('#st-close');
+  const ticks    = Array.from(overlay.querySelectorAll('.st-tick'));
+  const panel    = overlay.querySelector('#st-panel');
+  const image    = overlay.querySelector('#st-img');
+  const next     = overlay.querySelector('#st-next');
+  if (!dialog || !closeBtn || !ticks.length || !panel) return;
+
+  const steps = STEPPER.steps;
+  let cur = 0;
+
+  function select(i, moveFocus) {
+    cur = Math.max(0, Math.min(steps.length - 1, i));
+    const s = steps[cur];
+
+    ticks.forEach((t, j) => {
+      const on = j === cur;
       t.setAttribute('aria-selected', on ? 'true' : 'false');
       t.tabIndex = on ? 0 : -1;
     });
-    gl.setAttribute('data-active', tab.dataset.star);
-    panel.setAttribute('aria-labelledby', tab.id);
-    if (phase) phase.textContent = tab.dataset.phase;
-    if (moveFocus) tab.focus();
+
+    if (image && s.img && image.getAttribute('src') !== s.img) {
+      image.src = s.img;
+      image.alt = s.imgAlt || '';
+    }
+
+    panel.setAttribute('aria-labelledby', 'st-tab-' + cur);
+    panel.innerHTML = stepPanelHTML(s);
+    panel.scrollTop = 0;          /* a long step must not open mid-paragraph */
+
+    if (next) next.disabled = cur === steps.length - 1;
+    if (moveFocus) ticks[cur].focus();
   }
 
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(tab, false));
-    tab.addEventListener('keydown', (e) => {
-      let next = null;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
-      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
-      else if (e.key === 'Home') next = tabs[0];
-      else if (e.key === 'End') next = tabs[tabs.length - 1];
-      if (next) { e.preventDefault(); select(next, true); }
+  ticks.forEach((t, i) => {
+    t.addEventListener('click', () => select(i, false));
+    t.addEventListener('keydown', (e) => {
+      let n = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % ticks.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + ticks.length) % ticks.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = ticks.length - 1;
+      if (n !== null) { e.preventDefault(); select(n, true); }
     });
   });
+
+  if (next) next.addEventListener('click', () => select(cur + 1, false));
+
+  /* ── Open / close ── */
+  const FOCUSABLE = 'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  let lastFocus = null;
+
+  function openDialog() {
+    lastFocus = document.activeElement;
+    overlay.classList.add('is-open');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.addEventListener('keydown', stepperKeyHandler);
+    /* Focus the close button rather than the first tick: it is the reliable
+       way out, and it puts the caret at the top of the panel. */
+    closeBtn.focus();
+  }
+
+  function closeDialog() {
+    overlay.classList.remove('is-open');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', stepperKeyHandler);
+    /* Focus goes back to the control that opened it, or the user is stranded
+       at the top of the document. */
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  stepperKeyHandler = function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); closeDialog(); return; }
+    if (e.key !== 'Tab') return;
+
+    /* Keep Tab inside the dialog. Only the selected tick is tabbable, which is
+       what the roving tabindex above already guarantees. */
+    const f = Array.from(dialog.querySelectorAll(FOCUSABLE));
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+
+  openBtn.addEventListener('click', openDialog);
+  closeBtn.addEventListener('click', closeDialog);
+  /* mousedown, not click: a drag that starts inside and ends on the backdrop
+     should not count as a dismiss. */
+  overlay.addEventListener('mousedown', (e) => { if (e.target === overlay) closeDialog(); });
 }
 
 function setupImgFade() {
@@ -2894,7 +3293,7 @@ function render(id) {
   setupReveals();
   setupCarousel();
   setupImgFade();
-  setupGlance();
+  setupStepper();
   updateNavStates();
   updateProgress();
 
